@@ -23,7 +23,7 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 
 public:
 	UAuraAttributeSet();
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const override;
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
@@ -40,16 +40,16 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "Vital Attributes")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
-	
+
 	UFUNCTION()
 	void OnRep_Health( const FGameplayAttributeData& OldHealth ) const;
-	
+
 	UFUNCTION()
 	void OnRep_MaxHealth( const FGameplayAttributeData& OldMaxHealth ) const;
 
 	UFUNCTION()
 	void OnRep_Mana( const FGameplayAttributeData& OldMana ) const;
-	
+
 	UFUNCTION()
 	void OnRep_MaxMana( const FGameplayAttributeData& OldMaxMana ) const;
 };
