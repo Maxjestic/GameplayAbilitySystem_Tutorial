@@ -4,14 +4,18 @@
 #include "Player/AuraPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+
+	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void AAuraPlayerController::PlayerTick( float DeltaTime )
@@ -95,12 +99,14 @@ void AAuraPlayerController::CursorTrace()
 	{
 		if (CurrentActor == nullptr)
 		{
-			// Case 1)			
+			// Case 1)
+			bTargeting = false;
 		}
 		else
 		{
 			// Case 2)
 			CurrentActor->HighlightActor();
+			bTargeting = true;
 		}
 	}
 	else
@@ -109,6 +115,7 @@ void AAuraPlayerController::CursorTrace()
 		{
 			// Case 3)
 			LastActor->UnhighlightActor();
+			bTargeting = false;
 		}
 		else
 		{
@@ -117,6 +124,7 @@ void AAuraPlayerController::CursorTrace()
 				// Case 4
 				LastActor->UnhighlightActor();
 				CurrentActor->HighlightActor();
+				bTargeting = true;
 			}
 			else
 			{
@@ -128,26 +136,59 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPressed( FGameplayTag InputTag )
 {
-	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Orange, *InputTag.ToString() );
+	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		bAutoRunning = false;
+	}
 }
 
 void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 {
-	if(GetASC() == nullptr) return;
+	if (GetASC() == nullptr) return;
 	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
 void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
 {
-	if(GetASC() == nullptr) return;
-	GetASC()->AbilityInputTagHeld(InputTag);
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_RMB))
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
+	if (bTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+
+		if(APawn* ControlledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+	}
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 {
-	if(AuraAbilitySystemComponent == nullptr)
+	if (AuraAbilitySystemComponent == nullptr)
 	{
-		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>( UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(
+			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return AuraAbilitySystemComponent;
 }
