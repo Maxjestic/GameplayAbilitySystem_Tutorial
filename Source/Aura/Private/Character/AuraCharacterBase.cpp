@@ -19,12 +19,6 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-void AAuraCharacterBase::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
 	
@@ -48,12 +42,18 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultVitalAttributes);
 }
 
-void AAuraCharacterBase::AddCharacterAbilities()
+void AAuraCharacterBase::AddCharacterAbilities() const
 {
 	if(!HasAuthority()) return;
 
-	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
-	AuraASC->AddCharacterAbilities(StartupAbilities);
+	UAuraAbilitySystemComponent* AuraAbilitySystemComponent = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	AuraAbilitySystemComponent->AddCharacterAbilities(StartupAbilities);
+}
+
+void AAuraCharacterBase::BeginPlay()
+{
+	Super::BeginPlay();
+	
 }
 
 FVector AAuraCharacterBase::GetCombatSocketLocation()
@@ -61,4 +61,3 @@ FVector AAuraCharacterBase::GetCombatSocketLocation()
 	check(Weapon);
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
 }
-

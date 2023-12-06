@@ -10,7 +10,7 @@
 AAuraEnemy::AAuraEnemy()
 {
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-	
+
 	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 
@@ -22,8 +22,8 @@ AAuraEnemy::AAuraEnemy()
 }
 
 void AAuraEnemy::HighlightActor()
-{	
-	GetMesh()->SetRenderCustomDepth(true);	
+{
+	GetMesh()->SetRenderCustomDepth(true);
 	Weapon->SetRenderCustomDepth(true);
 }
 
@@ -33,7 +33,7 @@ void AAuraEnemy::UnhighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
-int32 AAuraEnemy::GetPlayerLevel()
+int32 AAuraEnemy::GetCharacterLevel()
 {
 	return Level;
 }

@@ -7,7 +7,7 @@
 #include "MMC_MaxHealth.generated.h"
 
 /**
- * 
+ * Custom calculation class used to calculate MaxHealth Attribute
  */
 UCLASS()
 class AURA_API UMMC_MaxHealth : public UGameplayModMagnitudeCalculation
@@ -15,10 +15,15 @@ class AURA_API UMMC_MaxHealth : public UGameplayModMagnitudeCalculation
 	GENERATED_BODY()
 
 public:
+	/** Default constructor */
 	UMMC_MaxHealth();
-	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 
+	//~ Begin UGameplayModMagnitudeCalculation Interface
+	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
+	//~ End UGameplayModMagnitudeCalculation Interface
+	
 private:
+	/** Vigor attribute to capture for calculation */
 	FGameplayEffectAttributeCaptureDefinition VigorDef;
 	
 };

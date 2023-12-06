@@ -35,6 +35,7 @@ void AAuraPlayerController::BeginPlay()
 	Super::BeginPlay();
 	check(AuraContext);
 
+	// Default Input Component class set in Project Settings > Input > Default Classes
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
 		GetLocalPlayer()))
 	{
@@ -66,6 +67,8 @@ void AAuraPlayerController::Move( const FInputActionValue& InputActionValue )
 	bAutoRunning = false;
 	
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
+
+	// Define forward direction   
 	const FRotator YawRotation(0.f, GetControlRotation().Yaw, 0.f);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
@@ -112,12 +115,12 @@ void AAuraPlayerController::CursorTrace()
 		if(LastActor)
 		{
 			LastActor->UnhighlightActor();
-			bTargeting = false;
+			bIsTargeting = false;
 		}
 		if(CurrentActor)
 		{
 			CurrentActor->HighlightActor();
-			bTargeting = true;
+			bIsTargeting = true;
 		}
 	}
 }
@@ -142,7 +145,7 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 		return;
 	}
 
-	if (bTargeting)
+	if (bIsTargeting)
 	{
 		if (GetASC())
 		{
@@ -184,7 +187,7 @@ void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
 		return;
 	}
 
-	if (bTargeting)
+	if (bIsTargeting)
 	{
 		if (GetASC())
 		{

@@ -9,7 +9,9 @@ FAuraGameplayTags FAuraGameplayTags::GameplayTags;
 
 void FAuraGameplayTags::InitializeNativeGameplayTags()
 {
-	//~ Begin Primary Attributes
+	/**
+	 * Primary Attributes Tags
+	 */
 	GameplayTags.Attributes_Primary_Intelligence = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Intelligence"),
 		FString("Increases Magical Damage"));
@@ -25,12 +27,13 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Attributes_Primary_Vigor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Vigor"),
 		FString("Increases Health"));
-	//~ End Primary Attributes
 
-	//~ Begin Secondary Attributes
+	/**
+	 * Secondary Attributes Tags
+	 */
 	GameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.Armor"),
-		FString("Reduces damage taken, increases block chance"));
+		FString("Reduces Damage taken, increases Block Chance"));
 
 	GameplayTags.Attributes_Secondary_ArmorPenetration = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.ArmorPenetration"),
@@ -62,36 +65,36 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Attributes_Secondary_MaxHealth = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxHealth"),
-		FString("Maximum amount of obtainable Health"));
+		FString("Maximum amount of Health obtainable"));
 
 	GameplayTags.Attributes_Secondary_MaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxMana"),
-		FString("Maximum amount of obtainable Mana"));
-	//~ End Secondary Attributes
+		FString("Maximum amount of Mana obtainable"));
 
-	//~ Begin Input Tags
+	/**
+	 * Input Tags
+	 */
 	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.LMB"),
 		FString("Input Tag for Left Mouse Button"));
-	
+
 	GameplayTags.InputTag_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.RMB"),
 		FString("Input Tag for Right Mouse Button"));
-	
+
 	GameplayTags.InputTag_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.1"),
 		FString("Input Tag for 1 key"));
-	
+
 	GameplayTags.InputTag_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.2"),
 		FString("Input Tag for 2 key"));
-	
+
 	GameplayTags.InputTag_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.3"),
 		FString("Input Tag for 3 key"));
-	
+
 	GameplayTags.InputTag_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.4"),
-		FString("Input Tag for 4 key"));	
-	//~ End Input Tags
+		FString("Input Tag for 4 key"));
 }

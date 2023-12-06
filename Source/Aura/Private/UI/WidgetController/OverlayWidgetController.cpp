@@ -52,15 +52,19 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		}
 	);
 
+	
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
 		[this]( const FGameplayTagContainer& AssetTags )
 		{
+			/** We want to display a message when player picks up something.
+			 *  Here we go through GameplayTags associated with applied Effect
+			 *  and look for Tag of "Message" Hierarchy, if we find it we broadcast
+			 *  it so Overlay Widget can display correct message to the screen */
 			for (const FGameplayTag Tag : AssetTags)
 			{
 				// For example, say that Tag = Message.HealthPotion				
 				// "Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
-				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				if (Tag.MatchesTag(MessageTag))
+				if (FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message")); Tag.MatchesTag(MessageTag))
 				{
 					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
 					MessageWidgetRow.Broadcast(*Row);

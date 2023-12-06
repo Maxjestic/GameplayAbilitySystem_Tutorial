@@ -25,15 +25,15 @@ float UMMC_MaxHealth::CalculateBaseMagnitude_Implementation( const FGameplayEffe
 	EvaluateParameters.SourceTags = SourceTags;
 	EvaluateParameters.TargetTags = TargetTags;
 
-	float Intelligence = 0.0f;
-	GetCapturedAttributeMagnitude(VigorDef, Spec, EvaluateParameters, Intelligence);
+	float Vigor = 0.0f;
+	GetCapturedAttributeMagnitude(VigorDef, Spec, EvaluateParameters, Vigor);
 	
 	// Clamping value so it doesn't go below 0.
-	Intelligence = FMath::Max<float>(Intelligence, 0.f);
+	Vigor = FMath::Max<float>(Vigor, 0.f);
 
 	// Getting interface to gather information about level
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(Spec.GetContext().GetSourceObject());
-	const int32 PlayerLevel = CombatInterface->GetPlayerLevel();
+	const int32 PlayerLevel = CombatInterface->GetCharacterLevel();
 
-	return 50.f + 2.5 * Intelligence + 15.f * PlayerLevel;
+	return 80.f + 2.5 * Vigor + 15.f * PlayerLevel;
 }

@@ -74,37 +74,39 @@ void UAuraAttributeSet::PreAttributeChange( const FGameplayAttribute& Attribute,
 }
 
 void UAuraAttributeSet::SetEffectProperties( const FGameplayEffectModCallbackData& Data,
-                                             FEffectProperties& Props ) const
+                                             FEffectProperties& Properties ) const
 {
 	// Source = causer of the effect, Target = target of the effect (owner of this AS)
 
-	Props.EffectContextHandle = Data.EffectSpec.GetContext();
-	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
+	Properties.EffectContextHandle = Data.EffectSpec.GetContext();
+	Properties.SourceAbilitySystemComponent = Properties.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
 
-	if (IsValid(Props.SourceASC) && Props.SourceASC->AbilityActorInfo.IsValid() && Props.SourceASC->AbilityActorInfo->
+	if (IsValid(Properties.SourceAbilitySystemComponent) && Properties.SourceAbilitySystemComponent->AbilityActorInfo.IsValid() && Properties.SourceAbilitySystemComponent->AbilityActorInfo->
 		AvatarActor.IsValid())
 	{
-		Props.SourceAvatarActor = Props.SourceASC->AbilityActorInfo->AvatarActor.Get();
-		Props.SourceController = Props.SourceASC->AbilityActorInfo->PlayerController.Get();
-		if (Props.SourceController == nullptr && Props.SourceAvatarActor != nullptr)
+		Properties.SourceAvatarActor = Properties.SourceAbilitySystemComponent->AbilityActorInfo->AvatarActor.Get();
+		Properties.SourceController = Properties.SourceAbilitySystemComponent->AbilityActorInfo->PlayerController.Get();
+
+		// If AbilityActorInfo has a nullptr for the player controller, we try to get a controller from Pawn
+		if (Properties.SourceController == nullptr && Properties.SourceAvatarActor != nullptr)
 		{
-			if (const APawn* Pawn = Cast<APawn>(Props.SourceAvatarActor))
+			if (const APawn* Pawn = Cast<APawn>(Properties.SourceAvatarActor))
 			{
-				Props.SourceController = Pawn->GetController();
+				Properties.SourceController = Pawn->GetController();
 			}
 		}
-		if (Props.SourceController != nullptr)
+		if (Properties.SourceController != nullptr)
 		{
-			Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+			Properties.SourceCharacter = Properties.SourceController->GetPawn<ACharacter>(); //Cast<ACharacter>(Properties.SourceController->GetPawn());
 		}
 	}
-
+	
 	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
 	{
-		Props.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
-		Props.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
-		Props.TargetCharacter = Cast<ACharacter>(Props.TargetAvatarActor);
-		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
+		Properties.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
+		Properties.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+		Properties.TargetCharacter = Cast<ACharacter>(Properties.TargetAvatarActor);
+		Properties.TargetAbilitySystemController = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Properties.TargetAvatarActor);
 	}
 }
 
@@ -112,9 +114,9 @@ void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallb
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	FEffectProperties Props;
+	FEffectProperties Properties;
 
-	SetEffectProperties(Data, Props);
+	SetEffectProperties(Data, Properties);
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{

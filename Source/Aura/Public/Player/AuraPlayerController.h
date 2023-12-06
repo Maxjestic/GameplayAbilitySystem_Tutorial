@@ -17,7 +17,7 @@ class IEnemyInterface;
 struct FInputActionValue;
 
 /**
- * 
+ * Controller class used as default controller class in game
  */
 UCLASS()
 class AURA_API AAuraPlayerController : public APlayerController
@@ -26,24 +26,38 @@ class AURA_API AAuraPlayerController : public APlayerController
 
 public:
 	AAuraPlayerController();
+
+	//~ Begin APlayerController Interface
 	virtual void PlayerTick(float DeltaTime) override;
+	//~ End APlayerController Interface
 	
 protected:
+	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	//~ End AActor Interface
 	
 private:
-	void Move(const FInputActionValue& InputActionValue);	
+	/** Callback function implementing movement */
+	void Move(const FInputActionValue& InputActionValue);
+
+	/** Implementation of movement using points on spline generated in response to given Input Action */
 	void AutoRun();
+
+	/** Tracing under cursor to target actors */
 	void CursorTrace();
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	/** A getter for AbilitySystemComponent */
 	UAuraAbilitySystemComponent* GetASC();
-	
+
+	/** Input Mapping Context used to map input */
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
 
+	/** Input Action property used to move character */
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
@@ -61,7 +75,7 @@ private:
 	float FollowTime = 0.f;
 	float ShortPressThreshold = 0.5f;
 	bool bAutoRunning = false;
-	bool bTargeting = false;
+	bool bIsTargeting = false;
 
 	UPROPERTY(EditDefaultsOnly)
 	float AutoRunAcceptanceRadius = 50.f;

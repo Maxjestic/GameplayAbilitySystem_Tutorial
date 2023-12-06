@@ -14,7 +14,7 @@ class UCombatInterface : public UInterface
 };
 
 /**
- * 
+ * Combat interaction interface
  */
 class AURA_API ICombatInterface
 {
@@ -22,6 +22,9 @@ class AURA_API ICombatInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual int32 GetPlayerLevel();
+	/** Level getter */
+	virtual int32 GetCharacterLevel();
+
+	/**  */
 	virtual FVector GetCombatSocketLocation();
 };

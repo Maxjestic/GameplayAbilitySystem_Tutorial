@@ -10,7 +10,7 @@
 class UAttributeSet;
 
 /**
- * 
+ * Player State class used as default player state in game
  */
 UCLASS()
 class AURA_API AAuraPlayerState : public APlayerState, public IAbilitySystemInterface
@@ -18,26 +18,43 @@ class AURA_API AAuraPlayerState : public APlayerState, public IAbilitySystemInte
 	GENERATED_BODY()
 
 public:
+	/** No parameter constructor
+	 *  Sets: NetUpdateFrequency, AbilitySystemComponent (+replication), AttributeSet */
 	AAuraPlayerState();
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	
+	//~ Begin UObject Interface
 	virtual void GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const override;
+	//~ End UObject Interface
 
-	//~ Begin Accessors
+	/** AttributeSet getter */
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	
+	/** Player level getter */ 
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
-	//~ End Accessors
 
+	//~ Begin IAbilitySystem Interface
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~ End IAbilitySystem Interface
+	
 protected:
+	/** AbilitySystemComponent owned by player character
+	 *  It persists after destruction of the player pawn
+	 *  and can be reused after creation of new player pawn */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
+	/** AttributeSet owned by player character
+	 *  It persists after destruction of the player pawn
+	 *  and can be reused after creation of new player pawn */
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 private:
+	/** Player level */
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Level)
 	int32 Level = 1;
 
+	/** Level replication function */
 	UFUNCTION()
 	void OnRep_Level( int32 OldLevel );
 };

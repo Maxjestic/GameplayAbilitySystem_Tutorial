@@ -10,15 +10,15 @@
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController( const UObject* WorldContextObject )
 {
-	if(APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	if(APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
 	{
-		if(AAuraHUD* AuraHUD = Cast<AAuraHUD>(PC->GetHUD()))
+		if(AAuraHUD* AuraHUD = PlayerController->GetHUD<AAuraHUD>())
 		{
-			AAuraPlayerState* PS = PC->GetPlayerState<AAuraPlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
+			AAuraPlayerState* PlayerState = PlayerController->GetPlayerState<AAuraPlayerState>();
+			UAbilitySystemComponent* AbilitySystemComponent = PlayerState->GetAbilitySystemComponent();
+			UAttributeSet* AttributeSet = PlayerState->GetAttributeSet();
 
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+			const FWidgetControllerParams WidgetControllerParams(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
 			return AuraHUD->GetOverlayWidgetController(WidgetControllerParams);
 		}
 	}
@@ -27,15 +27,15 @@ UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(
 
 UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuWidgetController( const UObject* WorldContextObject )
 {
-	if(APlayerController* PC = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	if(APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
 	{
-		if(AAuraHUD* AuraHUD = Cast<AAuraHUD>(PC->GetHUD()))
+		if(AAuraHUD* AuraHUD = PlayerController->GetHUD<AAuraHUD>())
 		{
-			AAuraPlayerState* PS = PC->GetPlayerState<AAuraPlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
+			AAuraPlayerState* PlayerState = PlayerController->GetPlayerState<AAuraPlayerState>();
+			UAbilitySystemComponent* AbilitySystemComponent = PlayerState->GetAbilitySystemComponent();
+			UAttributeSet* AttributeSet = PlayerState->GetAttributeSet();
 
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
+			const FWidgetControllerParams WidgetControllerParams(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
 			return AuraHUD->GetAttributeMenuWidgetController(WidgetControllerParams);
 		}
 	}
