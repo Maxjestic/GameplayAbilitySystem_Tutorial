@@ -16,9 +16,9 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 	GENERATED_BODY()
 
 public:
-	/** No parameter constructor
-	 *  Sets: mesh collision, custom depth stencil value,
-	 *  AbilitySystemComponent (+replication), AttributeSet */
+	/** 
+	 * Sets mesh collision, custom depth stencil value, AbilitySystemComponent (+replication), AttributeSet  
+	 */
 	AAuraEnemy();
 
 	//~ Begin IEnemy Interface

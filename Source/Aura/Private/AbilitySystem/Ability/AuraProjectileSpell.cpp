@@ -13,8 +13,7 @@ void UAuraProjectileSpell::ActivateAbility( const FGameplayAbilitySpecHandle Han
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	const bool bIsServer = HasAuthority(&ActivationInfo);
-	if (!bIsServer) return;
+	if (!HasAuthority(&ActivationInfo)) return;
 
 	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
@@ -25,13 +24,13 @@ void UAuraProjectileSpell::ActivateAbility( const FGameplayAbilitySpecHandle Han
 		// TODO: Set the Projectile Rotation.
 
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,
-		                                                SpawnTransform,
-		                                                GetOwningActorFromActorInfo(),
-		                                                Cast<APawn>(GetOwningActorFromActorInfo()),
-		                                                ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+																					  SpawnTransform,
+																					  GetOwningActorFromActorInfo(),
+																					  Cast<APawn>(GetOwningActorFromActorInfo()),
+																					  ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 		/// TODO: Give the Projectile a Gameplay Effect Spec for causing Damage.
-		
+
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

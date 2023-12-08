@@ -73,8 +73,9 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 
 public:
-	/** No parameter constructor
-	 *  assigns gameplay tags to attributes */
+	/**
+	 * Sets gameplay tags to attributes
+	 */
 	UAuraAttributeSet();
 
 	//~ Begin UObject Interface
@@ -235,7 +236,9 @@ public:
 	void OnRep_Mana( const FGameplayAttributeData& OldMana ) const;
 	
 private:
-	/** Fills up EffectProperties during PostGameplayEffectExecute
-	 *  with data from source and target involved in given gameplay effect */
+	/**
+	 * Fills up EffectProperties during PostGameplayEffectExecute
+	 * with data from source and target involved in given gameplay effect
+	 */
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Properties) const;
 };

@@ -15,7 +15,9 @@ class AURA_API UMMC_MaxHealth : public UGameplayModMagnitudeCalculation
 	GENERATED_BODY()
 
 public:
-	/** Default constructor */
+	/**
+	 * Sets gameplay effect attribute capture definition
+	 */
 	UMMC_MaxHealth();
 
 	//~ Begin UGameplayModMagnitudeCalculation Interface

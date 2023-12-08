@@ -53,7 +53,9 @@ public:
 	virtual void BindCallbacksToDependencies() override;
 	//~ End UAuraWidgetController Interface
 
-	//~ Begin OnAttributeChanged Delegates
+	/**
+	 * OnAttributeChanged Delegates
+	 */
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeChangedSignature OnHealthChanged;
 
@@ -65,7 +67,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxManaChanged;
-	//~ End OnAttributeChanged Delegates
 
 	/** Delegate broadcasting data of type FUIWidgetRow to display in player's viewport */
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")

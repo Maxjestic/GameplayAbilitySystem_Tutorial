@@ -34,8 +34,10 @@ public:
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(
 		const FWidgetControllerParams& WidgetControllerParams );
 
-	/** Initialization of Overlay, creates new Overlay UserWidget, sets WidgetController parameters
-	 *  sets WidgetController, broadcasts initial values and adds Overlay to Viewport */
+	/**
+	 * Initialization of Overlay, creates new Overlay UserWidget, sets WidgetController parameters
+	 * sets WidgetController, broadcasts initial values and adds Overlay to Viewport
+	 */
 	void InitOverlay( APlayerController* PlayerController, APlayerState* PlayerState,
 	                  UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet );
 

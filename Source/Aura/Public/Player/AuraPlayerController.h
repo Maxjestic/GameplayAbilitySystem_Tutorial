@@ -25,6 +25,9 @@ class AURA_API AAuraPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	/**
+	 * Sets replication and initializes spline component
+	 */
 	AAuraPlayerController();
 
 	//~ Begin APlayerController Interface
@@ -46,12 +49,16 @@ private:
 
 	/** Tracing under cursor to target actors */
 	void CursorTrace();
+
+	/**
+	 * Input callback functions for each supported trigger event
+	 */
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 
-	/** A getter for AbilitySystemComponent */
-	UAuraAbilitySystemComponent* GetASC();
+	/** A getter for AbilitySystemComponent, if ASC property is nullptr function tries to get it but may fail and return nullptr */
+	UAuraAbilitySystemComponent* GetAbilitySystemComponent();
 
 	/** Input Mapping Context used to map input */
 	UPROPERTY(EditAnywhere, Category = "Input")
@@ -61,25 +68,43 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	/** Input config data asset, contains associated input actions with gameplay tags */
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
 
+	/** Ability system controller associated with pawn controlled by this */
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
-	
-	IEnemyInterface* LastActor;
-	IEnemyInterface* CurrentActor;
 
+	/**
+	 * Interactable actors under cursor
+	 */
+	IEnemyInterface* PreviousActor;
+	IEnemyInterface* NewActor;
+
+	/** Hit result from under cursor trace */
 	FHitResult CursorHit;
+
+	/** Running action destination */
 	FVector CachedDestination = FVector::ZeroVector;
+
+	/** How long this is following a cursor */
 	float FollowTime = 0.f;
+
+	/** Threshold for short button press */
 	float ShortPressThreshold = 0.5f;
+
+	/** Is this in auto running state? */
 	bool bAutoRunning = false;
+
+	/** Is mouse hovering above target? */
 	bool bIsTargeting = false;
 
+	/** How close this can get to the destination */
 	UPROPERTY(EditDefaultsOnly)
 	float AutoRunAcceptanceRadius = 50.f;
 
+	/** Curve on which this is auto running */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
 };

@@ -7,7 +7,7 @@
 #include "AuraGameModeBase.generated.h"
 
 /**
- * 
+ * Default game mode class in Aura
  */
 UCLASS()
 class AURA_API AAuraGameModeBase : public AGameModeBase

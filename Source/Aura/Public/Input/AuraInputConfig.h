@@ -16,7 +16,7 @@ USTRUCT(BlueprintType)
 struct FAuraInputAction
 {
 	GENERATED_BODY()
-
+	
 	UPROPERTY(EditDefaultsOnly)
 	const UInputAction* InputAction = nullptr;
 

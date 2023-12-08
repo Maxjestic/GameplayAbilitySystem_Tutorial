@@ -8,7 +8,7 @@
 #include "AuraInputComponent.generated.h"
 
 /**
- * 
+ * Default input component used in Aura
  */
 UCLASS()
 class AURA_API UAuraInputComponent : public UEnhancedInputComponent
@@ -16,6 +16,11 @@ class AURA_API UAuraInputComponent : public UEnhancedInputComponent
 	GENERATED_BODY()
 
 public:
+	/**
+	 * Template function receiving functions or function pointers, binds input to callbacks
+	 * UserClass - user object
+	 * Pressed/Released/HeldFuncType - functions that will be bind to corresponding trigger events
+	 */
 	template <class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 	void BindAbilityActions( const UAuraInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc,
 	                         ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc );
@@ -28,26 +33,26 @@ void UAuraInputComponent::BindAbilityActions( const UAuraInputConfig* InputConfi
 {
 	check(InputConfig)
 
-	for (const FAuraInputAction Action : InputConfig->AbilityInputActions)
+	for (const auto [InputAction, InputTag] : InputConfig->AbilityInputActions)
 	{
-		if(!Action.InputAction || !Action.InputTag.IsValid())
+		if(!InputAction || !InputTag.IsValid())
 		{
 			continue;
 		}
 			
 		if(PressedFunc)
 		{
-			BindAction(Action.InputAction, ETriggerEvent::Started, Object, PressedFunc, Action.InputTag);
+			BindAction(InputAction, ETriggerEvent::Started, Object, PressedFunc, InputTag);
 		}
 			
 		if(ReleasedFunc)
 		{
-			BindAction(Action.InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, Action.InputTag);
+			BindAction(InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, InputTag);
 		}
 			
 		if(HeldFunc)
 		{
-			BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, HeldFunc, Action.InputTag);
+			BindAction(InputAction, ETriggerEvent::Triggered, Object, HeldFunc, InputTag);
 		}
 	}
 }

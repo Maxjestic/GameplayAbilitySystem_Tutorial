@@ -15,8 +15,9 @@ class AURA_API AAuraCharacter : public AAuraCharacterBase
 	GENERATED_BODY()
 
 public:
-	/** No parameter constructor
-	 *  Sets: CharacterMovementComponent and Controller default values for top-down */
+	/**
+	 *  Sets CharacterMovementComponent and Controller
+	 */
 	AAuraCharacter();
 
 	//~ Begin APawn Interface

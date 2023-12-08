@@ -27,8 +27,8 @@ public:
 	FGameplayTag Attributes_Primary_Vigor;
 
 	/**
-	* Secondary Attributes Tags variables
-	*/
+	 * Secondary Attributes Tags variables
+	 */
 	FGameplayTag Attributes_Secondary_Armor;
 	FGameplayTag Attributes_Secondary_ArmorPenetration;
 	FGameplayTag Attributes_Secondary_BlockChance;
@@ -41,8 +41,8 @@ public:
 	FGameplayTag Attributes_Secondary_MaxMana;
 
 	/**
-	* Input Tags variables
-	*/
+	 * Input Tags variables
+	 */
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 	FGameplayTag InputTag_1;

@@ -54,15 +54,15 @@ struct FAuraGameplayEffect
  * Generic class applying gameplay effect
  * Collision component and responses to overlap events should be added in blueprint
  */
-
 UCLASS()
 class AURA_API AAuraEffectActor : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	/** No parameter constructor
-	 *  sets RootComponent */
+	/**
+	 *  sets RootComponent
+	 */
 	AAuraEffectActor();
 
 protected:

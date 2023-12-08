@@ -15,7 +15,7 @@ class AURA_API UMMC_MaxMana : public UGameplayModMagnitudeCalculation
 	GENERATED_BODY()
 
 public:
-	/** Default constructor */
+	/** Sets gameplay effect attribute capture definition */
 	UMMC_MaxMana();
 
 	//~ Begin UGameplayModMagnitudeCalculation Interface

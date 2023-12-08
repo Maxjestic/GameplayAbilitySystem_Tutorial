@@ -23,8 +23,9 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 	GENERATED_BODY()
 
 public:
-	/**	No parameter constructor
-	 *	Creates weapon - attaches it to socket and sets its collision */
+	/**
+	 * Sets weapon
+	 */
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
@@ -58,15 +59,19 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName WeaponTipSocketName;
 
-	/** AbilitySystemComponent owned by Character
-	 *  Exist on PlayerState for player characters
-	 *  Exist directly on pawn for enemy (AI) characters */
+	/**
+	 * AbilitySystemComponent owned by Character
+	 * Exist on PlayerState for player characters
+	 * Exist directly on pawn for enemy (AI) characters
+	 */
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
-	/** AttributeSet owned by Character
-	 *  Exist on PlayerState for player characters
-	 *  Exist directly on pawn for enemy (AI) characters */
+	/**
+	 * AttributeSet owned by Character
+	 * Exist on PlayerState for player characters
+	 * Exist directly on pawn for enemy (AI) characters
+	 */
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 

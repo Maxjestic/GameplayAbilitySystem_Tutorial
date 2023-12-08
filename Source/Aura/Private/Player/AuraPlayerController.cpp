@@ -24,8 +24,8 @@ void AAuraPlayerController::PlayerTick( float DeltaTime )
 	Super::PlayerTick(DeltaTime);
 
 	CursorTrace();
-	if(bAutoRunning)
-	{		
+	if (bAutoRunning)
+	{
 		AutoRun();
 	}
 }
@@ -65,7 +65,7 @@ void AAuraPlayerController::SetupInputComponent()
 void AAuraPlayerController::Move( const FInputActionValue& InputActionValue )
 {
 	bAutoRunning = false;
-	
+
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 
 	// Define forward direction   
@@ -87,14 +87,14 @@ void AAuraPlayerController::AutoRun()
 	{
 		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(
 			ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
-		
+
 		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(
 			LocationOnSpline, ESplineCoordinateSpace::World);
-		
+
 		ControlledPawn->AddMovementInput(Direction);
 
 		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
-		if(DistanceToDestination <= AutoRunAcceptanceRadius)
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
 		{
 			bAutoRunning = false;
 		}
@@ -103,24 +103,21 @@ void AAuraPlayerController::AutoRun()
 
 void AAuraPlayerController::CursorTrace()
 {
-	
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
-	LastActor = CurrentActor;
-	CurrentActor = Cast<IEnemyInterface>(CursorHit.GetActor());
-	
-	if (LastActor != CurrentActor)
+	PreviousActor = NewActor;
+	NewActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	if (PreviousActor != NewActor)
 	{
-		if(LastActor)
+		if (PreviousActor)
 		{
-			LastActor->UnhighlightActor();
-			bIsTargeting = false;
+			PreviousActor->UnhighlightActor();
 		}
-		if(CurrentActor)
+		if (NewActor)
 		{
-			CurrentActor->HighlightActor();
-			bIsTargeting = true;
+			NewActor->HighlightActor();
 		}
 	}
 }
@@ -129,6 +126,7 @@ void AAuraPlayerController::AbilityInputTagPressed( FGameplayTag InputTag )
 {
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_RMB))
 	{
+		bIsTargeting = NewActor ? true : false;
 		FollowTime = 0.f;
 		bAutoRunning = false;
 	}
@@ -136,20 +134,22 @@ void AAuraPlayerController::AbilityInputTagPressed( FGameplayTag InputTag )
 
 void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 {
+	// if it's not RMB we just try to activate ability
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_RMB))
 	{
-		if (GetASC())
+		if (GetAbilitySystemComponent())
 		{
-			GetASC()->AbilityInputTagReleased(InputTag);
+			GetAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 		}
 		return;
 	}
 
+	// it it's RMB we check - is this targeting? true: try to activate ability; false: start auto running to clicked destination
 	if (bIsTargeting)
 	{
-		if (GetASC())
+		if (GetAbilitySystemComponent())
 		{
-			GetASC()->AbilityInputTagReleased(InputTag);
+			GetAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 		}
 	}
 	else
@@ -161,12 +161,12 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 				this, ControllerPawn->GetActorLocation(), CachedDestination))
 			{
 				Spline->ClearSplinePoints();
-				
+
 				for (const FVector& Point : NavPath->PathPoints)
 				{
 					Spline->AddSplinePoint(Point, ESplineCoordinateSpace::World);
 				}
-				if (NavPath->PathPoints.Num() >0 )
+				if (NavPath->PathPoints.Num() > 0)
 				{
 					CachedDestination = NavPath->PathPoints.Last();
 					bAutoRunning = true;
@@ -178,26 +178,28 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 
 void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
 {
+	// if it's not RMB we just try to activate ability
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_RMB))
 	{
-		if (GetASC())
+		if (GetAbilitySystemComponent())
 		{
-			GetASC()->AbilityInputTagHeld(InputTag);
+			GetAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 		}
 		return;
 	}
 
+	// it it's RMB we check - is this targeting? true: try to activate ability; false: run to cursor
 	if (bIsTargeting)
 	{
-		if (GetASC())
+		if (GetAbilitySystemComponent())
 		{
-			GetASC()->AbilityInputTagHeld(InputTag);
+			GetAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 		}
 	}
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
-		
+
 		if (CursorHit.bBlockingHit)
 		{
 			CachedDestination = CursorHit.ImpactPoint;
@@ -211,7 +213,7 @@ void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
 	}
 }
 
-UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
+UAuraAbilitySystemComponent* AAuraPlayerController::GetAbilitySystemComponent()
 {
 	if (AuraAbilitySystemComponent == nullptr)
 	{

@@ -22,9 +22,9 @@ class AURA_API ICombatInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	/** Level getter */
+	/** Returns character level */
 	virtual int32 GetCharacterLevel();
 
-	/**  */
+	/** Returns a socket from weapon that may be used to for example spawn a projectile */
 	virtual FVector GetCombatSocketLocation();
 };

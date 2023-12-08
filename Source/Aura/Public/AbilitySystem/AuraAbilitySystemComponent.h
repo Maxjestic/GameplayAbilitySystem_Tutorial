@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
 
+/** Declaration of delegate broadcasting  */
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/)
 
 /**
@@ -22,7 +23,11 @@ public:
 
 	/** Grants given abilities */
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
+
+	/** Activating ability on input released */
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
+
+	/** Activating ability on input held */
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 
 	/** Delegate, sending out asset tags */

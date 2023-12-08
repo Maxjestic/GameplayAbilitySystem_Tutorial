@@ -18,8 +18,9 @@ class AURA_API AAuraPlayerState : public APlayerState, public IAbilitySystemInte
 	GENERATED_BODY()
 
 public:
-	/** No parameter constructor
-	 *  Sets: NetUpdateFrequency, AbilitySystemComponent (+replication), AttributeSet */
+	/**
+	 * Sets NetUpdateFrequency, AbilitySystemComponent (+replication), AttributeSet
+	 */
 	AAuraPlayerState();
 	
 	//~ Begin UObject Interface
@@ -37,15 +38,17 @@ public:
 	//~ End IAbilitySystem Interface
 	
 protected:
-	/** AbilitySystemComponent owned by player character
-	 *  It persists after destruction of the player pawn
-	 *  and can be reused after creation of new player pawn */
+	/**
+	 * AbilitySystemComponent owned by player character
+	 * It persists after destruction of the player-controlled pawn and can be reused after creating new one
+	 */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
-	/** AttributeSet owned by player character
-	 *  It persists after destruction of the player pawn
-	 *  and can be reused after creation of new player pawn */
+	/**
+	 * AttributeSet owned by player character
+	 * It persists after destruction of the player-controlled pawn and can be reused after creating new one
+	 */
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
