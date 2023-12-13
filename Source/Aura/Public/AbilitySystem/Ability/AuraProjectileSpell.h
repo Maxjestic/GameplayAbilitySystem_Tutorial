@@ -23,6 +23,10 @@ protected:
 	                              const FGameplayEventData* TriggerEventData ) override;
 	//~ End UGameplayAbility Interface
 
+	/** Spawns projectile, when it should be delayed */
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
+	void SpawnProjectile() const;
+
 	/** Projectile class to spawn */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AAuraProjectile> ProjectileClass;

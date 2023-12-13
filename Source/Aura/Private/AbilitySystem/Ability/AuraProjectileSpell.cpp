@@ -11,10 +11,13 @@ void UAuraProjectileSpell::ActivateAbility( const FGameplayAbilitySpecHandle Han
                                             const FGameplayAbilityActivationInfo ActivationInfo,
                                             const FGameplayEventData* TriggerEventData )
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);	
+}
 
-	if (!HasAuthority(&ActivationInfo)) return;
-
+void UAuraProjectileSpell::SpawnProjectile() const
+{
+	
+	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
