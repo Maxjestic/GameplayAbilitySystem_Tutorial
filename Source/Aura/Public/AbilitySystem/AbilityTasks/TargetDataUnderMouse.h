@@ -7,7 +7,7 @@
 #include "TargetDataUnderMouse.generated.h"
 
 /** Delegate sending out Position of target under cursor */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMouseTargetDataSignature, const FVector&, Data);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMouseTargetDataSignature, const FGameplayAbilityTargetDataHandle&, DataHandle);
 
 /**
  * Gets target data related to target under mouse cursor
@@ -21,13 +21,19 @@ public:
 	/** Delegate sending out Position of target under cursor */
 	UPROPERTY(BlueprintAssignable)
 	FMouseTargetDataSignature ValidData;
-	
+
 	/** Creates instance of this class and returns it */
 	UFUNCTION(BlueprintCallable, Category = "Ability|Tasks", meta = (DisplayName = "TargetDataUnderMouse", HidePin = "OwningAbility", DefaultToSelf = "OwningAbility", BlueprintInternalUseOnly = "true"))
-	static UTargetDataUnderMouse* CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility);
+	static UTargetDataUnderMouse* CreateTargetDataUnderMouse( UGameplayAbility* OwningAbility );
 
 private:
 	//~ Begin UGameplayTask Interface
 	virtual void Activate() override;
 	//~ end UGameplayTask Interface
+
+	/** sends cursor data to the server  */
+	void SendMouseCursorData() const;
+
+	/** Called in response to receiving replicated target data */
+	void OnTargetDataReplicatedCallback( const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag );
 };
