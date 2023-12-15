@@ -58,6 +58,8 @@ void AAuraPlayerController::SetupInputComponent()
 	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 
 	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AAuraPlayerController::ShiftPressed);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AAuraPlayerController::ShiftReleased);
 	AuraInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed,
 	                                       &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
@@ -144,15 +146,14 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 		return;
 	}
 
-	// it it's RMB we check - is this targeting? true: try to activate ability; false: start auto running to clicked destination
-	if (bIsTargeting)
+	// We are informing ASC that we released the button
+	if (GetAbilitySystemComponent())
 	{
-		if (GetAbilitySystemComponent())
-		{
-			GetAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
-		}
+		GetAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 	}
-	else
+	
+	// if it's RMB we check - is this not targeting and shift key is not pressed? true: start auto running to clicked destination
+	if (!bIsTargeting && !bShiftKeyDown)
 	{
 		const APawn* ControllerPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControllerPawn)
@@ -188,8 +189,8 @@ void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
 		return;
 	}
 
-	// it it's RMB we check - is this targeting? true: try to activate ability; false: run to cursor
-	if (bIsTargeting)
+	// it it's RMB we check - is this targeting or is shift key pressed? true: try to activate ability; false: run to cursor
+	if (bIsTargeting || bShiftKeyDown)
 	{
 		if (GetAbilitySystemComponent())
 		{

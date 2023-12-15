@@ -31,7 +31,7 @@ private:
 	virtual void Activate() override;
 	//~ end UGameplayTask Interface
 
-	/** sends cursor data to the server  */
+	/** Sends cursor data to the server  */
 	void SendMouseCursorData() const;
 
 	/** Called in response to receiving replicated target data */

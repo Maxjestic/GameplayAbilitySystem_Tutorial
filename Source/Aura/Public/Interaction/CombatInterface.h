@@ -7,7 +7,7 @@
 #include "CombatInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, BlueprintType)
 class UCombatInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -27,4 +27,8 @@ public:
 
 	/** Returns a socket from weapon that may be used to for example spawn a projectile */
 	virtual FVector GetCombatSocketLocation();
+
+	/** Blueprint function to set warp target */
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void UpdateFacingTarget(const FVector& TargetLocation);
 };

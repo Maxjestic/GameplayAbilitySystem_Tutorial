@@ -31,18 +31,24 @@ public:
 	AAuraPlayerController();
 
 	//~ Begin APlayerController Interface
-	virtual void PlayerTick(float DeltaTime) override;
+	virtual void PlayerTick( float DeltaTime ) override;
 	//~ End APlayerController Interface
-	
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	//~ End AActor Interface
-	
+
 private:
 	/** Callback function implementing movement */
-	void Move(const FInputActionValue& InputActionValue);
+	void Move( const FInputActionValue& InputActionValue );
+
+	/** Callback function implementing movement */
+	void ShiftPressed() { bShiftKeyDown = true; }
+
+	/** Callback function implementing movement */
+	void ShiftReleased() { bShiftKeyDown = false; }
 
 	/** Implementation of movement using points on spline generated in response to given Input Action */
 	void AutoRun();
@@ -53,9 +59,9 @@ private:
 	/**
 	 * Input callback functions for each supported trigger event
 	 */
-	void AbilityInputTagPressed(FGameplayTag InputTag);
-	void AbilityInputTagReleased(FGameplayTag InputTag);
-	void AbilityInputTagHeld(FGameplayTag InputTag);
+	void AbilityInputTagPressed( FGameplayTag InputTag );
+	void AbilityInputTagReleased( FGameplayTag InputTag );
+	void AbilityInputTagHeld( FGameplayTag InputTag );
 
 	/** A getter for AbilitySystemComponent, if ASC property is nullptr function tries to get it but may fail and return nullptr */
 	UAuraAbilitySystemComponent* GetAbilitySystemComponent();
@@ -64,9 +70,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
 
-	/** Input Action property used to move character */
+	/** Input Action variable used to move character */
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
+
+	/** Input Action variable for shift key */
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ShiftAction;
 
 	/** Input config data asset, contains associated input actions with gameplay tags */
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -99,6 +109,9 @@ private:
 
 	/** Is mouse hovering above target? */
 	bool bIsTargeting = false;
+
+	/** Is shift pressed */
+	bool bShiftKeyDown = false;
 
 	/** How close this can get to the destination */
 	UPROPERTY(EditDefaultsOnly)

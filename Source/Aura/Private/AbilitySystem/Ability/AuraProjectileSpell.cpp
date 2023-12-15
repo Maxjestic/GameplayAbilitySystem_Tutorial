@@ -14,17 +14,20 @@ void UAuraProjectileSpell::ActivateAbility( const FGameplayAbilitySpecHandle Han
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);	
 }
 
-void UAuraProjectileSpell::SpawnProjectile() const
+void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetRotation)
 {
 	
 	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
-
+		FRotator Rotation = (ProjectileTargetRotation - SocketLocation).Rotation();		
+		// We want projectile to move parallel to the ground
+		Rotation.Pitch = 0.f;
+		
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
-		// TODO: Set the Projectile Rotation.
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,
 																					  SpawnTransform,
