@@ -24,7 +24,7 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 
 public:
 	/**
-	 * Sets weapon and camera collision
+	 * Sets weapon and mesh collisions
 	 */
 	AAuraCharacterBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
