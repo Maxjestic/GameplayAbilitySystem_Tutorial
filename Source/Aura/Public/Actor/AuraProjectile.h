@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "GameFramework/Actor.h"
 #include "AuraProjectile.generated.h"
 
@@ -26,6 +27,10 @@ public:
 
 	/** Projectile movement component used by this */
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
+
+	/** Spec handle for damaging gameplay effect */
+	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 	
 protected:
 	//~ Begin AActor Interface
