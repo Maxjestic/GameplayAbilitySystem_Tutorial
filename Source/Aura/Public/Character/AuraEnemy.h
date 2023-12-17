@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
 
+class UWidgetComponent;
 /**
  * Class for AI-controlled characters
  */
@@ -17,7 +19,8 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 
 public:
 	/** 
-	 * Sets mesh collision, custom depth stencil value, AbilitySystemComponent (+replication), AttributeSet  
+	 * Sets mesh collision, custom depth stencil value, AbilitySystemComponent (+replication), AttributeSet
+	 * Creates health bar widget
 	 */
 	AAuraEnemy();
 
@@ -29,6 +32,14 @@ public:
 	//~ Begin ICombat Interface
 	virtual int32 GetCharacterLevel() override;
 	//~ End ICombat Interface
+
+	/** Delegate to broadcast when health changes */
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
+	/** Delegate to broadcast when health changes */
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 	
 protected:
 	//~ Begin AActor Interface
@@ -42,4 +53,12 @@ protected:
 	/** Enemy level */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
+
+	/** Health bar above enemy */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
+
+private:
+	/** Sets controller, binds callbacks to delegates, broadcasts initial values */
+	void SetupHealthBarWidget();
 };
