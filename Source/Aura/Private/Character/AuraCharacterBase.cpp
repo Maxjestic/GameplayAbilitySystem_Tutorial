@@ -45,9 +45,7 @@ void AAuraCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> Ga
 
 void AAuraCharacterBase::InitializeDefaultAttributes() const
 {
-	ApplyEffectToSelf(DefaultPrimaryAttributes);
-	ApplyEffectToSelf(DefaultSecondaryAttributes);
-	ApplyEffectToSelf(DefaultVitalAttributes);
+	
 }
 
 void AAuraCharacterBase::AddCharacterAbilities() const

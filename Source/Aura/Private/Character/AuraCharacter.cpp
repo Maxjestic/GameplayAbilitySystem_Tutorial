@@ -68,3 +68,10 @@ void AAuraCharacter::InitAbilityActorInfo()
 	
 	InitializeDefaultAttributes();
 }
+
+void AAuraCharacter::InitializeDefaultAttributes() const
+{	
+	ApplyEffectToSelf(DefaultPrimaryAttributes);
+	ApplyEffectToSelf(DefaultSecondaryAttributes);
+	ApplyEffectToSelf(DefaultVitalAttributes);
+}

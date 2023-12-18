@@ -27,7 +27,12 @@ public:
 	 * Sets weapon and mesh collisions
 	 */
 	AAuraCharacterBase();
+
+	//~ Begin IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//~ End IAbilitySystemInterface
+
+	/** Returns attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 protected:
@@ -38,7 +43,7 @@ protected:
 	void ApplyEffectToSelf( const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level = 1.f ) const;
 
 	/** Initializes all default attributes using gameplay effects */
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 
 	/** Granting startup abilities to character, calls a function on ability system component */
 	void AddCharacterAbilities() const;
@@ -74,18 +79,6 @@ protected:
 	 */
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-
-	/** Gameplay effect initializing primary attributes for the character */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
-	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
-
-	/** Gameplay effect initializing secondary attributes for the character */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
-	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
-
-	/** Gameplay effect initializing vital attributes for the character */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
-	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
 
 private:
 	/** Set of ability classes granted to the character at the beginning of the game */
