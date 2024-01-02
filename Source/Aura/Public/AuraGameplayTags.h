@@ -50,6 +50,11 @@ public:
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
 
+	/**
+	 * Gameplay related
+	 */
+	FGameplayTag Damage;
+	
 private:
 	/** The only instance of GameplayTags */
 	static FAuraGameplayTags GameplayTags;
