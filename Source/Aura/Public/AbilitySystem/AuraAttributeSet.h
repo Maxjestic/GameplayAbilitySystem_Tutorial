@@ -94,92 +94,113 @@ public:
 	 * Attribute properties, with Attribute Accessors
 	 */
 
-	/** Primary Attribute Strength - Increases Physical Damage */
+	/**
+	 * Primary Attributes
+	 */
+
+	/** Increases Physical Damage */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Primary Attributes")
 	FGameplayAttributeData Strength;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Strength);
 
-	/** Primary Attribute Intelligence - Increases Magical Damage */
+	/** Increases Magical Damage */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "Primary Attributes")
 	FGameplayAttributeData Intelligence;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Intelligence);
 
-	/** Primary Attribute Resilience - Increases Armor and Armor Penetration */
+	/** Increases Armor and Armor Penetration */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "Primary Attributes")
 	FGameplayAttributeData Resilience;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Resilience);
 
-	/** Primary Attribute Vigor - Increases Health */
+	/** Increases Health */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "Primary Attributes")
 	FGameplayAttributeData Vigor;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Vigor);
 
-	/** Secondary Attribute Armor - Reduces Damage taken, increases Block Chance */
+	/**
+	 * Secondary Attributes
+	 */
+	
+	/** Reduces Damage taken, increases Block Chance */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Secondary Attributes")
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Armor);
 
-	/** Secondary Attribute Armor Penetration - Ignores percentage of enemy Armor, increases Critical Hit Chance */
+	/** Ignores percentage of enemy Armor, increases Critical Hit Chance */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ArmorPenetration, Category = "Secondary Attributes")
 	FGameplayAttributeData ArmorPenetration;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ArmorPenetration);
 
-	/** Secondary Attribute Block Chance - Chance to cut incoming Damage in half */
+	/** Chance to cut incoming Damage in half */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_BlockChance, Category = "Secondary Attributes")
 	FGameplayAttributeData BlockChance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, BlockChance);
 
-	/** Secondary Attribute Critical Hit Chance - Chance to double Damage plus Critical Hit bonus */
+	/** Chance to double Damage plus Critical Hit bonus */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitChance, Category = "Secondary Attributes")
 	FGameplayAttributeData CriticalHitChance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitChance);
 
-	/** Secondary Attribute Critical Hit Damage - Bonus Damage added when Critical Hit is scored */
+	/** Bonus Damage added when Critical Hit is scored */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitDamage, Category = "Secondary Attributes")
 	FGameplayAttributeData CriticalHitDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitDamage);
 
-	/** Secondary Attribute Critical Hit Resistance - Reduces Critical Hit Chance of attacking enemies */
+	/** Reduces Critical Hit Chance of attacking enemies */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitResistance, Category = "Secondary Attributes")
 	FGameplayAttributeData CriticalHitResistance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitResistance);
 
-	/** Secondary Attribute Health Regeneration - Amount of Health regenerated every second */
+	/** Amount of Health regenerated every second */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_HealthRegeneration, Category = "Secondary Attributes")
 	FGameplayAttributeData HealthRegeneration;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, HealthRegeneration);
 
-	/** Secondary Attribute Mana Regeneration - Amount of Mana regenerated every second */
+	/** Amount of Mana regenerated every second */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ManaRegeneration, Category = "Secondary Attributes")
 	FGameplayAttributeData ManaRegeneration;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ManaRegeneration);
 
-	/** Secondary Attribute Max Health - Maximum amount of obtainable Health */
+	/** Maximum amount of obtainable Health */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Vital Attributes")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth);
 
-	/** Secondary Attribute Max Mana - Maximum amount of obtainable Mana */
+	/** Maximum amount of obtainable Mana */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "Vital Attributes")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
+
+	/**
+	 * Vital Attributes
+	 */
 	
-	/** Vital Attribute Health - Maximum amount of Health obtainable */	
+	/** Maximum amount of Health obtainable */	
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health);
 
-	/** Vital Attribute Mana - Maximum amount of Mana obtainable */	
+	/** Maximum amount of Mana obtainable */	
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana);
+
+	/**
+	 * Meta Attributes
+	 */
+
+	/** Product of calculation that will deal damage, set and calculated on the server */
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
 	
 	/*
 	 * Replication Functions, called everytime when any attribute changes
 	 */
 
 	/**
-	 * Primary Attributes OnRep Functions
+	 * Primary Attributes
 	 */
 	UFUNCTION()
 	void OnRep_Strength( const FGameplayAttributeData& OldStrength ) const;
@@ -194,7 +215,7 @@ public:
 	void OnRep_Vigor( const FGameplayAttributeData& OldVigor ) const;
 	
 	/**
-	 * Secondary Attributes OnRep Functions
+	 * Secondary Attributes
 	 */
 	UFUNCTION()
 	void OnRep_Armor( const FGameplayAttributeData& OldArmor ) const;
@@ -227,7 +248,7 @@ public:
 	void OnRep_MaxMana( const FGameplayAttributeData& OldMaxMana ) const;
 
 	/**
-	 * Vital Attributes OnRep Functions
+	 * Vital Attributes
 	 */
 	UFUNCTION()
 	void OnRep_Health( const FGameplayAttributeData& OldHealth ) const;
