@@ -15,3 +15,5 @@ Build
 *.xcodeproj
 *.xcworkspace
 *.DotSettings*
+~*.docx
+~*.tmp
