@@ -34,6 +34,9 @@ public:
 	virtual int32 GetCharacterLevel() override;
 	//~ End ICombat Interface
 
+	/** Callback responding to Effects.HitReact tag change */
+	void HitReactTagChanged( const FGameplayTag CallbackTag, int32 NewCount );
+
 	/** Delegate to broadcast when health changes */
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
@@ -41,7 +44,15 @@ public:
 	/** Delegate to broadcast when health changes */
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
-	
+
+	/** Is this hit reacting */
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
+
+	/** Base walk speed value */
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 250.f;
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;

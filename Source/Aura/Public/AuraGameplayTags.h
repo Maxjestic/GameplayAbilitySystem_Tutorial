@@ -54,6 +54,7 @@ public:
 	 * Gameplay related
 	 */
 	FGameplayTag Damage;
+	FGameplayTag Effects_HitReact;
 	
 private:
 	/** The only instance of GameplayTags */

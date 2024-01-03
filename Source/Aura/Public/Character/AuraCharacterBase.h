@@ -11,6 +11,7 @@
 class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
+class UAnimMontage;
 
 /**
  * Base class for all characters in game
@@ -54,6 +55,7 @@ protected:
 
 	//~ Begin ICombatInterface
 	virtual FVector GetCombatSocketLocation() override;
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	//~ End ICombat Interface
 
 	/** The skeletal mesh associated with this character's weapon */
@@ -84,4 +86,8 @@ private:
 	/** Set of ability classes granted to the character at the beginning of the game */
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	/** Animation montage played when character is reacting to hit, may be nullptr */
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 };
