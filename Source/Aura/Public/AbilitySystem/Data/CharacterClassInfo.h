@@ -7,6 +7,8 @@
 #include "CharacterClassInfo.generated.h"
 
 class UGameplayEffect;
+class UGameplayAbility;
+
 /**
  * All character classes in Aura
  */
@@ -40,6 +42,8 @@ class AURA_API UCharacterClassInfo : public UDataAsset
 	GENERATED_BODY()
 	
 public:
+	/** Class default info getter */
+	FCharacterClassDefaultInfo GetClassDefaultInfo(const ECharacterClass CharacterClass);
 
 	/** Default class info for each character class */
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
@@ -53,5 +57,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
 	TSubclassOf<UGameplayEffect> VitalAttributes;
 
-	FCharacterClassDefaultInfo GetClassDefaultInfo(const ECharacterClass CharacterClass);
+	/** Applicable gameplay abilities */
+	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
+	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 };
