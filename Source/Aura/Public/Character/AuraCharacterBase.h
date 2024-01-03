@@ -33,9 +33,19 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface
 
+	
+	//~ Begin ICombatInterface
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual void Die() override;
+	//~ End ICombat Interface
+	
 	/** Returns attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	/** Handles what happens on all clients whenever a character dies */
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+	
 protected:
 	/** A Function that initializes Ability Actor Info for AbilitySystemComponent */
 	virtual void InitAbilityActorInfo();
@@ -55,7 +65,6 @@ protected:
 
 	//~ Begin ICombatInterface
 	virtual FVector GetCombatSocketLocation() override;
-	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	//~ End ICombat Interface
 
 	/** The skeletal mesh associated with this character's weapon */

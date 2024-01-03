@@ -32,6 +32,7 @@ public:
 
 	//~ Begin ICombat Interface
 	virtual int32 GetCharacterLevel() override;
+	virtual void Die() override;
 	//~ End ICombat Interface
 
 	/** Callback responding to Effects.HitReact tag change */
@@ -52,6 +53,10 @@ public:
 	/** Base walk speed value */
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	float BaseWalkSpeed = 250.f;
+
+	/** Life span value */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;
 
 protected:
 	//~ Begin AActor Interface

@@ -43,7 +43,7 @@ struct FEffectProperties
 
 	/** Ability system component of the target of the executed gameplay effect */
 	UPROPERTY()
-	UAbilitySystemComponent* TargetAbilitySystemController = nullptr;
+	UAbilitySystemComponent* TargetAbilitySystemComponent = nullptr;
 	
 	/** Avatar actor of the target of the executed gameplay effect */
 	UPROPERTY()

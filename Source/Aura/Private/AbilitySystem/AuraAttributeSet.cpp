@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -79,9 +80,12 @@ void UAuraAttributeSet::SetEffectProperties( const FGameplayEffectModCallbackDat
 	// Source = causer of the effect, Target = target of the effect (owner of this AS)
 
 	Properties.EffectContextHandle = Data.EffectSpec.GetContext();
-	Properties.SourceAbilitySystemComponent = Properties.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
+	Properties.SourceAbilitySystemComponent = Properties.EffectContextHandle.
+	                                                     GetOriginalInstigatorAbilitySystemComponent();
 
-	if (IsValid(Properties.SourceAbilitySystemComponent) && Properties.SourceAbilitySystemComponent->AbilityActorInfo.IsValid() && Properties.SourceAbilitySystemComponent->AbilityActorInfo->
+	if (IsValid(Properties.SourceAbilitySystemComponent) && Properties.SourceAbilitySystemComponent->AbilityActorInfo.
+	                                                                   IsValid() && Properties.
+		SourceAbilitySystemComponent->AbilityActorInfo->
 		AvatarActor.IsValid())
 	{
 		Properties.SourceAvatarActor = Properties.SourceAbilitySystemComponent->AbilityActorInfo->AvatarActor.Get();
@@ -97,16 +101,18 @@ void UAuraAttributeSet::SetEffectProperties( const FGameplayEffectModCallbackDat
 		}
 		if (Properties.SourceController != nullptr)
 		{
-			Properties.SourceCharacter = Properties.SourceController->GetPawn<ACharacter>(); //Cast<ACharacter>(Properties.SourceController->GetPawn());
+			Properties.SourceCharacter = Properties.SourceController->GetPawn<ACharacter>();
+			//Cast<ACharacter>(Properties.SourceController->GetPawn());
 		}
 	}
-	
+
 	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
 	{
 		Properties.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
 		Properties.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
 		Properties.TargetCharacter = Cast<ACharacter>(Properties.TargetAvatarActor);
-		Properties.TargetAbilitySystemController = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Properties.TargetAvatarActor);
+		Properties.TargetAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(
+			Properties.TargetAvatarActor);
 	}
 }
 
@@ -121,27 +127,38 @@ void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallb
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
-		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Properties.TargetAvatarActor->GetName(), GetHealth())
+		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Properties.TargetAvatarActor->GetName(),
+		       GetHealth())
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
-	if(Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
 	{
 		const float LocalIncomingDamage = GetIncomingDamage();
 		SetIncomingDamage(0.f);
-		if(LocalIncomingDamage > 0.f)
+		if (LocalIncomingDamage > 0.f)
 		{
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0.f;
-			if(!bFatal)
+			if (bFatal)
+			{
+				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Properties.TargetAvatarActor);
+				if(CombatInterface == nullptr)
+				{
+					return;
+				}
+				
+				CombatInterface->Die();
+			}
+			else
 			{
 				FGameplayTagContainer TagContainer;
 				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
-				Properties.TargetAbilitySystemController->TryActivateAbilitiesByTag(TagContainer);
+				Properties.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(TagContainer);
 			}
 		}
 	}

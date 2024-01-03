@@ -37,4 +37,7 @@ public:
 	/** Returns a animation montage that should be played when reacting to hit */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetHitReactMontage();
+
+	/** Function called when character's health reaches 0, called on the server */
+	virtual void Die() = 0;
 };
