@@ -91,6 +91,28 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
+	/**
+	 * Dissolve effects
+	 */
+
+	/** Called on death to start dissolving */
+	void Dissolve();
+
+	/** Blueprint event used to create timeline */
+	UFUNCTION(BlueprintImplementableEvent)
+	void MeshStartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void WeaponStartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+	
+	/** Material used to create dynamic material with dissolve effect for mesh */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInstance> MeshDissolveMaterialInstance;
+	
+	/** Material used to create dynamic material with dissolve effect for weapon */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+
 private:
 	/** Set of ability classes granted to the character at the beginning of the game */
 	UPROPERTY(EditAnywhere, Category = "Abilities")
