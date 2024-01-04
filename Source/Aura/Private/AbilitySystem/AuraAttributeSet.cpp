@@ -8,7 +8,9 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -74,6 +76,52 @@ void UAuraAttributeSet::PreAttributeChange( const FGameplayAttribute& Attribute,
 	}
 }
 
+void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallbackData& Data )
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	FEffectProperties Properties;
+
+	SetEffectProperties(Data, Properties);
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Properties.TargetAvatarActor->GetName(),
+		       GetHealth())
+	}
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	{
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(0.f);
+		if (LocalIncomingDamage > 0.f)
+		{
+			const float NewHealth = GetHealth() - LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth, 0, GetMaxHealth()));
+
+			const bool bFatal = NewHealth <= 0.f;
+			if (bFatal)
+			{
+				if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(Properties.TargetAvatarActor))
+				{
+					CombatInterface->Die();
+				}								
+			}
+			else
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+				Properties.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(TagContainer);
+			}
+			ShowFloatingText(Properties, LocalIncomingDamage);
+		}
+	}
+}
+
 void UAuraAttributeSet::SetEffectProperties( const FGameplayEffectModCallbackData& Data,
                                              FEffectProperties& Properties ) const
 {
@@ -116,50 +164,13 @@ void UAuraAttributeSet::SetEffectProperties( const FGameplayEffectModCallbackDat
 	}
 }
 
-void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallbackData& Data )
+void UAuraAttributeSet::ShowFloatingText( const FEffectProperties& Properties, const float Damage ) const
 {
-	Super::PostGameplayEffectExecute(Data);
-
-	FEffectProperties Properties;
-
-	SetEffectProperties(Data, Properties);
-
-	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	if(Properties.SourceCharacter != Properties.TargetCharacter)
 	{
-		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
-		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Properties.TargetAvatarActor->GetName(),
-		       GetHealth())
-	}
-	if (Data.EvaluatedData.Attribute == GetManaAttribute())
-	{
-		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
-	}
-	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
-	{
-		const float LocalIncomingDamage = GetIncomingDamage();
-		SetIncomingDamage(0.f);
-		if (LocalIncomingDamage > 0.f)
+		if(AAuraPlayerController* PlayerController = Cast<AAuraPlayerController>( UGameplayStatics::GetPlayerController(Properties.SourceCharacter, 0)))
 		{
-			const float NewHealth = GetHealth() - LocalIncomingDamage;
-			SetHealth(FMath::Clamp(NewHealth, 0, GetMaxHealth()));
-
-			const bool bFatal = NewHealth <= 0.f;
-			if (bFatal)
-			{
-				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Properties.TargetAvatarActor);
-				if(CombatInterface == nullptr)
-				{
-					return;
-				}
-				
-				CombatInterface->Die();
-			}
-			else
-			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
-				Properties.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(TagContainer);
-			}
+			PlayerController->ShowDamageNumber(Damage, Properties.TargetCharacter);
 		}
 	}
 }

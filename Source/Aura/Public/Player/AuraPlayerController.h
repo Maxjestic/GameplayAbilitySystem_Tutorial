@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
@@ -34,6 +35,10 @@ public:
 	virtual void PlayerTick( float DeltaTime ) override;
 	//~ End APlayerController Interface
 
+	/** Called when character takes damage to show the amount with widget */
+	UFUNCTION(Client, Reliable)
+	void ShowDamageNumber(const float Damage, ACharacter* TargetCharacter);
+	
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
@@ -120,4 +125,8 @@ private:
 	/** Curve on which this is auto running */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
+
+	/** Widget spawned to show dealt damage */
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
 };

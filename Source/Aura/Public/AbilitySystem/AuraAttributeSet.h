@@ -20,7 +20,9 @@ struct FEffectProperties
 {
 	GENERATED_BODY()
 
-	FEffectProperties(){}	
+	FEffectProperties()
+	{
+	}
 
 	/** Handle to executed gameplay effect context */
 	FGameplayEffectContextHandle EffectContextHandle;
@@ -44,7 +46,7 @@ struct FEffectProperties
 	/** Ability system component of the target of the executed gameplay effect */
 	UPROPERTY()
 	UAbilitySystemComponent* TargetAbilitySystemComponent = nullptr;
-	
+
 	/** Avatar actor of the target of the executed gameplay effect */
 	UPROPERTY()
 	AActor* TargetAvatarActor = nullptr;
@@ -59,7 +61,7 @@ struct FEffectProperties
 };
 
 /** An alias for Function Pointer to function with any signature - T(*)( ... ) */
-template<class T>
+template <class T>
 using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 
 /**
@@ -83,13 +85,13 @@ public:
 	//~ End UObject Interface
 
 	//~ Begin UAttributeSet Interface
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	virtual void PreAttributeChange( const FGameplayAttribute& Attribute, float& NewValue ) override;
+	virtual void PostGameplayEffectExecute( const FGameplayEffectModCallbackData& Data ) override;
 	//~ End UAttributeSet Interface
-	
+
 	/** Map assigning gameplay tags to attributes  */
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
-	
+
 	/**
 	 * Attribute properties, with Attribute Accessors
 	 */
@@ -121,7 +123,7 @@ public:
 	/**
 	 * Secondary Attributes
 	 */
-	
+
 	/** Reduces Damage taken, increases Block Chance */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Secondary Attributes")
 	FGameplayAttributeData Armor;
@@ -175,13 +177,13 @@ public:
 	/**
 	 * Vital Attributes
 	 */
-	
-	/** Maximum amount of Health obtainable */	
+
+	/** Maximum amount of Health obtainable */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health);
 
-	/** Maximum amount of Mana obtainable */	
+	/** Maximum amount of Mana obtainable */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana);
@@ -194,7 +196,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
-	
+
 	/*
 	 * Replication Functions, called everytime when any attribute changes
 	 */
@@ -213,7 +215,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_Vigor( const FGameplayAttributeData& OldVigor ) const;
-	
+
 	/**
 	 * Secondary Attributes
 	 */
@@ -255,11 +257,14 @@ public:
 
 	UFUNCTION()
 	void OnRep_Mana( const FGameplayAttributeData& OldMana ) const;
-	
+
 private:
 	/**
 	 * Fills up EffectProperties during PostGameplayEffectExecute
 	 * with data from source and target involved in given gameplay effect
 	 */
-	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Properties) const;
+	void SetEffectProperties( const FGameplayEffectModCallbackData& Data, FEffectProperties& Properties ) const;
+
+	/** Informs PlayerController to show damage text */
+	void ShowFloatingText( const FEffectProperties& Properties, const float Damage ) const;
 };
