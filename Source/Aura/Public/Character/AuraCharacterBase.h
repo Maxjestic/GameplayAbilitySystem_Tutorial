@@ -18,7 +18,7 @@ class UAnimMontage;
  * Contains common properties and functionalities to all characters
  */
 
-UCLASS(Abstract)
+UCLASS( Abstract )
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
@@ -33,19 +33,19 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface
 
-	
+
 	//~ Begin ICombatInterface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
 	//~ End ICombat Interface
-	
+
 	/** Returns attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	/** Handles what happens on all clients whenever a character dies */
-	UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION( NetMulticast, Reliable )
 	virtual void MulticastHandleDeath();
-	
+
 protected:
 	/** A Function that initializes Ability Actor Info for AbilitySystemComponent */
 	virtual void InitAbilityActorInfo();
@@ -68,11 +68,11 @@ protected:
 	//~ End ICombat Interface
 
 	/** The skeletal mesh associated with this character's weapon */
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY( EditAnywhere, Category = "Combat" )
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
 	/** FName of the weapon socket from which projectiles are launched */
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY( EditAnywhere, Category = "Combat" )
 	FName WeaponTipSocketName;
 
 	/**
@@ -99,26 +99,26 @@ protected:
 	void Dissolve();
 
 	/** Blueprint event used to create timeline */
-	UFUNCTION(BlueprintImplementableEvent)
-	void MeshStartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
-	
-	UFUNCTION(BlueprintImplementableEvent)
-	void WeaponStartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
-	
+	UFUNCTION( BlueprintImplementableEvent )
+	void MeshStartDissolveTimeline( UMaterialInstanceDynamic* DynamicMaterialInstance );
+
+	UFUNCTION( BlueprintImplementableEvent )
+	void WeaponStartDissolveTimeline( UMaterialInstanceDynamic* DynamicMaterialInstance );
+
 	/** Material used to create dynamic material with dissolve effect for mesh */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY( EditAnywhere, BlueprintReadOnly )
 	TObjectPtr<UMaterialInstance> MeshDissolveMaterialInstance;
-	
+
 	/** Material used to create dynamic material with dissolve effect for weapon */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY( EditAnywhere, BlueprintReadOnly )
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
 
 private:
 	/** Set of ability classes granted to the character at the beginning of the game */
-	UPROPERTY(EditAnywhere, Category = "Abilities")
+	UPROPERTY( EditAnywhere, Category = "Abilities" )
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
 	/** Animation montage played when character is reacting to hit, may be nullptr */
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY( EditAnywhere, Category = "Combat" )
 	TObjectPtr<UAnimMontage> HitReactMontage;
 };

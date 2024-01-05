@@ -12,19 +12,19 @@
 
 AAuraCharacter::AAuraCharacter()
 {
-	GetCharacterMovement()->bOrientRotationToMovement =true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f,400.f,0.f);
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator( 0.f, 400.f, 0.f );
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
-	bUseControllerRotationYaw = false;	
+	bUseControllerRotationYaw = false;
 }
 
 void AAuraCharacter::PossessedBy( AController* NewController )
 {
-	Super::PossessedBy(NewController);
+	Super::PossessedBy( NewController );
 
 	// Init ability actor info for the server
 	InitAbilityActorInfo();
@@ -39,39 +39,41 @@ void AAuraCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
-int32 AAuraCharacter::GetCharacterLevel()
+int32 AAuraCharacter::GetCharacterLevel() const
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
-	check(AuraPlayerState);
+	check( AuraPlayerState );
 	return AuraPlayerState->GetPlayerLevel();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
-	check(AuraPlayerState);
-	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
+	check( AuraPlayerState );
+	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo( AuraPlayerState, this );
 
-	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
-	
+	Cast<UAuraAbilitySystemComponent>( AuraPlayerState->GetAbilitySystemComponent() )->AbilityActorInfoSet();
+
 	// Set AbilitySystemComponent and AttributeSet
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 
-	if (AAuraPlayerController* AuraPlayerController = GetController<AAuraPlayerController>()) //Cast<AAuraPlayerController>(GetController()))
-	{		
-		if (AAuraHUD* AuraHUD = AuraPlayerController->GetHUD<AAuraHUD>()) //Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
+	if (AAuraPlayerController* AuraPlayerController = GetController<AAuraPlayerController>())
+	//Cast<AAuraPlayerController>(GetController()))
+	{
+		if (AAuraHUD* AuraHUD = AuraPlayerController->GetHUD<AAuraHUD>())
+		//Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
 		{
-			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
+			AuraHUD->InitOverlay( AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet );
 		}
 	}
-	
+
 	InitializeDefaultAttributes();
 }
 
 void AAuraCharacter::InitializeDefaultAttributes() const
-{	
-	ApplyEffectToSelf(DefaultPrimaryAttributes);
-	ApplyEffectToSelf(DefaultSecondaryAttributes);
-	ApplyEffectToSelf(DefaultVitalAttributes);
+{
+	ApplyEffectToSelf( DefaultPrimaryAttributes );
+	ApplyEffectToSelf( DefaultSecondaryAttributes );
+	ApplyEffectToSelf( DefaultVitalAttributes );
 }

@@ -21,18 +21,24 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 
 public:
 	/** Get overlay widget controller getter, may return nullptr */
-	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController")
-	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController" )
+	static UOverlayWidgetController* GetOverlayWidgetController( const UObject* WorldContextObject );
 
 	/** Get attribute menu widget controller, may return nullptr */
-	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController")
-	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController" )
+	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController( const UObject* WorldContextObject );
 
 	/** Initializes default attribute values for enemies */
-	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults")
-	static void InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* AbilitySystemComponent);
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
+	static void InitializeDefaultAttributes( const UObject* WorldContextObject, ECharacterClass CharacterClass,
+	                                         float Level, UAbilitySystemComponent* AbilitySystemComponent );
 
 	/** Initializes startup abilities for enemy */
-	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults")
-	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* AbilitySystemComponent);
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
+	static void GiveStartupAbilities( const UObject* WorldContextObject,
+	                                  UAbilitySystemComponent* AbilitySystemComponent );
+
+	/** Character Class Info data asset getter */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
+	static UCharacterClassInfo* GetCharacterClassInfo( const UObject* WorldContextObject );
 };

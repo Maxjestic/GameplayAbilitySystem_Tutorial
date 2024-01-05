@@ -31,7 +31,7 @@ public:
 	//~ End IEnemy Interface
 
 	//~ Begin ICombat Interface
-	virtual int32 GetCharacterLevel() override;
+	virtual int32 GetCharacterLevel() const override;
 	virtual void Die() override;
 	//~ End ICombat Interface
 
@@ -39,23 +39,23 @@ public:
 	void HitReactTagChanged( const FGameplayTag CallbackTag, int32 NewCount );
 
 	/** Delegate to broadcast when health changes */
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY( BlueprintAssignable )
 	FOnAttributeChangedSignature OnHealthChanged;
 
 	/** Delegate to broadcast when health changes */
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY( BlueprintAssignable )
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	/** Is this hit reacting */
-	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	UPROPERTY( BlueprintReadOnly, Category="Combat" )
 	bool bHitReacting = false;
 
 	/** Base walk speed value */
-	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	UPROPERTY( BlueprintReadOnly, Category="Combat" )
 	float BaseWalkSpeed = 250.f;
 
 	/** Life span value */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category="Combat" )
 	float LifeSpan = 5.f;
 
 protected:
@@ -69,15 +69,15 @@ protected:
 	//~ End AAuraCharacterBase Interface
 
 	/** Enemy level */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults" )
 	int32 Level = 1;
 
 	/** Enemy Character class */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults" )
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
 	/** Health bar above enemy */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UWidgetComponent> HealthBar;
 
 private:
