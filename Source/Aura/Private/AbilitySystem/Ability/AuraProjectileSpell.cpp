@@ -14,42 +14,52 @@ void UAuraProjectileSpell::ActivateAbility( const FGameplayAbilitySpecHandle Han
                                             const FGameplayAbilityActivationInfo ActivationInfo,
                                             const FGameplayEventData* TriggerEventData )
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);	
+	Super::ActivateAbility( Handle, ActorInfo, ActivationInfo, TriggerEventData );
 }
 
-void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetRotation)
+void UAuraProjectileSpell::SpawnProjectile( const FVector& ProjectileTargetRotation )
 {
-	
 	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
-	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>( GetAvatarActorFromActorInfo() ))
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
-		FRotator Rotation = (ProjectileTargetRotation - SocketLocation).Rotation();		
+		FRotator Rotation = (ProjectileTargetRotation - SocketLocation).Rotation();
 		// We want projectile to move parallel to the ground
 		Rotation.Pitch = 0.f;
-		
-		FTransform SpawnTransform;
-		SpawnTransform.SetLocation(SocketLocation);
-		SpawnTransform.SetRotation(Rotation.Quaternion());
 
-		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,
-																					  SpawnTransform,
-																					  GetOwningActorFromActorInfo(),
-																					  Cast<APawn>(GetOwningActorFromActorInfo()),
-																					  ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation( SocketLocation );
+		SpawnTransform.SetRotation( Rotation.Quaternion() );
+
+		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>( ProjectileClass,
+		                                                                               SpawnTransform,
+		                                                                               GetOwningActorFromActorInfo(),
+		                                                                               Cast<APawn>( GetOwningActorFromActorInfo() ),
+		                                                                               ESpawnActorCollisionHandlingMethod::AlwaysSpawn );
 
 		// Setting up gameplay effect for ability (projectile)
-		const UAbilitySystemComponent* SourceAbilitySystemComponent =
-			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
-		const FGameplayEffectSpecHandle SpecHandle =
-			SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceAbilitySystemComponent->MakeEffectContext());
+		const UAbilitySystemComponent* SourceAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent( GetAvatarActorFromActorInfo() );
+		FGameplayEffectContextHandle EffectContextHandle = SourceAbilitySystemComponent->MakeEffectContext();
+		
+		EffectContextHandle.SetAbility( this );
+		EffectContextHandle.AddSourceObject( Projectile );
+		TArray<TWeakObjectPtr<AActor>> Actors;
+		Actors.Add(Projectile);
+		EffectContextHandle.AddActors( Actors );
+		FHitResult HitResult;
+		HitResult.Location = ProjectileTargetRotation;
+		EffectContextHandle.AddHitResult( HitResult );
+		
+		const FGameplayEffectSpecHandle SpecHandle = SourceAbilitySystemComponent->MakeOutgoingSpec( DamageEffectClass,
+																									 GetAbilityLevel(),
+																									 EffectContextHandle );
 
-		const float ScaledDamage = Damage.GetValueAtLevel(10);
+		const float ScaledDamage = Damage.GetValueAtLevel( 10 );
 		const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
-		
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, ScaledDamage);
+
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( SpecHandle, GameplayTags.Damage, ScaledDamage );
 		Projectile->DamageEffectSpecHandle = SpecHandle;
-		
-		Projectile->FinishSpawning(SpawnTransform);
+
+		Projectile->FinishSpawning( SpawnTransform );
 	}
 }

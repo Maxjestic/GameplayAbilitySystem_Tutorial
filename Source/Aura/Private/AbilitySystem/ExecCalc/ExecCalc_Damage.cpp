@@ -164,8 +164,7 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 		// Double the Damage and add Critical Hit Damage
 		Damage = Damage * 2.f + SourceCriticalHitDamage;
 	}
-
-
+	
 	const FGameplayModifierEvaluatedData EvaluatedData( UAuraAttributeSet::GetIncomingDamageAttribute(),
 	                                                    EGameplayModOp::Additive,
 	                                                    Damage );

@@ -24,14 +24,14 @@ protected:
 	//~ End UGameplayAbility Interface
 
 	/** Spawns projectile, when it should be delayed */
-	UFUNCTION(BlueprintCallable, Category = "Projectile")
-	void SpawnProjectile(const FVector& ProjectileTargetRotation);
+	UFUNCTION( BlueprintCallable, Category = "Projectile" )
+	void SpawnProjectile( const FVector& ProjectileTargetRotation );
 
 	/** Projectile class to spawn */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY( EditAnywhere, BlueprintReadOnly )
 	TSubclassOf<AAuraProjectile> ProjectileClass;
 
 	/** Class of gameplay effect that this applies */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };
