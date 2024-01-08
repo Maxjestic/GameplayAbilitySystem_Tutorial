@@ -4,6 +4,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
@@ -88,6 +89,9 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 	// Determine if there was a successful Block
 	const bool bBlocked = FMath::RandRange( 1, 100 ) < TargetBlockChance;
 
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+	UAuraAbilitySystemLibrary::SetIsBlockedHit( EffectContextHandle, bBlocked );
+
 	// If Block was successful halve the Damage
 	Damage = bBlocked ? Damage * 0.5f : Damage;
 
@@ -152,6 +156,7 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 
 	// Determine if there was successful Critical Hit
 	const bool bCriticalHit = FMath::RandRange( 1, 100 ) < EffectiveCriticalHitChance;
+	UAuraAbilitySystemLibrary::SetIsCriticalHit( EffectContextHandle, bCriticalHit );
 
 	if (bCriticalHit)
 	{
@@ -164,7 +169,7 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 		// Double the Damage and add Critical Hit Damage
 		Damage = Damage * 2.f + SourceCriticalHitDamage;
 	}
-	
+
 	const FGameplayModifierEvaluatedData EvaluatedData( UAuraAttributeSet::GetIncomingDamageAttribute(),
 	                                                    EGameplayModOp::Additive,
 	                                                    Damage );

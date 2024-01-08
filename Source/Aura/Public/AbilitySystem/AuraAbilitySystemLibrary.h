@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+struct FGameplayEffectContextHandle;
 class UAbilitySystemComponent;
 class UAttributeMenuWidgetController;
 class UOverlayWidgetController;
@@ -41,4 +42,20 @@ public:
 	/** Character Class Info data asset getter */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static UCharacterClassInfo* GetCharacterClassInfo( const UObject* WorldContextObject );
+
+	/** Returns true if hit was blocked from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static bool IsBlockedHit( const FGameplayEffectContextHandle& EffectContextHandle );
+
+	/** Returns true if hit was critical from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static bool IsCriticalHit( const FGameplayEffectContextHandle& EffectContextHandle );
+
+	/** Sets if hit was blocked information in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetIsBlockedHit( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsBlockedHit );
+
+	/** Sets if hit was critical information in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetIsCriticalHit( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsCriticalHit );
 };

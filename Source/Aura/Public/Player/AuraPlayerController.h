@@ -36,9 +36,9 @@ public:
 	//~ End APlayerController Interface
 
 	/** Called when character takes damage to show the amount with widget */
-	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(const float Damage, ACharacter* TargetCharacter);
-	
+	UFUNCTION( Client, Reliable )
+	void ShowDamageNumber( const float Damage, ACharacter* TargetCharacter, const bool bBlockedHit, const bool bCriticalHit );
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
@@ -72,19 +72,19 @@ private:
 	UAuraAbilitySystemComponent* GetAbilitySystemComponent();
 
 	/** Input Mapping Context used to map input */
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY( EditAnywhere, Category = "Input" )
 	TObjectPtr<UInputMappingContext> AuraContext;
 
 	/** Input Action variable used to move character */
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY( EditAnywhere, Category = "Input" )
 	TObjectPtr<UInputAction> MoveAction;
 
 	/** Input Action variable for shift key */
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY( EditAnywhere, Category = "Input" )
 	TObjectPtr<UInputAction> ShiftAction;
 
 	/** Input config data asset, contains associated input actions with gameplay tags */
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UPROPERTY( EditDefaultsOnly, Category = "Input" )
 	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	/** Ability system controller associated with pawn controlled by this */
@@ -119,14 +119,14 @@ private:
 	bool bShiftKeyDown = false;
 
 	/** How close this can get to the destination */
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY( EditDefaultsOnly )
 	float AutoRunAcceptanceRadius = 50.f;
 
 	/** Curve on which this is auto running */
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USplineComponent> Spline;
 
 	/** Widget spawned to show dealt damage */
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY( EditDefaultsOnly )
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
 };

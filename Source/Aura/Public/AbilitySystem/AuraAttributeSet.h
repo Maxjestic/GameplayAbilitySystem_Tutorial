@@ -266,5 +266,5 @@ private:
 	void SetEffectProperties( const FGameplayEffectModCallbackData& Data, FEffectProperties& Properties ) const;
 
 	/** Informs PlayerController to show damage text */
-	void ShowFloatingText( const FEffectProperties& Properties, const float Damage ) const;
+	void ShowFloatingText( const FEffectProperties& Properties, const float Damage, const bool bBlockedHit, const bool bCriticalHit ) const;
 };
