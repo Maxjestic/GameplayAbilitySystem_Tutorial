@@ -10,7 +10,7 @@ bool FAuraGameplayEffectContext::NetSerialize( FArchive& Ar, UPackageMap* Map, b
 		{
 			RepBits |= 1 << 0;
 		}
-		if (bReplicateEffectCauser && EffectCauser.IsValid() )
+		if (bReplicateEffectCauser && EffectCauser.IsValid())
 		{
 			RepBits |= 1 << 1;
 		}
@@ -44,7 +44,7 @@ bool FAuraGameplayEffectContext::NetSerialize( FArchive& Ar, UPackageMap* Map, b
 		}
 	}
 
-	Ar.SerializeBits(&RepBits, 9);
+	Ar.SerializeBits( &RepBits, 9 );
 
 	if (RepBits & (1 << 0))
 	{
@@ -64,7 +64,7 @@ bool FAuraGameplayEffectContext::NetSerialize( FArchive& Ar, UPackageMap* Map, b
 	}
 	if (RepBits & (1 << 4))
 	{
-		SafeNetSerializeTArray_Default<31>(Ar, Actors);
+		SafeNetSerializeTArray_Default<31>( Ar, Actors );
 	}
 	if (RepBits & (1 << 5))
 	{
@@ -72,10 +72,10 @@ bool FAuraGameplayEffectContext::NetSerialize( FArchive& Ar, UPackageMap* Map, b
 		{
 			if (!HitResult.IsValid())
 			{
-				HitResult = TSharedPtr<FHitResult>(new FHitResult());
+				HitResult = TSharedPtr<FHitResult>( new FHitResult() );
 			}
 		}
-		HitResult->NetSerialize(Ar, Map, bOutSuccess);
+		HitResult->NetSerialize( Ar, Map, bOutSuccess );
 	}
 	if (RepBits & (1 << 6))
 	{
@@ -86,20 +86,32 @@ bool FAuraGameplayEffectContext::NetSerialize( FArchive& Ar, UPackageMap* Map, b
 	{
 		bHasWorldOrigin = false;
 	}
-	if(RepBits & (1 << 7))
+	if (RepBits & (1 << 7))
 	{
 		Ar << bIsBlockedHit;
 	}
-	if(RepBits & (1 << 8))
+	if (RepBits & (1 << 8))
 	{
 		Ar << bIsCriticalHit;
 	}
 
 	if (Ar.IsLoading())
 	{
-		AddInstigator(Instigator.Get(), EffectCauser.Get()); // Just to initialize InstigatorAbilitySystemComponent
-	}	
-	
+		AddInstigator( Instigator.Get(), EffectCauser.Get() ); // Just to initialize InstigatorAbilitySystemComponent
+	}
+
 	bOutSuccess = true;
 	return true;
+}
+
+FAuraGameplayEffectContext* FAuraGameplayEffectContext::Duplicate() const
+{
+	FAuraGameplayEffectContext* NewContext = new FAuraGameplayEffectContext();
+	*NewContext = *this;
+	if (GetHitResult())
+	{
+		// Does a deep copy of the hit result
+		NewContext->AddHitResult( *GetHitResult(), true );
+	}
+	return NewContext;
 }
