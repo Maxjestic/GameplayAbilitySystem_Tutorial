@@ -17,15 +17,15 @@ class AURA_API UAuraUserWidget : public UUserWidget
 
 public:
 	/** Widget Controller setter, also calling WidgetControllerSet() */
-	UFUNCTION(BlueprintCallable)
-	void SetWidgetController(UObject* InWidgetController);
+	UFUNCTION( BlueprintCallable )
+	void SetWidgetController( UObject* InWidgetController );
 
 	/** Controller from which data is retrieved */
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY( BlueprintReadOnly )
 	TObjectPtr<UObject> WidgetController;
 
 protected:
 	/** BeginPlay-like event implemented in blueprint*/
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION( BlueprintImplementableEvent )
 	void WidgetControllerSet();
 };
