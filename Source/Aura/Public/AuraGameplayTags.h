@@ -54,8 +54,12 @@ public:
 	 * Gameplay related
 	 */
 	FGameplayTag Damage;
+	FGameplayTag Damage_Fire;
 	FGameplayTag Effects_HitReact;
-	
+
+	/** Array containing all damage type tags */
+	TArray<FGameplayTag> DamageTypes;
+
 private:
 	/** The only instance of GameplayTags */
 	static FAuraGameplayTags GameplayTags;

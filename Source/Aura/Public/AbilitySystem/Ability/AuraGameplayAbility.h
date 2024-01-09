@@ -18,8 +18,5 @@ public:
 	/** Gameplay tag for startup ability, abilities granted during game can have their tags changed in runtime */
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	FGameplayTag StartupInputTag;
-
-	/** Value of damage for damaging abilities */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Damage")
-	FScalableFloat Damage;
+	
 };
