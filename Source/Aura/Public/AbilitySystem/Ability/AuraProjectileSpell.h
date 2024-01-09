@@ -30,5 +30,4 @@ protected:
 	/** Projectile class to spawn */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly )
 	TSubclassOf<AAuraProjectile> ProjectileClass;
-	
 };

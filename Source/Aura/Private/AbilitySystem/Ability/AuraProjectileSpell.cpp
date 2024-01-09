@@ -24,8 +24,6 @@ void UAuraProjectileSpell::SpawnProjectile( const FVector& ProjectileTargetRotat
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 		FRotator Rotation = (ProjectileTargetRotation - SocketLocation).Rotation();
-		// We want projectile to move parallel to the ground
-		Rotation.Pitch = 0.f;
 
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation( SocketLocation );

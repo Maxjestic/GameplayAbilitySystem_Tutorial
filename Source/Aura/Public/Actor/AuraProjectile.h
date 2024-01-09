@@ -29,35 +29,35 @@ public:
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	/** Spec handle for damaging gameplay effect */
-	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn))
+	UPROPERTY( BlueprintReadWrite, meta = (ExposeOnSpawn) )
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;
-	
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
 	//~ End AActor Interface
-	
+
 	/** On overlap callback */
 	UFUNCTION()
 	void OnSphereOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                      int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult );
 
-private:	
+private:
 	/** Collision sphere component */
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USphereComponent> Sphere;
-	
+
 	/** Niagara effect for impact */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY( EditAnywhere )
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
 
 	/** Sound for impact */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY( EditAnywhere )
 	TObjectPtr<USoundBase> ImpactSound;
 
 	/** Looping sound when projectile flies */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY( EditAnywhere )
 	TObjectPtr<USoundBase> LoopingSound;
 
 	/** Looping sound component used to stop playing that sound */
@@ -68,6 +68,6 @@ private:
 	bool bHit = false;
 
 	/** LifeSpan of the projectile */
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY( EditDefaultsOnly )
 	float LifeSpan = 15.f;
 };
