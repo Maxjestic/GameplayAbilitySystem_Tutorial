@@ -22,7 +22,7 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
 
 public:
 	/** 
-	 * Sets mesh collision, custom depth stencil value, AbilitySystemComponent (+replication), AttributeSet
+	 * Sets mesh collision, custom depth stencil value, AbilitySystemComponent (+replication), AttributeSet, controller rotation
 	 * Creates health bar widget
 	 */
 	AAuraEnemy();

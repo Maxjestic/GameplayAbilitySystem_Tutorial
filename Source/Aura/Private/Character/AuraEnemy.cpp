@@ -26,6 +26,11 @@ AAuraEnemy::AAuraEnemy()
 	AbilitySystemComponent->SetIsReplicated( true );
 	AbilitySystemComponent->SetReplicationMode( EGameplayEffectReplicationMode::Minimal );
 
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>( "AttributeSet" );
 
 	HealthBar = CreateDefaultSubobject<UWidgetComponent>( "HealthBar" );
@@ -52,7 +57,7 @@ void AAuraEnemy::PossessedBy( AController* NewController )
 	{
 		return;
 	}
-	
+
 	AuraAIController = Cast<AAuraAIController>( NewController );
 	AuraAIController->GetBlackboardComponent()->InitializeBlackboard( *BehaviorTree->BlackboardAsset );
 	AuraAIController->RunBehaviorTree( BehaviorTree );
