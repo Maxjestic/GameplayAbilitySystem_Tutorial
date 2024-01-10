@@ -9,6 +9,8 @@
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
 
+class AAuraAIController;
+class UBehaviorTree;
 class UWidgetComponent;
 /**
  * Class for AI-controlled characters
@@ -29,6 +31,10 @@ public:
 	virtual void HighlightActor() override;
 	virtual void UnhighlightActor() override;
 	//~ End IEnemy Interface
+
+	//~ Begin APawn Interface
+	virtual void PossessedBy(AController* NewController) override;
+	//~ End APawn Interface
 
 	//~ Begin ICombat Interface
 	virtual int32 GetCharacterLevel() const override;
@@ -79,6 +85,14 @@ protected:
 	/** Health bar above enemy */
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	/** Behavior tree used by this */
+	UPROPERTY( EditAnywhere, Category = "AI" )
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	/** AI controller of this */
+	UPROPERTY()
+	TObjectPtr<AAuraAIController> AuraAIController;
 
 private:
 	/** Sets controller, binds callbacks to delegates, broadcasts initial values */

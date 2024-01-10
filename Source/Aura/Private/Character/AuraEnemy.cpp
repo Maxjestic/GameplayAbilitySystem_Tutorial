@@ -7,7 +7,10 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AI/AuraAIController.h"
 #include "Aura/Aura.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
@@ -41,6 +44,20 @@ void AAuraEnemy::UnhighlightActor()
 	Weapon->SetRenderCustomDepth( false );
 }
 
+void AAuraEnemy::PossessedBy( AController* NewController )
+{
+	Super::PossessedBy( NewController );
+
+	if (!HasAuthority())
+	{
+		return;
+	}
+	
+	AuraAIController = Cast<AAuraAIController>( NewController );
+	AuraAIController->GetBlackboardComponent()->InitializeBlackboard( *BehaviorTree->BlackboardAsset );
+	AuraAIController->RunBehaviorTree( BehaviorTree );
+}
+
 int32 AAuraEnemy::GetCharacterLevel() const
 {
 	return Level;
@@ -63,8 +80,8 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
-	if(HasAuthority())
-	{		
+	if (HasAuthority())
+	{
 		UAuraAbilitySystemLibrary::GiveStartupAbilities( this, AbilitySystemComponent );
 	}
 	SetupHealthBarWidget();
@@ -75,10 +92,10 @@ void AAuraEnemy::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo( this, this );
 	Cast<UAuraAbilitySystemComponent>( AbilitySystemComponent )->AbilityActorInfoSet();
 
-	if(HasAuthority())
-	{		
+	if (HasAuthority())
+	{
 		InitializeDefaultAttributes();
-	}	
+	}
 }
 
 void AAuraEnemy::InitializeDefaultAttributes() const
