@@ -64,7 +64,7 @@ protected:
 	//~ End AActor Interface
 
 	//~ Begin ICombatInterface
-	virtual FVector GetCombatSocketLocation() override;
+	virtual FVector GetCombatSocketLocation_Implementation() override;
 	//~ End ICombat Interface
 
 	/** The skeletal mesh associated with this character's weapon */

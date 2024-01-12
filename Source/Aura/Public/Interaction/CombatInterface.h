@@ -28,7 +28,8 @@ public:
 	virtual int32 GetCharacterLevel() const;
 
 	/** Returns a socket from weapon that may be used to for example spawn a projectile */
-	virtual FVector GetCombatSocketLocation();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	FVector GetCombatSocketLocation();
 
 	/** Blueprint function to set warp target */
 	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )

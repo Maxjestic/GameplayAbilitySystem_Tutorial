@@ -30,10 +30,12 @@ public:
 	//~ Begin IEnemy Interface
 	virtual void HighlightActor() override;
 	virtual void UnhighlightActor() override;
+	virtual void SetCombatTarget_Implementation(AActor* InTargetActor) override;
+	virtual AActor* GetCombatTarget_Implementation() override;
 	//~ End IEnemy Interface
 
 	//~ Begin APawn Interface
-	virtual void PossessedBy(AController* NewController) override;
+	virtual void PossessedBy( AController* NewController ) override;
 	//~ End APawn Interface
 
 	//~ Begin ICombat Interface
@@ -53,16 +55,20 @@ public:
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	/** Is this hit reacting */
-	UPROPERTY( BlueprintReadOnly, Category="Combat" )
+	UPROPERTY( BlueprintReadOnly, Category = "Combat" )
 	bool bHitReacting = false;
 
 	/** Base walk speed value */
-	UPROPERTY( BlueprintReadOnly, Category="Combat" )
+	UPROPERTY( BlueprintReadOnly, Category = "Combat" )
 	float BaseWalkSpeed = 250.f;
 
 	/** Life span value */
-	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category="Combat" )
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	float LifeSpan = 5.f;
+
+	/** What this is currently targeting */
+	UPROPERTY( BlueprintReadWrite, Category = "Combat" )
+	TObjectPtr<AActor> CombatTarget;
 
 protected:
 	//~ Begin AActor Interface

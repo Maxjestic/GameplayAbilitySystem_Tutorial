@@ -49,6 +49,16 @@ void AAuraEnemy::UnhighlightActor()
 	Weapon->SetRenderCustomDepth( false );
 }
 
+void AAuraEnemy::SetCombatTarget_Implementation( AActor* InTargetActor )
+{
+	CombatTarget = InTargetActor;
+}
+
+AActor* AAuraEnemy::GetCombatTarget_Implementation()
+{
+	return CombatTarget;
+}
+
 void AAuraEnemy::PossessedBy( AController* NewController )
 {
 	Super::PossessedBy( NewController );
