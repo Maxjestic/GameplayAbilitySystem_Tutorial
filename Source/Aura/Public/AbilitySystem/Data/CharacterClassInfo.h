@@ -28,9 +28,13 @@ struct FCharacterClassDefaultInfo
 {
 	GENERATED_BODY()
 
-	/** Gameplay effect setting primary attributes */
+	/** Gameplay effect setting default primary attributes */
 	UPROPERTY( EditDefaultsOnly, Category = "Class Defaults" )
 	TSubclassOf<UGameplayEffect> PrimaryAttributes;
+
+	/** Set of abilities that character class should start the game with by default */
+	UPROPERTY( EditDefaultsOnly, Category = "Class Defaults" )
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
 
 /**
@@ -49,19 +53,19 @@ public:
 	UPROPERTY( EditDefaultsOnly, Category = "Character Class Defaults" )
 	TMap<ECharacterClass, FCharacterClassDefaultInfo> CharacterClassInformation;
 
-	/** Gameplay effect setting secondary attributes, common to all characters */
+	/** Gameplay effect setting default secondary attributes, common to all characters */
 	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults" )
 	TSubclassOf<UGameplayEffect> SecondaryAttributes;
 
-	/** Gameplay effect setting vital attributes, common to all characters */
+	/** Gameplay effect setting default vital attributes, common to all characters */
 	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults" )
 	TSubclassOf<UGameplayEffect> VitalAttributes;
 
-	/** Applicable gameplay abilities */
+	/** Applicable default gameplay abilities */
 	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults" )
 	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
 
-	/** Coefficients used when calculating damage */
+	/** default coefficients used when calculating damage */
 	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults|Damage" )
 	TObjectPtr<UCurveTable> DamageCalculationCoefficients;
 };

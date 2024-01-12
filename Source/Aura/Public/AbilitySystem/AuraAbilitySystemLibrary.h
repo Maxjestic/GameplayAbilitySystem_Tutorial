@@ -37,7 +37,7 @@ public:
 	/** Initializes startup abilities for enemy */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static void GiveStartupAbilities( const UObject* WorldContextObject,
-	                                  UAbilitySystemComponent* AbilitySystemComponent );
+	                                  UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass );
 
 	/** Character Class Info data asset getter */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )

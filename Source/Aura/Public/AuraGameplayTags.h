@@ -67,7 +67,12 @@ public:
 	FGameplayTag Damage_Physical;
 
 	/**
-	 * Other
+	 * Ability Tags
+	 */
+	FGameplayTag Abilities_Attack;
+
+	/**
+	 * Effects
 	 */
 	FGameplayTag Effects_HitReact;
 
