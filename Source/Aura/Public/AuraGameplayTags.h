@@ -76,6 +76,13 @@ public:
 	 */
 	FGameplayTag Effects_HitReact;
 
+	/**
+	 * Montage Tags
+	 */
+	FGameplayTag Montage_Attack_Weapon;	
+	FGameplayTag Montage_Attack_RightHand;	
+	FGameplayTag Montage_Attack_LeftHand;	
+	
 	/** Map assigning Damage Type Tags to Resistance Tags */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 

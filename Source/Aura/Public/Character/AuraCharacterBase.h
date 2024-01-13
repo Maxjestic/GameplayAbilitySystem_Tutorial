@@ -39,6 +39,7 @@ public:
 	virtual void Die() override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
+	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	//~ End ICombat Interface
 
 	/** Returns attribute set */
@@ -47,6 +48,10 @@ public:
 	/** Handles what happens on all clients whenever a character dies */
 	UFUNCTION( NetMulticast, Reliable )
 	virtual void MulticastHandleDeath();
+
+	/** Montages used to perform an attack */
+	UPROPERTY( EditAnywhere, Category = "Combat" )
+	TArray<FTaggedMontage> AttackMontages;
 
 protected:
 	/** A Function that initializes Ability Actor Info for AbilitySystemComponent */

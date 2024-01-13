@@ -3,10 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
 class UAnimMontage;
+
+
+/**
+ * Associates Montage with Gameplay Tag
+ */
+USTRUCT( BlueprintType )
+struct FTaggedMontage
+{
+	GENERATED_BODY()
+	
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
+	UAnimMontage* Montage = nullptr;
+
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
+	FGameplayTag MontageTag;	
+};
 
 // This class does not need to be modified.
 UINTERFACE( MinimalAPI, BlueprintType )
@@ -43,10 +60,14 @@ public:
 	virtual void Die() = 0;
 
 	/** Returns true if owner is dead */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	bool IsDead() const;
 
 	/** Returns avatar */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	AActor* GetAvatar();
+
+	/** Returns owner's tagged attack montages */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	TArray<FTaggedMontage> GetAttackMontages();
 };
