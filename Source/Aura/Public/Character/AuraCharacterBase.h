@@ -37,6 +37,8 @@ public:
 	//~ Begin ICombatInterface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
 	//~ End ICombat Interface
 
 	/** Returns attribute set */
@@ -112,6 +114,9 @@ protected:
 	/** Material used to create dynamic material with dissolve effect for weapon */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly )
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+
+	/** True if this is dead */
+	bool bDead = false;
 
 private:
 	/** Set of ability classes granted to the character at the beginning of the game */

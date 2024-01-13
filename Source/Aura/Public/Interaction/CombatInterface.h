@@ -24,11 +24,11 @@ class AURA_API ICombatInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	/** Returns character level */
+	/** Returns owner level */
 	virtual int32 GetCharacterLevel() const;
 
 	/** Returns a socket from weapon that may be used to for example spawn a projectile */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	FVector GetCombatSocketLocation();
 
 	/** Blueprint function to set warp target */
@@ -36,9 +36,17 @@ public:
 	void UpdateFacingTarget( const FVector& TargetLocation );
 
 	/** Returns a animation montage that should be played when reacting to hit */
-	UFUNCTION( BlueprintNativeEvent, BlueprintCallable )
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	UAnimMontage* GetHitReactMontage();
 
-	/** Function called when character's health reaches 0, called on the server */
+	/** Function called when owner's health reaches 0, called on the server */
 	virtual void Die() = 0;
+
+	/** Returns true if owner is dead */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool IsDead() const;
+
+	/** Returns avatar */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	AActor* GetAvatar();
 };
