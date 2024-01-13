@@ -71,16 +71,24 @@ protected:
 	//~ End AActor Interface
 
 	//~ Begin ICombatInterface
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation( const FGameplayTag& MontageTag ) override;
 	//~ End ICombat Interface
 
 	/** The skeletal mesh associated with this character's weapon */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
-	/** FName of the weapon socket from which projectiles are launched */
+	/** FName of the weapon socket */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	FName WeaponTipSocketName;
+
+	/** FName of the right hand */
+	UPROPERTY( EditAnywhere, Category = "Combat" )
+	FName RightHandSocketName;
+
+	/** FName of the left hand */
+	UPROPERTY( EditAnywhere, Category = "Combat" )
+	FName LeftHandSocketName;
 
 	/**
 	 * AbilitySystemComponent owned by Character

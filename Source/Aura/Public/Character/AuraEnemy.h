@@ -59,7 +59,7 @@ public:
 	bool bHitReacting = false;
 
 	/** Base walk speed value */
-	UPROPERTY( BlueprintReadOnly, Category = "Combat" )
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	float BaseWalkSpeed = 250.f;
 
 	/** Life span value */

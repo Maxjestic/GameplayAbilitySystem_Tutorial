@@ -17,12 +17,12 @@ USTRUCT( BlueprintType )
 struct FTaggedMontage
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	UAnimMontage* Montage = nullptr;
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
-	FGameplayTag MontageTag;	
+	FGameplayTag MontageTag;
 };
 
 // This class does not need to be modified.
@@ -46,7 +46,7 @@ public:
 
 	/** Returns a socket from weapon that may be used to for example spawn a projectile */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
-	FVector GetCombatSocketLocation();
+	FVector GetCombatSocketLocation( const FGameplayTag& MontageTag );
 
 	/** Blueprint function to set warp target */
 	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )
