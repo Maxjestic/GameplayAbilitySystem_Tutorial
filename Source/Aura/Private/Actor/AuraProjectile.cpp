@@ -65,7 +65,7 @@ void AAuraProjectile::OnSphereOverlap( UPrimitiveComponent* OverlappedComponent,
 	{
 		return;
 	}
-	
+
 	if (!bHit)
 	{
 		UGameplayStatics::PlaySoundAtLocation( this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator );

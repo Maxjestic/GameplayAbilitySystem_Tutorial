@@ -26,6 +26,7 @@ public:
 	AAuraProjectile();
 
 	/** Projectile movement component used by this */
+	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	/** Spec handle for damaging gameplay effect */

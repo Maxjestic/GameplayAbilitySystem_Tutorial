@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/Ability/AuraGameplayAbility.h"
+#include "Interaction/CombatInterface.h"
 #include "AuraDamageGameplayAbility.generated.h"
 
 /**
@@ -24,6 +25,11 @@ protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
+	/** Damage type to damage amount */
 	UPROPERTY( EditDefaultsOnly, Category="Damage" )
 	TMap<FGameplayTag, FScalableFloat> DamageTypes;
+
+	/** Returns random attack montage from montages */
+	UFUNCTION( BlueprintPure )
+	FTaggedMontage GetRandomTaggedMontageFromArray( const TArray<FTaggedMontage>& TaggedMontages ) const;
 };
