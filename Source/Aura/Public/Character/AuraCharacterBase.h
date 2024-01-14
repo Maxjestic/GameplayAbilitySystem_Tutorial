@@ -75,7 +75,7 @@ protected:
 	//~ End ICombat Interface
 
 	/** The skeletal mesh associated with this character's weapon */
-	UPROPERTY( EditAnywhere, Category = "Combat" )
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
 	/** FName of the weapon socket */
