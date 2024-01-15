@@ -23,9 +23,13 @@ struct FTaggedMontage
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	UAnimMontage* Montage = nullptr;
 
-	/** Gameplay tag associated with montage */
+	/** Montage Gameplay tag associated with Montage*/
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	FGameplayTag MontageTag;
+
+	/** Combat Socket Gameplay Tag associated with Montage*/
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
+	FGameplayTag SocketTag;
 
 	/** Sound played on impact */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
@@ -53,7 +57,7 @@ public:
 
 	/** Returns a socket from weapon that may be used to for example spawn a projectile */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
-	FVector GetCombatSocketLocation( const FGameplayTag& MontageTag );
+	FVector GetCombatSocketLocation( const FGameplayTag& CombatSocketTag );
 
 	/** Blueprint function to set warp target */
 	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )
@@ -81,4 +85,8 @@ public:
 	/** Returns owner's blood effect */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	UNiagaraSystem* GetBloodEffect();
+	
+	/** Returns Tagged Montage for given Tag */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag& MontageTag);
 };

@@ -42,6 +42,7 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
+	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	//~ End ICombat Interface
 
 	/** Returns attribute set */
@@ -133,6 +134,10 @@ protected:
 	/** Blood effect in response to getting damaged */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	TObjectPtr<UNiagaraSystem> BloodEffect;
+
+	/** Sound played when character dies */
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
+	TObjectPtr<USoundBase> DeathSound;
 
 	/** True if this is dead */
 	bool bDead = false;
