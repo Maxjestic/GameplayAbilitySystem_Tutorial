@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UNiagaraSystem;
 class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
@@ -40,6 +41,7 @@ public:
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
 	//~ End ICombat Interface
 
 	/** Returns attribute set */
@@ -127,6 +129,10 @@ protected:
 	/** Material used to create dynamic material with dissolve effect for weapon */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly )
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+
+	/** Blood effect in response to getting damaged */
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
+	TObjectPtr<UNiagaraSystem> BloodEffect;
 
 	/** True if this is dead */
 	bool bDead = false;

@@ -7,22 +7,29 @@
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
+class UNiagaraSystem;
 class UAnimMontage;
 
 
 /**
- * Associates Montage with Gameplay Tag
+ * Contains montage with corresponding gameplay tag and sound
  */
 USTRUCT( BlueprintType )
 struct FTaggedMontage
 {
 	GENERATED_BODY()
 
+	/** Montage to play */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	UAnimMontage* Montage = nullptr;
 
+	/** Gameplay tag associated with montage */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	FGameplayTag MontageTag;
+
+	/** Sound played on impact */
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
+	USoundBase* ImpactSound = nullptr;
 };
 
 // This class does not need to be modified.
@@ -70,4 +77,8 @@ public:
 	/** Returns owner's tagged attack montages */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	TArray<FTaggedMontage> GetAttackMontages();
+
+	/** Returns owner's blood effect */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	UNiagaraSystem* GetBloodEffect();
 };
