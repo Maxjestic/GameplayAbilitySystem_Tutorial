@@ -41,10 +41,10 @@ public:
 
 	/**
 	 * Resistance Attributes Tags
-	 */	
+	 */
 	FGameplayTag Attributes_Resistance_Arcane;
-	FGameplayTag Attributes_Resistance_Fire;	
-	FGameplayTag Attributes_Resistance_Lightning;	
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
 	FGameplayTag Attributes_Resistance_Physical;
 
 	/**
@@ -60,9 +60,9 @@ public:
 	/**
 	 * Damage Type Tags
 	 */
-	FGameplayTag Damage;	
-	FGameplayTag Damage_Arcane;	
-	FGameplayTag Damage_Fire;	
+	FGameplayTag Damage;
+	FGameplayTag Damage_Arcane;
+	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Physical;
 
@@ -79,9 +79,10 @@ public:
 	/**
 	 * Combat Socket Tags
 	 */
-	FGameplayTag CombatSocket_Weapon;	
-	FGameplayTag CombatSocket_RightHand;	
-	FGameplayTag CombatSocket_LeftHand;	
+	FGameplayTag CombatSocket_Weapon;
+	FGameplayTag CombatSocket_RightHand;
+	FGameplayTag CombatSocket_LeftHand;
+	FGameplayTag CombatSocket_Tail;
 
 	/**
 	 * Montage Tags
@@ -90,7 +91,7 @@ public:
 	FGameplayTag Montage_Attack_2;
 	FGameplayTag Montage_Attack_3;
 	FGameplayTag Montage_Attack_4;
-	
+
 	/** Map assigning Damage Type Tags to Resistance Tags */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 

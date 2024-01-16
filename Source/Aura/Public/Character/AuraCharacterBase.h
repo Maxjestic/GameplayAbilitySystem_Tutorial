@@ -81,17 +81,21 @@ protected:
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
-	/** FName of the weapon socket */
+	/** Socket of the weapon socket */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	FName WeaponTipSocketName;
 
-	/** FName of the right hand */
+	/** Socket of the right hand */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	FName RightHandSocketName;
 
-	/** FName of the left hand */
+	/** Socket of the left hand */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	FName LeftHandSocketName;
+
+	/** Socket of the tail */
+	UPROPERTY( EditAnywhere, Category = "Combat" )
+	FName TailSocketName;
 
 	/**
 	 * AbilitySystemComponent owned by Character
