@@ -25,7 +25,7 @@ protected:
 
 	/** Spawns projectile, when it should be delayed */
 	UFUNCTION( BlueprintCallable, Category = "Projectile" )
-	void SpawnProjectile( const FVector& ProjectileTargetRotation );
+	void SpawnProjectile( const FVector& ProjectileTargetRotation, const FGameplayTag SocketTag );
 
 	/** Projectile class to spawn */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly )

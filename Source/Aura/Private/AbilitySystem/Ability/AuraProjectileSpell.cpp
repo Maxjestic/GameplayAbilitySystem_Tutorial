@@ -17,13 +17,13 @@ void UAuraProjectileSpell::ActivateAbility( const FGameplayAbilitySpecHandle Han
 	Super::ActivateAbility( Handle, ActorInfo, ActivationInfo, TriggerEventData );
 }
 
-void UAuraProjectileSpell::SpawnProjectile( const FVector& ProjectileTargetRotation )
+void UAuraProjectileSpell::SpawnProjectile( const FVector& ProjectileTargetRotation, const FGameplayTag SocketTag )
 {
 	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
 
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
 		GetAvatarActorFromActorInfo(),
-		FAuraGameplayTags::Get().CombatSocket_Weapon );
+		SocketTag );
 	FRotator Rotation = (ProjectileTargetRotation - SocketLocation).Rotation();
 
 	FTransform SpawnTransform;
