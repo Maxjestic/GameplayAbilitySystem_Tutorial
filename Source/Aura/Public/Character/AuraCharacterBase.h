@@ -43,6 +43,7 @@ public:
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
+	virtual int32 GetMinionCount_Implementation() override;
 	//~ End ICombat Interface
 
 	/** Returns attribute set */
@@ -145,6 +146,13 @@ protected:
 
 	/** True if this is dead */
 	bool bDead = false;
+
+	/**
+	 * Minions
+	 */
+	
+	/** How many minions does this have */
+	int32 MinionCount = 0;
 
 private:
 	/** Set of ability classes granted to the character at the beginning of the game */
