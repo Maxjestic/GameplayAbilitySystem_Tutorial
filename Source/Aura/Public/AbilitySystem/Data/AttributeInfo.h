@@ -12,25 +12,25 @@
  * Everything but value can be set in blueprint
  * value is set based on actual value of the attribute of given character if needed (e.g. Attribute menu)
  */
-USTRUCT(BlueprintType)
+USTRUCT( BlueprintType )
 struct FAuraAttributeInfo
 {
 	GENERATED_BODY()
 
 	/** Gameplay tag associated with the attribute */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	FGameplayTag AttributeTag = FGameplayTag();
 
 	/** Name of the attribute */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	FText AttributeName = FText();
 
 	/** Description of the attribute */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	FText AttributeDescription = FText();
 
 	/** Value of the attribute */
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY( BlueprintReadOnly )
 	float AttributeValue = 0.f;
 };
 
@@ -47,6 +47,6 @@ public:
 	FAuraAttributeInfo FindAttributeInfoForTag( const FGameplayTag& AttributeTag, const bool bLogNotFound = false ) const;
 
 	/** Stores attribute infos structs */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	TArray<FAuraAttributeInfo> AttributeInformation;
 };

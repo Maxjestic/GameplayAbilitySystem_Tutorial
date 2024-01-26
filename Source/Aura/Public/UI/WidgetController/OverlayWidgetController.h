@@ -6,6 +6,7 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+class UAbilityInfo;
 class UAuraUserWidget;
 
 /** Row structure containing pop-up information data displayed to user */
@@ -80,6 +81,10 @@ protected:
 	/** Data Table used to display messages to the player screen */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data" )
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
+
+	/** Data asset used to assign visuals to spell globes in overlay */
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data" )
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 };
 
 template <typename T>
