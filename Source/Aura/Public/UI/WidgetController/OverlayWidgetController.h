@@ -6,8 +6,10 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+class UAuraAbilitySystemComponent;
 class UAbilityInfo;
 class UAuraUserWidget;
+struct FAuraAbilityInfo;
 
 /** Row structure containing pop-up information data displayed to user */
 USTRUCT( BlueprintType )
@@ -32,11 +34,14 @@ struct FUIWidgetRow : public FTableRowBase
 	UTexture2D* Image = nullptr;
 };
 
-/** Declaration of delegate broadcasting attribute changes */
+/** Broadcasts attribute changes */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnAttributeChangedSignature, float, NewValue );
 
-/** Declaration of delegate broadcasting UIWidgetRow to show message for user in viewport */
+/** Broadcasts UIWidgetRow to show message for user in viewport */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FMessageWidgetRowSignature, FUIWidgetRow, Row );
+
+/** Broadcasts AbilityInfo */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam ( FAbilityInfoSignature, const FAuraAbilityInfo&, Info );
 
 /**
  * Controller for Overlay Widget
@@ -73,10 +78,17 @@ public:
 	UPROPERTY( BlueprintAssignable, Category = "GAS|Messages" )
 	FMessageWidgetRowSignature MessageWidgetRow;
 
+	/** Broadcasts AbilityInfo */
+	UPROPERTY( BlueprintAssignable, Category = "GAS|Messages" )
+	FAbilityInfoSignature AbilityInfoDelegate;
+
 protected:
 	/** Finds data table row by corresponding gameplay tag in given data table */
 	template <typename T>
 	T* GetDataTableRowByTag( UDataTable* DataTable, const FGameplayTag& Tag );
+
+	/** Responds to AbilitiesGivenDelegate from AuraAbilitySystemComponent */
+	void OnInitializeStartupAbilities( UAuraAbilitySystemComponent* AuraAbilitySystemComponent );
 
 	/** Data Table used to display messages to the player screen */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data" )
