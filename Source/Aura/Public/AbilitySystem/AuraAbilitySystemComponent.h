@@ -55,7 +55,11 @@ public:
 	/** Returns input tag from given ability spec, empty if not found*/
 	static FGameplayTag GetInputTagFromSpec( const FGameplayAbilitySpec& AbilitySpec );
 
-protected:
+protected:	
+	//~ Begin UAbilitySystemComponent Interface
+	virtual void OnRep_ActivateAbilities() override;
+	//~ End UAbilitySystemComponent Interface
+	
 	/** Callback bound to OnGameplayEffectAppliedDelegateToSelf event */
 	UFUNCTION( Client, Reliable )
 	void ClientEffectApplied( UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
