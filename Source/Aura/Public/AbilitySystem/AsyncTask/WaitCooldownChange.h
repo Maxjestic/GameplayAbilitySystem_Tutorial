@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FCooldownChangeSignature, float, Ti
  * Waits for cooldown
  * Informs when cooldown begins and ends
  */
-UCLASS()
+UCLASS( BlueprintType, meta = (ExposedAsyncProxy = "AsyncTask") )
 class AURA_API UWaitCooldownChange : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()

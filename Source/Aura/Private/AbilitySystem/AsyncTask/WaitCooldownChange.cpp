@@ -45,7 +45,7 @@ void UWaitCooldownChange::EndTask()
 }
 
 void UWaitCooldownChange::OnActiveEffectAdded( UAbilitySystemComponent* InAbilitySystemComponent, const FGameplayEffectSpec& AppliedSpec,
-											   FActiveGameplayEffectHandle ActiveEffectHandle )
+                                               FActiveGameplayEffectHandle ActiveEffectHandle )
 {
 	FGameplayTagContainer AssetTags;
 	AppliedSpec.GetAllAssetTags( AssetTags );
@@ -53,23 +53,24 @@ void UWaitCooldownChange::OnActiveEffectAdded( UAbilitySystemComponent* InAbilit
 	FGameplayTagContainer GrantedTags;
 	AppliedSpec.GetAllAssetTags( GrantedTags );
 
-	if( !AssetTags.HasTagExact( CooldownTag ) || !GrantedTags.HasTagExact( CooldownTag ))
+	if (!AssetTags.HasTagExact( CooldownTag ) || !GrantedTags.HasTagExact( CooldownTag ))
 	{
 		return;
 	}
 
-	const FGameplayEffectQuery GameplayEffectQuery = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags( CooldownTag.GetSingleTagContainer() );
+	const FGameplayEffectQuery GameplayEffectQuery = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(
+		CooldownTag.GetSingleTagContainer() );
 	TArray<float> TimesRemaining = AbilitySystemComponent->GetActiveEffectsTimeRemaining( GameplayEffectQuery );
 
-	if(TimesRemaining.IsEmpty())
+	if (TimesRemaining.IsEmpty())
 	{
 		return;
 	}
 
 	float TimeRemaining = TimesRemaining[0];
-	for(int32 i = 0; i < TimesRemaining.Num(); i++)
+	for (int32 i = 0; i < TimesRemaining.Num(); i++)
 	{
-		if(TimeRemaining < TimesRemaining[i])
+		if (TimeRemaining < TimesRemaining[i])
 		{
 			TimeRemaining = TimesRemaining[i];
 		}

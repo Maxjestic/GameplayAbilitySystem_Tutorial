@@ -23,6 +23,10 @@ struct FAuraAbilityInfo
 	UPROPERTY( BlueprintReadOnly )
 	FGameplayTag InputTag = FGameplayTag();
 
+	/** Gameplay tag associated with the cooldown of the ability */
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
+	FGameplayTag CooldownTag = FGameplayTag();
+
 	/** Icon of the ability */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	TObjectPtr<const UTexture2D> Icon = nullptr;
