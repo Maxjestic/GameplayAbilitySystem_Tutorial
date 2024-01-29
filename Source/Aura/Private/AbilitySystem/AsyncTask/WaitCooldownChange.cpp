@@ -4,7 +4,6 @@
 #include "AbilitySystem/AsyncTask/WaitCooldownChange.h"
 
 #include "AbilitySystemComponent.h"
-#include "Aura/AuraLogChannels.h"
 
 UWaitCooldownChange* UWaitCooldownChange::WaitForCooldownChange( UAbilitySystemComponent* InAbilitySystemComponent,
                                                                  const FGameplayTag& InCooldownTag )
