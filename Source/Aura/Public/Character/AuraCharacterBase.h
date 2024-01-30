@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
@@ -42,9 +43,10 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
-	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
+	virtual FTaggedMontage GetTaggedMontageByTag_Implementation( const FGameplayTag& MontageTag ) override;
 	virtual int32 GetMinionCount_Implementation() override;
-	virtual void UpdateMinionCount_Implementation(const int32 Amount) override;
+	virtual void UpdateMinionCount_Implementation( const int32 Amount ) override;
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	//~ End ICombat Interface
 
 	/** Returns attribute set */
@@ -99,6 +101,10 @@ protected:
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	FName TailSocketName;
 
+	/** Enemy Character class */
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults" )
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
 	/**
 	 * AbilitySystemComponent owned by Character
 	 * Exist on PlayerState for player characters
@@ -151,7 +157,7 @@ protected:
 	/**
 	 * Minions
 	 */
-	
+
 	/** How many minions does this have */
 	int32 MinionCount = 0;
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
@@ -97,4 +98,8 @@ public:
 	/** Updates number of minions that this has by given number */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	void UpdateMinionCount(const int32 Amount);
+
+	/** Returns character class of this */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	ECharacterClass GetCharacterClass();
 };

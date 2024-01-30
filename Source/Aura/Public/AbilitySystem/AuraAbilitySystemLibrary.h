@@ -39,6 +39,9 @@ public:
 	static void GiveStartupAbilities( const UObject* WorldContextObject,
 	                                  UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass );
 
+	/** Returns amount of experience reward based on level and class of the character */
+	static int32 GetExperienceRewardForClassAndLevel (const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel);
+	
 	/** Character Class Info data asset getter */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static UCharacterClassInfo* GetCharacterClassInfo( const UObject* WorldContextObject );
@@ -67,4 +70,5 @@ public:
 	/** Check if two actors are "friends" */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
 	static bool IsNotFriend( const AActor* FirstActor, const AActor* SecondActor );
+
 };

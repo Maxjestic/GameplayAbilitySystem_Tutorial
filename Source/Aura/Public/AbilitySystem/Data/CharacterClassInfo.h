@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ScalableFloat.h"
 #include "Engine/DataAsset.h"
 #include "CharacterClassInfo.generated.h"
 
@@ -35,6 +36,10 @@ struct FCharacterClassDefaultInfo
 	/** Set of abilities that character class should start the game with by default */
 	UPROPERTY( EditDefaultsOnly, Category = "Class Defaults" )
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	/** Curve containing amount experience reward based on level given to attacker */
+	UPROPERTY( EditDefaultsOnly, Category = "Class Defaults" )
+	FScalableFloat ExperienceReward = FScalableFloat();
 };
 
 /**

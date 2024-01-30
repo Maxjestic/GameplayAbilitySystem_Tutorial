@@ -120,6 +120,21 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities( const UObject* WorldContex
 	}
 }
 
+int32 UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject, const ECharacterClass CharacterClass,
+	const int32 CharacterLevel )
+{
+	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo( WorldContextObject );
+
+	if (CharacterClassInfo == nullptr)
+	{
+		return 0;
+	}
+	
+	const FCharacterClassDefaultInfo& ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo( CharacterClass );
+	const float ExperienceReward = ClassDefaultInfo.ExperienceReward.GetValueAtLevel( CharacterLevel );
+	return static_cast<int32>(ExperienceReward);
+}
+
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo( const UObject* WorldContextObject )
 {
 	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(
