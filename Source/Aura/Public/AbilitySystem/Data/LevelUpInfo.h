@@ -42,5 +42,5 @@ public:
 
 	/** Returns level for given amount of experience points, 0 if wrong amount of XP is given */
 	UFUNCTION()
-	int32 FindLevelForXP( int32 XP );
+	int32 FindLevelForXP( int32 XP ) const;
 };

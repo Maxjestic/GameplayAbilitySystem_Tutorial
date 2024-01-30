@@ -6,6 +6,8 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
+#include "Player/AuraPlayerState.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -19,6 +21,9 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
+	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>( PlayerState );
+	AuraPlayerState->OnExperienceChangedDelegate.AddUObject( this, &UOverlayWidgetController::OnExperienceChanged );
+
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>( AttributeSet );
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
@@ -99,11 +104,36 @@ void UOverlayWidgetController::OnInitializeStartupAbilities( UAuraAbilitySystemC
 		[this, AuraAbilitySystemComponent]( const FGameplayAbilitySpec& AbilitySpec )
 		{
 			FAuraAbilityInfo Info = AbilityInfo->FindAbilityForTag( AuraAbilitySystemComponent->GetAbilityTagFromSpec( AbilitySpec ) );
-			
+
 			// InputTag is not set in editor, it is dynamic so we have to get it and assign
 			Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec( AbilitySpec );
 			AbilityInfoDelegate.Broadcast( Info );
 		} );
 
 	AuraAbilitySystemComponent->ForEachAbility( BroadcastDelegate );
+}
+
+void UOverlayWidgetController::OnExperienceChanged( const int32 NewExperience ) const 
+{
+	const AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>( PlayerState );
+	const ULevelUpInfo* LevelUpInfo = AuraPlayerState->LevelUpInfo;
+
+	checkf( LevelUpInfo, TEXT("Unable to fin LevelUpInfo. Please fillout AuraPlayerState Blueprint") )
+
+	const int32 Level = LevelUpInfo->FindLevelForXP( NewExperience );
+	const int32 MaxLevel = LevelUpInfo->LevelUpInformation.Num();
+
+	if (Level <= 0 || Level > MaxLevel)
+	{
+		return;
+	}
+
+	const int32 LevelUpRequirement = LevelUpInfo->LevelUpInformation[Level].LevelUpRequirement;
+	const int32 PreviousLevelUpRequirement = LevelUpInfo->LevelUpInformation[Level - 1].LevelUpRequirement;
+	const int32 LevelUpRequirementDelta = LevelUpRequirement - PreviousLevelUpRequirement;
+	const int32 ExperienceForNextLevel = NewExperience - PreviousLevelUpRequirement;
+	
+	const float ExperiencePercent = static_cast<float>( ExperienceForNextLevel) / static_cast<float>( LevelUpRequirementDelta);
+	
+	OnExperiencePercentChangedDelegate.Broadcast( ExperiencePercent );
 }

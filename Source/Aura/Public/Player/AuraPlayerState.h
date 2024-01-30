@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "AuraPlayerState.generated.h"
 
+class ULevelUpInfo;
 class UAttributeSet;
 
 /** Broadcasts single value related to player stats */
@@ -63,6 +64,10 @@ public:
 	//~ Begin IAbilitySystem Interface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystem Interface
+
+	/** Data asset containing level related information */
+	UPROPERTY( EditDefaultsOnly )
+	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 protected:
 	/**

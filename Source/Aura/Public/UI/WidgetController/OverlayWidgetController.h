@@ -82,6 +82,10 @@ public:
 	UPROPERTY( BlueprintAssignable, Category = "GAS|Messages" )
 	FAbilityInfoSignature AbilityInfoDelegate;
 
+	/** Broadcasts experience percent on change */
+	UPROPERTY( BlueprintAssignable, Category = "GAS|Expereince" )
+	FOnAttributeChangedSignature OnExperiencePercentChangedDelegate;
+
 protected:
 	/** Finds data table row by corresponding gameplay tag in given data table */
 	template <typename T>
@@ -97,6 +101,9 @@ protected:
 	/** Data asset used to assign visuals to spell globes in overlay */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data" )
 	TObjectPtr<UAbilityInfo> AbilityInfo;
+
+	/** Callback to when experience changes */
+	void OnExperienceChanged(const int32 NewExperience) const;
 };
 
 template <typename T>
