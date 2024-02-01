@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Character/AuraCharacterBase.h"
+#include "Interaction/PlayerInterface.h"
 #include "AuraCharacter.generated.h"
 
 /**
  * Class for player-controlled character
  */
 UCLASS()
-class AURA_API AAuraCharacter : public AAuraCharacterBase
+class AURA_API AAuraCharacter : public AAuraCharacterBase, public IPlayerInterface
 {
 	GENERATED_BODY()
 
@@ -28,6 +29,10 @@ public:
 	//~ Begin Combat Interface
 	virtual int32 GetCharacterLevel() const override;
 	//~ End Combat Interface
+
+	//~ Begin Player Interface
+	virtual void AddExperience_Implementation( const int32 InExperience ) override;
+	//~ End Player Interface
 
 protected:
 	/** Gameplay effect initializing primary attributes for the character */

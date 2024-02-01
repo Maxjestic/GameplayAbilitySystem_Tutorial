@@ -7,9 +7,9 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
-#include "Aura/AuraLogChannels.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Interaction/PlayerInterface.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/AuraPlayerController.h"
 
@@ -140,7 +140,11 @@ void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallb
 		SetIncomingExperience( 0.f );
 		if (LocalIncomingExperience > 0)
 		{
-			
+			//TODO: Check if character should level up
+			if (Properties.SourceCharacter->Implements<UPlayerInterface>())
+			{
+				IPlayerInterface::Execute_AddExperience( Properties.SourceCharacter, LocalIncomingExperience );
+			}
 		}
 	}
 }
