@@ -120,6 +120,7 @@ public:
 	FGameplayAttributeData Vigor;
 	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, Vigor );
 
+
 	/**
 	 * Secondary Attributes
 	 */
@@ -174,6 +175,7 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, MaxMana );
 
+
 	/**
 	 * Vital Attributes
 	 */
@@ -188,6 +190,7 @@ public:
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, Mana );
 
+
 	/**
 	 * Resistance Attributes
 	 */
@@ -195,22 +198,23 @@ public:
 	/** Resistance to Arcane Damage */
 	UPROPERTY( BlueprintReadOnly, ReplicatedUsing = OnRep_ArcaneResistance, Category = "Resistance Attributes" )
 	FGameplayAttributeData ArcaneResistance;
-	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, ArcaneResistance );	
+	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, ArcaneResistance );
 
 	/** Resistance to Fire Damage */
 	UPROPERTY( BlueprintReadOnly, ReplicatedUsing = OnRep_FireResistance, Category = "Resistance Attributes" )
 	FGameplayAttributeData FireResistance;
-	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, FireResistance );	
+	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, FireResistance );
 
 	/** Resistance to Lightning Damage */
 	UPROPERTY( BlueprintReadOnly, ReplicatedUsing = OnRep_LightningResistance, Category = "Resistance Attributes" )
 	FGameplayAttributeData LightningResistance;
-	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, LightningResistance );	
+	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, LightningResistance );
 
 	/** Resistance to Physical Damage */
 	UPROPERTY( BlueprintReadOnly, ReplicatedUsing = OnRep_PhysicalResistance, Category = "Resistance Attributes" )
 	FGameplayAttributeData PhysicalResistance;
-	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, PhysicalResistance );	
+	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, PhysicalResistance );
+
 
 	/**
 	 * Meta Attributes
@@ -220,6 +224,12 @@ public:
 	UPROPERTY( BlueprintReadOnly, Category = "Meta Attributes" )
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, IncomingDamage );
+
+	/** Experience to reward, set and calculated on the server */
+	UPROPERTY( BlueprintReadOnly, Category = "Meta Attributes" )
+	FGameplayAttributeData IncomingExperience;
+	ATTRIBUTE_ACCESSORS( UAuraAttributeSet, IncomingExperience );
+
 
 	/*
 	 * Replication Functions, called everytime when any attribute changes
@@ -239,6 +249,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_Vigor( const FGameplayAttributeData& OldVigor ) const;
+
 
 	/**
 	 * Secondary Attributes
@@ -273,6 +284,7 @@ public:
 	UFUNCTION()
 	void OnRep_MaxMana( const FGameplayAttributeData& OldMaxMana ) const;
 
+
 	/**
 	 * Vital Attributes
 	 */
@@ -287,15 +299,15 @@ public:
 	 */
 	UFUNCTION()
 	void OnRep_ArcaneResistance( const FGameplayAttributeData& OldArcaneResistance ) const;
-	
+
 	UFUNCTION()
 	void OnRep_FireResistance( const FGameplayAttributeData& OldFireResistance ) const;
-	
+
 	UFUNCTION()
 	void OnRep_LightningResistance( const FGameplayAttributeData& OldLightningResistance ) const;
-	
+
 	UFUNCTION()
-	void OnRep_PhysicalResistance( const FGameplayAttributeData& OldPhysicalResistance ) const;	
+	void OnRep_PhysicalResistance( const FGameplayAttributeData& OldPhysicalResistance ) const;
 
 private:
 	/**

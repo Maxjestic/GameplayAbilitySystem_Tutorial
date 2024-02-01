@@ -162,9 +162,13 @@ protected:
 	int32 MinionCount = 0;
 
 private:
-	/** Set of ability classes granted to the character at the beginning of the game */
+	/** Set of active ability classes granted to the character at the beginning of the game */
 	UPROPERTY( EditAnywhere, Category = "Abilities" )
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+	
+	/** Set of passive ability classes granted to the character at the beginning of the game */
+	UPROPERTY( EditAnywhere, Category = "Abilities" )
+	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;
 
 	/** Animation montage played when character is reacting to hit, may be nullptr */
 	UPROPERTY( EditAnywhere, Category = "Combat" )

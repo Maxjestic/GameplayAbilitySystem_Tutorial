@@ -7,9 +7,9 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
-#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/AuraPlayerController.h"
 
@@ -36,10 +36,10 @@ UAuraAttributeSet::UAuraAttributeSet()
 	TagsToAttributes.Add( GameplayTags.Attributes_Secondary_MaxMana, GetMaxManaAttribute );
 
 	/** Resistance */
-	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Arcane, GetArcaneResistanceAttribute );	
-	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Fire, GetFireResistanceAttribute );	
-	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Lightning, GetLightningResistanceAttribute );	
-	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Physical, GetPhysicalResistanceAttribute );	
+	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Arcane, GetArcaneResistanceAttribute );
+	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Fire, GetFireResistanceAttribute );
+	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Lightning, GetLightningResistanceAttribute );
+	TagsToAttributes.Add( GameplayTags.Attributes_Resistance_Physical, GetPhysicalResistanceAttribute );
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const
@@ -100,11 +100,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallb
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth( FMath::Clamp( GetHealth(), 0.f, GetMaxHealth() ) );
-		UE_LOG( LogTemp,
-		        Warning,
-		        TEXT("Changed Health on %s, Health: %f"),
-		        *Properties.TargetAvatarActor->GetName(),
-		        GetHealth() )
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
@@ -136,6 +131,15 @@ void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallb
 			const bool bBlockedHit = UAuraAbilitySystemLibrary::IsBlockedHit( Properties.EffectContextHandle );
 			const bool bCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit( Properties.EffectContextHandle );
 			ShowFloatingText( Properties, LocalIncomingDamage, bBlockedHit, bCriticalHit );
+		}
+	}
+	if (Data.EvaluatedData.Attribute == GetIncomingExperienceAttribute())
+	{
+		const float LocalIncomingExperience = GetIncomingExperience();
+		SetIncomingExperience( 0.f );
+		if (LocalIncomingExperience > 0)
+		{
+			UE_LOG( LogAura, Log, TEXT("Incoming Experience: %f"), LocalIncomingExperience )
 		}
 	}
 }
@@ -280,20 +284,20 @@ void UAuraAttributeSet::OnRep_Mana( const FGameplayAttributeData& OldMana ) cons
 
 void UAuraAttributeSet::OnRep_ArcaneResistance( const FGameplayAttributeData& OldArcaneResistance ) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, ArcaneResistance , OldArcaneResistance  );
+	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, ArcaneResistance, OldArcaneResistance );
 }
 
 void UAuraAttributeSet::OnRep_FireResistance( const FGameplayAttributeData& OldFireResistance ) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, FireResistance , OldFireResistance  );
+	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, FireResistance, OldFireResistance );
 }
 
 void UAuraAttributeSet::OnRep_LightningResistance( const FGameplayAttributeData& OldLightningResistance ) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, LightningResistance , OldLightningResistance  );
+	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, LightningResistance, OldLightningResistance );
 }
 
 void UAuraAttributeSet::OnRep_PhysicalResistance( const FGameplayAttributeData& OldPhysicalResistance ) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, PhysicalResistance , OldPhysicalResistance  );
+	GAMEPLAYATTRIBUTE_REPNOTIFY( UAuraAttributeSet, PhysicalResistance, OldPhysicalResistance );
 }

@@ -10,7 +10,7 @@ FAuraGameplayTags FAuraGameplayTags::GameplayTags;
 void FAuraGameplayTags::InitializeNativeGameplayTags()
 {
 	/**
-	 * Primary Attributes Tags
+	 * Primary Attribute Tags
 	 */
 	GameplayTags.Attributes_Primary_Intelligence = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName( "Attributes.Primary.Intelligence" ),
@@ -29,7 +29,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString( "Increases Health" ) );
 
 	/**
-	 * Secondary Attributes Tags
+	 * Secondary Attribute Tags
 	 */
 	GameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName( "Attributes.Secondary.Armor" ),
@@ -70,6 +70,13 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Attributes_Secondary_MaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName( "Attributes.Secondary.MaxMana" ),
 		FString( "Maximum amount of Mana obtainable" ) );
+
+	/**
+	 * Meta Attribute Tags
+	 */
+	GameplayTags.Attributes_Meta_IncomingExperience = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName( "Attributes.Meta.IncomingExperience" ),
+		FString( "Incoming Experience Meta Attribute" ) );
 
 	/**
 	 * Input Tags

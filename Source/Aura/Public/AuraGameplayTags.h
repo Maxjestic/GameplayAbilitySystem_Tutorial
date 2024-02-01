@@ -18,7 +18,7 @@ public:
 	static void InitializeNativeGameplayTags();
 
 	/**
-	 * Primary Attributes Tags
+	 * Primary Attribute Tags
 	 */
 	FGameplayTag Attributes_Primary_Strength;
 	FGameplayTag Attributes_Primary_Intelligence;
@@ -26,7 +26,7 @@ public:
 	FGameplayTag Attributes_Primary_Vigor;
 
 	/**
-	 * Secondary Attributes Tags
+	 * Secondary Attribute Tags
 	 */
 	FGameplayTag Attributes_Secondary_Armor;
 	FGameplayTag Attributes_Secondary_ArmorPenetration;
@@ -40,7 +40,7 @@ public:
 	FGameplayTag Attributes_Secondary_MaxMana;
 
 	/**
-	 * Resistance Attributes Tags
+	 * Resistance Attribute Tags
 	 */
 	FGameplayTag Attributes_Resistance_Arcane;
 	FGameplayTag Attributes_Resistance_Fire;
@@ -48,7 +48,12 @@ public:
 	FGameplayTag Attributes_Resistance_Physical;
 
 	/**
-	 * Input Tags variables
+	 * Meta Attribute Tags
+	 */	
+	FGameplayTag Attributes_Meta_IncomingExperience;
+
+	/**
+	 * Input Tags
 	 */
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;

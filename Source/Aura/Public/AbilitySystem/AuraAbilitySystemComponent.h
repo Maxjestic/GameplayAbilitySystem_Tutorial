@@ -31,6 +31,9 @@ public:
 	/** Grants given abilities */
 	void AddCharacterAbilities( const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities );
 
+	/** Grants given abilities */
+	void AddCharacterPassiveAbilities( const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities );
+
 	/** Activating ability on input released */
 	void AbilityInputTagReleased( const FGameplayTag& InputTag );
 

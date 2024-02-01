@@ -131,7 +131,9 @@ void AAuraCharacterBase::AddCharacterAbilities() const
 	if (!HasAuthority()) return;
 
 	UAuraAbilitySystemComponent* AuraAbilitySystemComponent = CastChecked<UAuraAbilitySystemComponent>( AbilitySystemComponent );
+	
 	AuraAbilitySystemComponent->AddCharacterAbilities( StartupAbilities );
+	AuraAbilitySystemComponent->AddCharacterPassiveAbilities( StartupPassiveAbilities );
 }
 
 void AAuraCharacterBase::BeginPlay()
