@@ -120,7 +120,7 @@ void UOverlayWidgetController::OnExperienceChanged( const int32 NewExperience ) 
 
 	checkf( LevelUpInfo, TEXT("Unable to fin LevelUpInfo. Please fillout AuraPlayerState Blueprint") )
 
-	const int32 Level = LevelUpInfo->FindLevelForXP( NewExperience );
+	const int32 Level = LevelUpInfo->FindLevelForExperience( NewExperience );
 	const int32 MaxLevel = LevelUpInfo->LevelUpInformation.Num();
 
 	if (Level <= 0 || Level > MaxLevel)

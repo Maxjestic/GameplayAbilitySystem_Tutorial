@@ -31,8 +31,15 @@ public:
 	//~ End Combat Interface
 
 	//~ Begin Player Interface
+	virtual int32 GetExperience_Implementation() const override;
 	virtual void AddExperience_Implementation( const int32 InExperience ) override;
+	virtual int32 FindLevelForExperience_Implementation( const int32 InExperience ) const override;
 	virtual void LevelUp_Implementation() override;
+	virtual void AddToPlayerLevel_Implementation( const int32 InPlayerLevel ) override;
+	virtual int32 GetAttributePointsReward_Implementation( const int32 PlayerLevel ) const override;
+	virtual void AddToAttributePoints_Implementation( const int32 InAttributePoints ) override;
+	virtual int32 GetSpellPointsReward_Implementation( const int32 PlayerLevel ) const override;
+	virtual void AddToSpellPoints_Implementation( const int32 InSpellPoints ) override;
 	//~ End Player Interface
 
 protected:

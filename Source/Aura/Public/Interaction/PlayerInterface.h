@@ -22,11 +22,42 @@ class AURA_API IPlayerInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	/** Adds experience to owner */
+	/** Returns owners experience points*/
+	UFUNCTION( BlueprintNativeEvent )
+	int32 GetExperience() const;
+
+	/** Adds experience to the owner */
 	UFUNCTION( BlueprintNativeEvent )
 	void AddExperience( const int32 InExperience );
 
-	/** Performs level up */
+
+	/** Returns level corresponding to given experience amount */
+	UFUNCTION( BlueprintNativeEvent )
+	int32 FindLevelForExperience( const int32 InExperience ) const;
+
+	/** Performs level up on the owner */
 	UFUNCTION( BlueprintNativeEvent )
 	void LevelUp();
+
+	/** Adds given amount to level of the owner */
+	UFUNCTION( BlueprintNativeEvent )
+	void AddToPlayerLevel( const int32 InPlayerLevel );
+
+
+	/** Returns amount of attribute points that should be rewarded to the owner */
+	UFUNCTION( BlueprintNativeEvent )
+	int32 GetAttributePointsReward( const int32 PlayerLevel ) const;
+
+	/** Adds given amount of attribute points */
+	UFUNCTION( BlueprintNativeEvent )
+	void AddToAttributePoints( const int32 InAttributePoints );
+
+
+	/** Returns amount of spell points that should be rewarded to the owner */
+	UFUNCTION( BlueprintNativeEvent )
+	int32 GetSpellPointsReward( const int32 PlayerLevel ) const;
+
+	/** Adds given amount to spell points */
+	UFUNCTION( BlueprintNativeEvent )
+	void AddToSpellPoints( const int32 InSpellPoints );
 };

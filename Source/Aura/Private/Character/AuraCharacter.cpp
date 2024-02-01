@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
@@ -48,6 +49,14 @@ int32 AAuraCharacter::GetCharacterLevel_Implementation() const
 	return AuraPlayerState->GetPlayerLevel();
 }
 
+int32 AAuraCharacter::GetExperience_Implementation() const
+{
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check( AuraPlayerState );
+
+	return AuraPlayerState->GetPlayerExperience();
+}
+
 void AAuraCharacter::AddExperience_Implementation( const int32 InExperience )
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
@@ -56,9 +65,50 @@ void AAuraCharacter::AddExperience_Implementation( const int32 InExperience )
 	AuraPlayerState->AddToExperience( InExperience );
 }
 
+int32 AAuraCharacter::FindLevelForExperience_Implementation( const int32 InExperience ) const
+{
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check( AuraPlayerState );
+
+	return AuraPlayerState->LevelUpInfo->FindLevelForExperience( InExperience );
+}
+
 void AAuraCharacter::LevelUp_Implementation()
 {
-	
+}
+
+void AAuraCharacter::AddToPlayerLevel_Implementation( const int32 InPlayerLevel )
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check( AuraPlayerState );
+
+	AuraPlayerState->AddToLevel( InPlayerLevel );
+}
+
+int32 AAuraCharacter::GetAttributePointsReward_Implementation( const int32 PlayerLevel ) const
+{
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check( AuraPlayerState );
+
+	return AuraPlayerState->LevelUpInfo->LevelUpInformation[PlayerLevel].AttributePointReward;
+}
+
+void AAuraCharacter::AddToAttributePoints_Implementation( int32 InAttributePoints )
+{
+	// TODO: Add attribute points to player state
+}
+
+int32 AAuraCharacter::GetSpellPointsReward_Implementation( const int32 PlayerLevel ) const
+{
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check( AuraPlayerState );
+
+	return AuraPlayerState->LevelUpInfo->LevelUpInformation[PlayerLevel].SpellPointReward;
+}
+
+void AAuraCharacter::AddToSpellPoints_Implementation( int32 InSpellPoints )
+{
+	// TODO: Add spell points to player state
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
