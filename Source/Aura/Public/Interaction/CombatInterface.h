@@ -54,7 +54,8 @@ class AURA_API ICombatInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	/** Returns owner level */
-	virtual int32 GetCharacterLevel() const;
+	UFUNCTION( BlueprintNativeEvent )
+	int32 GetCharacterLevel() const;
 
 	/** Returns a socket from weapon that may be used to for example spawn a projectile */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
@@ -86,10 +87,10 @@ public:
 	/** Returns owner's blood effect */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	UNiagaraSystem* GetBloodEffect();
-	
+
 	/** Returns Tagged Montage for given Tag */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
-	FTaggedMontage GetTaggedMontageByTag(const FGameplayTag& MontageTag);
+	FTaggedMontage GetTaggedMontageByTag( const FGameplayTag& MontageTag );
 
 	/** Returns number of minions that this has */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
@@ -97,7 +98,7 @@ public:
 
 	/** Updates number of minions that this has by given number */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
-	void UpdateMinionCount(const int32 Amount);
+	void UpdateMinionCount( const int32 Amount );
 
 	/** Returns character class of this */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )

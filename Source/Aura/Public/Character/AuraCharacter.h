@@ -27,11 +27,12 @@ public:
 	//~ End APawn Interface
 
 	//~ Begin Combat Interface
-	virtual int32 GetCharacterLevel() const override;
+	virtual int32 GetCharacterLevel_Implementation() const override;
 	//~ End Combat Interface
 
 	//~ Begin Player Interface
 	virtual void AddExperience_Implementation( const int32 InExperience ) override;
+	virtual void LevelUp_Implementation() override;
 	//~ End Player Interface
 
 protected:

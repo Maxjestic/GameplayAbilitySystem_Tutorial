@@ -75,7 +75,7 @@ void AAuraEnemy::PossessedBy( AController* NewController )
 	AuraAIController->GetBlackboardComponent()->SetValueAsBool( FName( "RangedAttacker" ), CharacterClass != ECharacterClass::Warrior );
 }
 
-int32 AAuraEnemy::GetCharacterLevel() const
+int32 AAuraEnemy::GetCharacterLevel_Implementation() const
 {
 	return Level;
 }

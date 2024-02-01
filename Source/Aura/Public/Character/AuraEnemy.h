@@ -39,7 +39,7 @@ public:
 	//~ End APawn Interface
 
 	//~ Begin ICombat Interface
-	virtual int32 GetCharacterLevel() const override;
+	virtual int32 GetCharacterLevel_Implementation() const override;
 	virtual void Die() override;
 	//~ End ICombat Interface
 

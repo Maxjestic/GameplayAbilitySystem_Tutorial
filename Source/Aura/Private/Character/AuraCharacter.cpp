@@ -41,7 +41,7 @@ void AAuraCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
-int32 AAuraCharacter::GetCharacterLevel() const
+int32 AAuraCharacter::GetCharacterLevel_Implementation() const
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check( AuraPlayerState );
@@ -54,6 +54,11 @@ void AAuraCharacter::AddExperience_Implementation( const int32 InExperience )
 	check( AuraPlayerState );
 
 	AuraPlayerState->AddToExperience( InExperience );
+}
+
+void AAuraCharacter::LevelUp_Implementation()
+{
+	
 }
 
 void AAuraCharacter::InitAbilityActorInfo()

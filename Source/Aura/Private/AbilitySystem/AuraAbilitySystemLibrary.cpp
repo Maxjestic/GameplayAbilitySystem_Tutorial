@@ -112,16 +112,19 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities( const UObject* WorldContex
 	const FCharacterClassDefaultInfo& DefaultInfo = CharacterClassInfo->GetClassDefaultInfo( CharacterClass );
 	for (const TSubclassOf<UGameplayAbility> AbilityClass : DefaultInfo.StartupAbilities)
 	{
-		if (const ICombatInterface* CombatInterface = Cast<ICombatInterface>( AbilitySystemComponent->GetAvatarActor() ))
+		if (AbilitySystemComponent->GetAvatarActor()->Implements<UCombatInterface>())
 		{
-			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec( AbilityClass, CombatInterface->GetCharacterLevel() );
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec( AbilityClass,
+			                                                         ICombatInterface::Execute_GetCharacterLevel(
+				                                                         AbilitySystemComponent->GetAvatarActor() ) );
 			AbilitySystemComponent->GiveAbility( AbilitySpec );
 		}
 	}
 }
 
-int32 UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject, const ECharacterClass CharacterClass,
-	const int32 CharacterLevel )
+int32 UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject,
+                                                                      const ECharacterClass CharacterClass,
+                                                                      const int32 CharacterLevel )
 {
 	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo( WorldContextObject );
 
@@ -129,7 +132,7 @@ int32 UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel( const UObj
 	{
 		return 0;
 	}
-	
+
 	const FCharacterClassDefaultInfo& ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo( CharacterClass );
 	const float ExperienceReward = ClassDefaultInfo.ExperienceReward.GetValueAtLevel( CharacterLevel );
 	return static_cast<int32>(ExperienceReward);
@@ -208,9 +211,9 @@ void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius( const UObject* World
 }
 
 bool UAuraAbilitySystemLibrary::IsNotFriend( const AActor* FirstActor, const AActor* SecondActor )
-{	
-	const bool bBothArePlayers = FirstActor->ActorHasTag( FName("Player") ) && SecondActor->ActorHasTag( FName("Player") );
-	const bool bBothAreEnemies = FirstActor->ActorHasTag( FName("Enemy") ) && SecondActor->ActorHasTag( FName("Enemy") );
+{
+	const bool bBothArePlayers = FirstActor->ActorHasTag( FName( "Player" ) ) && SecondActor->ActorHasTag( FName( "Player" ) );
+	const bool bBothAreEnemies = FirstActor->ActorHasTag( FName( "Enemy" ) ) && SecondActor->ActorHasTag( FName( "Enemy" ) );
 
 	return !(bBothArePlayers || bBothAreEnemies);
 }
