@@ -121,6 +121,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallb
 				{
 					CombatInterface->Die();
 				}
+				SendExperienceEvent( Properties );
 			}
 			else
 			{
@@ -139,7 +140,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute( const FGameplayEffectModCallb
 		SetIncomingExperience( 0.f );
 		if (LocalIncomingExperience > 0)
 		{
-			UE_LOG( LogAura, Log, TEXT("Incoming Experience: %f"), LocalIncomingExperience )
+			
 		}
 	}
 }
@@ -199,6 +200,28 @@ void UAuraAttributeSet::ShowFloatingText( const FEffectProperties& Properties, c
 		{
 			PlayerController->ShowDamageNumber( Damage, Properties.TargetCharacter, bBlockedHit, bCriticalHit );
 		}
+	}
+}
+
+void UAuraAttributeSet::SendExperienceEvent( const FEffectProperties& Properties )
+{
+	if (const ICombatInterface* CombatInterface = Cast<ICombatInterface>( Properties.TargetCharacter ))
+	{
+		const ECharacterClass CharacterClass = ICombatInterface::Execute_GetCharacterClass( Properties.TargetCharacter );
+		const int32 Level = CombatInterface->GetCharacterLevel();
+
+		const int32 ExperienceReward = UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel(
+			Properties.TargetCharacter,
+			CharacterClass,
+			Level );
+
+		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+		FGameplayEventData Payload;
+		Payload.EventTag = GameplayTags.Attributes_Meta_IncomingExperience;
+		Payload.EventMagnitude = ExperienceReward;
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor( Properties.SourceCharacter,
+		                                                          GameplayTags.Attributes_Meta_IncomingExperience,
+		                                                          Payload );
 	}
 }
 

@@ -318,4 +318,7 @@ private:
 
 	/** Informs PlayerController to show damage text */
 	void ShowFloatingText( const FEffectProperties& Properties, const float Damage, const bool bBlockedHit, const bool bCriticalHit ) const;
+
+	/** Informs that Experience should be rewarded */
+	void SendExperienceEvent(const FEffectProperties& Properties);
 };
