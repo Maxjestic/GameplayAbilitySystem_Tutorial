@@ -7,6 +7,9 @@
 #include "Interaction/PlayerInterface.h"
 #include "AuraCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+class UNiagaraComponent;
 /**
  * Class for player-controlled character
  */
@@ -17,7 +20,7 @@ class AURA_API AAuraCharacter : public AAuraCharacterBase, public IPlayerInterfa
 
 public:
 	/**
-	 *  Sets CharacterMovementComponent and Controller
+	 *  Sets CameraComponent, SpringArmComponent, (LevelUp)NiagaraComponent, CharacterMovementComponent and Controller
 	 */
 	AAuraCharacter();
 
@@ -55,9 +58,24 @@ protected:
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Attributes" )
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
 
+	/** Niagara component used on level up */
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
+	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+
 private:
 	//~ Begin AAuraCharacterBase Interface
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
 	//~ End AAuraCharacterBase Interface
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLevelUpParticles() const;
+
+	/** Player character camera component */
+	UPROPERTY( VisibleAnywhere )
+	TObjectPtr<UCameraComponent> TopDownCameraComponent;
+	
+	/** Spring arm component for camera */
+	UPROPERTY( VisibleAnywhere )
+	TObjectPtr<USpringArmComponent> CameraBoom;
 };
