@@ -60,6 +60,7 @@ UAbilitySystemComponent* AAuraPlayerState::GetAbilitySystemComponent() const
 
 void AAuraPlayerState::OnRep_Level( int32 OldLevel )
 {
+	OnLevelChangedDelegate.Broadcast( Level );
 }
 
 void AAuraPlayerState::OnRep_Experience( int32 OldExperience )
