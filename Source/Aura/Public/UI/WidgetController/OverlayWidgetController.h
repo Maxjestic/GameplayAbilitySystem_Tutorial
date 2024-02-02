@@ -37,6 +37,9 @@ struct FUIWidgetRow : public FTableRowBase
 /** Broadcasts attribute changes */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnAttributeChangedSignature, float, NewValue );
 
+/** Broadcasts player stat changes */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnPlayerStatChangedSignature, int32, NewValue );
+
 /** Broadcasts UIWidgetRow to show message for user in viewport */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FMessageWidgetRowSignature, FUIWidgetRow, Row );
 
@@ -85,6 +88,10 @@ public:
 	/** Broadcasts experience percent on change */
 	UPROPERTY( BlueprintAssignable, Category = "GAS|Expereince" )
 	FOnAttributeChangedSignature OnExperiencePercentChangedDelegate;
+
+	/** Broadcasts experience percent on change */
+	UPROPERTY( BlueprintAssignable, Category = "GAS|Level" )
+	FOnPlayerStatChangedSignature OnPlayerLevelChangedDelegate;
 
 protected:
 	/** Finds data table row by corresponding gameplay tag in given data table */
