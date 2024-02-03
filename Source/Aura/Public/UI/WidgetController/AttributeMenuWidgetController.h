@@ -38,6 +38,10 @@ public:
 	UPROPERTY( BlueprintAssignable, Category = "GAS|Spells" )
 	FOnPlayerStatChangedSignature SpellPointsChangedDelegate;
 
+	/** Activated from blueprint to increase attribute associated with given tag */
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute( const FGameplayTag& AttributeTag );
+
 protected:
 	/** Data asset containing AuraAttributeInfo with relevant attributes */
 	UPROPERTY( EditDefaultsOnly )

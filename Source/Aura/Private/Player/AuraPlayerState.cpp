@@ -34,9 +34,8 @@ void AAuraPlayerState::SetLevel( const int32 InLevel )
 	OnLevelChangedDelegate.Broadcast( Level );
 }
 
-void AAuraPlayerState::AddToLevel( int32 InLevel )
+void AAuraPlayerState::AddToLevel( const  int32 InLevel )
 {
-	InLevel = FMath::Clamp( InLevel, 0, InLevel );
 	Level += InLevel;
 	OnLevelChangedDelegate.Broadcast( Level );
 }
@@ -48,9 +47,8 @@ void AAuraPlayerState::SetExperience( const int32 InExperience )
 	OnExperienceChangedDelegate.Broadcast( Experience );
 }
 
-void AAuraPlayerState::AddToExperience( int32 InExperience )
+void AAuraPlayerState::AddToExperience( const int32 InExperience )
 {
-	InExperience = FMath::Clamp( InExperience, 0, InExperience );
 	Experience += InExperience;
 	OnExperienceChangedDelegate.Broadcast( Experience );
 }
@@ -62,9 +60,8 @@ void AAuraPlayerState::SetAttributePoints( const int32 InAttributePoints )
 	OnAttributePointsChangedDelegate.Broadcast( AttributePoints );
 }
 
-void AAuraPlayerState::AddToAttributePoints( int32 InAttributePoints )
+void AAuraPlayerState::AddToAttributePoints( const int32 InAttributePoints )
 {
-	InAttributePoints = FMath::Clamp( InAttributePoints, 0, InAttributePoints );
 	AttributePoints += InAttributePoints;
 	OnAttributePointsChangedDelegate.Broadcast( AttributePoints );
 }
@@ -76,9 +73,8 @@ void AAuraPlayerState::SetSpellPoints( const int32 InSpellPoints )
 	OnSpellPointsChangedDelegate.Broadcast( SpellPoints );
 }
 
-void AAuraPlayerState::AddToSpellPoints( int32 InSpellPoints )
+void AAuraPlayerState::AddToSpellPoints( const int32 InSpellPoints )
 {
-	InSpellPoints = FMath::Clamp( InSpellPoints, 0, InSpellPoints );
 	SpellPoints += InSpellPoints;
 	OnSpellPointsChangedDelegate.Broadcast( SpellPoints );
 }

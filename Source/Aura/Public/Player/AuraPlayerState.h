@@ -41,7 +41,7 @@ public:
 	/** Sets Level to given value */
 	void SetLevel( const int32 InLevel );
 
-	/** Adds given number to current Level */
+	/** Adds given number to current Level (negative to subtract) */
 	void AddToLevel( const int32 InLevel );
 
 	/** Broadcast Experience amount on change */
@@ -54,7 +54,7 @@ public:
 	/** Sets Experience to given amount */
 	void SetExperience( const int32 InExperience );
 
-	/** Adds given amount to current experience amount */
+	/** Adds given amount to current experience amount (negative to subtract) */
 	void AddToExperience( const int32 InExperience );
 
 	/** Broadcast Experience progress percent on change */
@@ -67,8 +67,8 @@ public:
 	/** Sets Attribute Points to given amount */
 	void SetAttributePoints( const int32 InAttributePoints );
 
-	/** Adds given amount to Attribute Points */
-	void AddToAttributePoints( int32 InAttributePoints );
+	/** Adds given amount to Attribute Points (negative to subtract) */
+	void AddToAttributePoints( const int32 InAttributePoints );
 
 	/** Broadcasts new amount of Attribute Points */
 	FOnPlayerStatChanged OnAttributePointsChangedDelegate;
@@ -80,8 +80,8 @@ public:
 	/** Sets Spell Points to given amount */
 	void SetSpellPoints( const int32 InSpellPoints );
 
-	/** Adds given amount to Spell Points */
-	void AddToSpellPoints( int32 InSpellPoints );
+	/** Adds given amount to Spell Points (negative to subtract) */
+	void AddToSpellPoints( const int32 InSpellPoints );
 
 	/** Broadcasts new amount of Spell Points */
 	FOnPlayerStatChanged OnSpellPointsChangedDelegate;

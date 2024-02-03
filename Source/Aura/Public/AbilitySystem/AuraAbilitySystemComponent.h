@@ -58,11 +58,18 @@ public:
 	/** Returns input tag from given ability spec, empty if not found*/
 	static FGameplayTag GetInputTagFromSpec( const FGameplayAbilitySpec& AbilitySpec );
 
-protected:	
+	/** Client side, increase attribute associated with given tag */
+	void UpgradeAttribute( const FGameplayTag& AttributeTag );
+
+	/** Server side, increase attribute associated with given tag */
+	UFUNCTION(Server, Reliable)
+	void ServerUpgradeAttribute( const FGameplayTag& AttributeTag );
+
+protected:
 	//~ Begin UAbilitySystemComponent Interface
 	virtual void OnRep_ActivateAbilities() override;
 	//~ End UAbilitySystemComponent Interface
-	
+
 	/** Callback bound to OnGameplayEffectAppliedDelegateToSelf event */
 	UFUNCTION( Client, Reliable )
 	void ClientEffectApplied( UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,

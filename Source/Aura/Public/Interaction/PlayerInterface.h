@@ -43,6 +43,10 @@ public:
 	UFUNCTION( BlueprintNativeEvent )
 	void AddToPlayerLevel( const int32 InPlayerLevel );
 
+	
+	/** Returns amount of attribute points that owner has */
+	UFUNCTION( BlueprintNativeEvent )
+	int32 GetAttributePoints() const;
 
 	/** Returns amount of attribute points that should be rewarded to the owner */
 	UFUNCTION( BlueprintNativeEvent )
@@ -53,6 +57,10 @@ public:
 	void AddToAttributePoints( const int32 InAttributePoints );
 
 
+	/** Returns amount of spell points that owner has */
+	UFUNCTION( BlueprintNativeEvent )
+	int32 GetSpellPoints() const;
+	
 	/** Returns amount of spell points that should be rewarded to the owner */
 	UFUNCTION( BlueprintNativeEvent )
 	int32 GetSpellPointsReward( const int32 PlayerLevel ) const;
