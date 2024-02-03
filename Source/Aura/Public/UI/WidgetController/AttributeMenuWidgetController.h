@@ -30,6 +30,14 @@ public:
 	UPROPERTY( BlueprintAssignable, Category="GAS|Attributes" )
 	FAttributeInfoSignature AttributeInfoDelegate;
 
+	/** Broadcasts attribute points on change */
+	UPROPERTY( BlueprintAssignable, Category = "GAS|Attributes" )
+	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
+
+	/** Broadcasts spell points on change */
+	UPROPERTY( BlueprintAssignable, Category = "GAS|Spells" )
+	FOnPlayerStatChangedSignature SpellPointsChangedDelegate;
+
 protected:
 	/** Data asset containing AuraAttributeInfo with relevant attributes */
 	UPROPERTY( EditDefaultsOnly )

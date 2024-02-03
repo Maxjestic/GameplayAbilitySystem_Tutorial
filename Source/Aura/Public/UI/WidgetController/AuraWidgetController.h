@@ -40,6 +40,11 @@ struct FWidgetControllerParams
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
 };
 
+
+
+/** Broadcasts player stat changes */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnPlayerStatChangedSignature, int32, NewValue );
+
 /**
  * Base Widget Controller class containing each possible model
  * One way dependency on various models

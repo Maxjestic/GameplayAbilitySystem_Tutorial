@@ -42,7 +42,7 @@ public:
 	void SetLevel( const int32 InLevel );
 
 	/** Adds given number to current Level */
-	void AddToLevel( int32 InLevel );
+	void AddToLevel( const int32 InLevel );
 
 	/** Broadcast Experience amount on change */
 	FOnPlayerStatChanged OnLevelChangedDelegate;
@@ -52,13 +52,39 @@ public:
 	FORCEINLINE int32 GetPlayerExperience() const { return Experience; }
 
 	/** Sets Experience to given amount */
-	void SetExperience( int32 InExperience );
+	void SetExperience( const int32 InExperience );
 
 	/** Adds given amount to current experience amount */
-	void AddToExperience( int32 InExperience );
+	void AddToExperience( const int32 InExperience );
 
-	/** Broadcast Experience amount on change */
+	/** Broadcast Experience progress percent on change */
 	FOnPlayerStatChanged OnExperienceChangedDelegate;
+	
+
+	/** Player attribute points getter */
+	FORCEINLINE int32 GetAttributePoints() const { return AttributePoints; }
+
+	/** Sets Attribute Points to given amount */
+	void SetAttributePoints( const int32 InAttributePoints );
+
+	/** Adds given amount to Attribute Points */
+	void AddToAttributePoints( int32 InAttributePoints );
+
+	/** Broadcasts new amount of Attribute Points */
+	FOnPlayerStatChanged OnAttributePointsChangedDelegate;
+	
+
+	/** Player Spell Points getter */
+	FORCEINLINE int32 GetSpellPoints() const { return SpellPoints; }
+
+	/** Sets Spell Points to given amount */
+	void SetSpellPoints( const int32 InSpellPoints );
+
+	/** Adds given amount to Spell Points */
+	void AddToSpellPoints( int32 InSpellPoints );
+
+	/** Broadcasts new amount of Spell Points */
+	FOnPlayerStatChanged OnSpellPointsChangedDelegate;
 
 
 	//~ Begin IAbilitySystem Interface
@@ -93,11 +119,26 @@ private:
 	UPROPERTY( VisibleAnywhere, ReplicatedUsing = OnRep_Experience )
 	int32 Experience = 0;
 
-	/** Level replication function */
+	/** Points that can be spend to increase attributes */
+	UPROPERTY( VisibleAnywhere, ReplicatedUsing = OnRep_AttributePoints )
+	int32 AttributePoints = 0;
+
+	/** Points that can be spend to unlock/upgrade spells */
+	UPROPERTY( VisibleAnywhere, ReplicatedUsing = OnRep_SpellPoints )
+	int32 SpellPoints = 0;
+
+	/**
+	 * Replication functions 
+	 */
 	UFUNCTION()
 	void OnRep_Level( int32 OldLevel );
 
-	/** Experience replication function */
 	UFUNCTION()
 	void OnRep_Experience( int32 OldExperience );
+
+	UFUNCTION()
+	void OnRep_AttributePoints( int32 OldAttributePoints );
+
+	UFUNCTION()
+	void OnRep_SpellPoints( int32 OldSpellPoints );
 };

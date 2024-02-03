@@ -24,7 +24,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>( PlayerState );
 	AuraPlayerState->OnExperienceChangedDelegate.AddUObject( this, &UOverlayWidgetController::OnExperienceChanged );
 	AuraPlayerState->OnLevelChangedDelegate.AddLambda(
-		[this](int32 NewLevel)
+		[this](const int32 NewLevel)
 		{
 			OnPlayerLevelChangedDelegate.Broadcast( NewLevel );
 		} );
