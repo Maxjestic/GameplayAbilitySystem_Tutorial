@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "AuraHUD.generated.h"
 
+class USpellMenuWidgetController;
 class UAuraWidgetController;
 class UAttributeMenuWidgetController;
 class UAttributeSet;
@@ -34,6 +35,10 @@ public:
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(
 		const FWidgetControllerParams& WidgetControllerParams );
 
+	/** Spell Menu Controller getter, it creates one if it does not exist */
+	USpellMenuWidgetController* GetSpellMenuWidgetController(
+		const FWidgetControllerParams& WidgetControllerParams );
+
 	/**
 	 * Initialization of Overlay, creates new Overlay UserWidget, sets WidgetController parameters
 	 * sets WidgetController, broadcasts initial values and adds Overlay to Viewport
@@ -47,7 +52,7 @@ private:
 	TObjectPtr<UAuraUserWidget> OverlayWidget;
 
 	/** View - Overlay Widget class, used to spawn overlay */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY( EditAnywhere )
 	TSubclassOf<UAuraUserWidget> OverlayWidgetClass;
 
 	/** Controller - Overlay Widget Controller */
@@ -55,7 +60,7 @@ private:
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 
 	/** Controller - Overlay Widget Controller class */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY( EditAnywhere )
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 
 	/** Controller - Attribute Menu Controller */
@@ -63,6 +68,14 @@ private:
 	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
 
 	/** Controller - Attribute Menu Controller class */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY( EditAnywhere )
 	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+
+	/** Controller - Spell Menu Controller */
+	UPROPERTY()
+	TObjectPtr<USpellMenuWidgetController> SpellMenuWidgetController;
+
+	/** Controller - Spell Menu Controller class */
+	UPROPERTY( EditAnywhere )
+	TSubclassOf<USpellMenuWidgetController> SpellMenuWidgetControllerClass;
 };

@@ -7,6 +7,9 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class AAuraHUD;
+struct FWidgetControllerParams;
+class USpellMenuWidgetController;
 struct FGameplayEffectContextHandle;
 class UAbilitySystemComponent;
 class UAttributeMenuWidgetController;
@@ -21,13 +24,21 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
+	/** Creates Widget Controller Params, returns false if failed */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
+	static bool MakeWidgetControllerParams( const UObject* WorldContextObject, FWidgetControllerParams& OutWidgetControllerParams, AAuraHUD*& OutAuraHUD );
+	
 	/** Get overlay widget controller getter, may return nullptr */
-	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController" )
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
 	static UOverlayWidgetController* GetOverlayWidgetController( const UObject* WorldContextObject );
 
 	/** Get attribute menu widget controller, may return nullptr */
-	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController" )
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController( const UObject* WorldContextObject );
+
+	/** Get spell menu widget controller, may return nullptr */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
+	static USpellMenuWidgetController* GetSpellMenuWidgetController( const UObject* WorldContextObject );
 
 	/** Initializes default attribute values for enemies */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
