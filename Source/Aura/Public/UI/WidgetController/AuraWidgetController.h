@@ -6,6 +6,11 @@
 #include "AbilitySystemComponent.h"
 #include "AuraWidgetController.generated.h"
 
+class UAbilityInfo;
+class UAuraAttributeSet;
+class UAuraAbilitySystemComponent;
+class AAuraPlayerState;
+class AAuraPlayerController;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -45,6 +50,9 @@ struct FWidgetControllerParams
 /** Broadcasts player stat changes */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnPlayerStatChangedSignature, int32, NewValue );
 
+/** Broadcasts AbilityInfo */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam ( FAbilityInfoSignature, const FAuraAbilityInfo&, Info );
+
 /**
  * Base Widget Controller class containing each possible model
  * One way dependency on various models
@@ -66,6 +74,13 @@ public:
 	/** Function used to bind callbacks to dependencies, empty definition - no need to call Super */
 	virtual void BindCallbacksToDependencies();
 
+	/** Forces all abilities to broadcast their ability info */
+	void BroadcastAbilityInfo();
+
+	/** Broadcasts AbilityInfo */
+	UPROPERTY( BlueprintAssignable, Category = "GAS|Messages" )
+	FAbilityInfoSignature AbilityInfoDelegate;
+
 protected:
 	/** Model - Player Controller */
 	UPROPERTY( BlueprintReadOnly, Category = "WidgetController" )
@@ -82,4 +97,38 @@ protected:
 	/** Model - Attribute Set */
 	UPROPERTY( BlueprintReadOnly, Category = "WidgetController" )
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	/** Data asset used to assign visuals to spell globes in overlay */
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data" )
+	TObjectPtr<UAbilityInfo> AbilityInfo;
+
+	/** Returns Aura Player Controller, lazy casts */
+	AAuraPlayerController* GetAuraPlayerController();
+
+	/** Returns Aura Player State, lazy casts */
+	AAuraPlayerState* GetAuraPlayerState();
+
+	/** Returns Aura Ability System Component, lazy casts */
+	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
+
+	/** Returns Aura Attribute Set, lazy casts */
+	UAuraAttributeSet* GetAuraAttributeSet();
+
+private:	
+	/** Aura Player Controller stored after lazy cast */
+	UPROPERTY( /*BlueprintReadOnly, Category = "WidgetController"*/ )
+	TObjectPtr<AAuraPlayerController> AuraPlayerController;
+
+	/** Aura Player State stored after lazy cast */
+	UPROPERTY( /*BlueprintReadOnly, Category = "WidgetController"*/ )
+	TObjectPtr<AAuraPlayerState> AuraPlayerState;
+
+	/** Aura Ability System Component stored after lazy cast */
+	UPROPERTY( /*BlueprintReadOnly, Category = "WidgetController"*/ )
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+
+	/** Aura Attribute Set stored after lazy cast */
+	UPROPERTY( /*BlueprintReadOnly, Category = "WidgetController"*/ )
+	TObjectPtr<UAuraAttributeSet> AuraAttributeSet;
+	
 };

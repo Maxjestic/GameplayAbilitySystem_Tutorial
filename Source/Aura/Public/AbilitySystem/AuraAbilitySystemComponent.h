@@ -11,7 +11,7 @@
 DECLARE_MULTICAST_DELEGATE_OneParam( FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/ )
 
 /** Broadcast to inform that abilities have been given */
-DECLARE_MULTICAST_DELEGATE_OneParam( FAbilitiesGiven, UAuraAbilitySystemComponent* /*AuraAbilitySystemComponent*/ );
+DECLARE_MULTICAST_DELEGATE( FAbilitiesGiven );
 
 /** Delegate created in OverlayWidgetController and executed on every activable abilities and broadcasting AbilityInfo to widgets  */
 DECLARE_DELEGATE_OneParam( FForEachAbility, const FGameplayAbilitySpec& /*AbilitySpec*/ );

@@ -7,9 +7,7 @@
 #include "OverlayWidgetController.generated.h"
 
 class UAuraAbilitySystemComponent;
-class UAbilityInfo;
 class UAuraUserWidget;
-struct FAuraAbilityInfo;
 
 /** Row structure containing pop-up information data displayed to user */
 USTRUCT( BlueprintType )
@@ -39,9 +37,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnAttributeChangedSignature, float
 
 /** Broadcasts UIWidgetRow to show message for user in viewport */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FMessageWidgetRowSignature, FUIWidgetRow, Row );
-
-/** Broadcasts AbilityInfo */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam ( FAbilityInfoSignature, const FAuraAbilityInfo&, Info );
 
 /**
  * Controller for Overlay Widget
@@ -78,10 +73,6 @@ public:
 	UPROPERTY( BlueprintAssignable, Category = "GAS|Messages" )
 	FMessageWidgetRowSignature MessageWidgetRow;
 
-	/** Broadcasts AbilityInfo */
-	UPROPERTY( BlueprintAssignable, Category = "GAS|Messages" )
-	FAbilityInfoSignature AbilityInfoDelegate;
-
 	/** Broadcasts experience percent on change */
 	UPROPERTY( BlueprintAssignable, Category = "GAS|Expereince" )
 	FOnAttributeChangedSignature OnExperiencePercentChangedDelegate;
@@ -95,19 +86,12 @@ protected:
 	template <typename T>
 	T* GetDataTableRowByTag( UDataTable* DataTable, const FGameplayTag& Tag );
 
-	/** Responds to AbilitiesGivenDelegate from AuraAbilitySystemComponent */
-	void OnInitializeStartupAbilities( UAuraAbilitySystemComponent* AuraAbilitySystemComponent );
-
 	/** Data Table used to display messages to the player screen */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data" )
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
-	/** Data asset used to assign visuals to spell globes in overlay */
-	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data" )
-	TObjectPtr<UAbilityInfo> AbilityInfo;
-
 	/** Callback to when experience changes */
-	void OnExperienceChanged(const int32 NewExperience) const;
+	void OnExperienceChanged(const int32 NewExperience);
 };
 
 template <typename T>

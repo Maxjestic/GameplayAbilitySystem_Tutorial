@@ -34,10 +34,6 @@ public:
 	UPROPERTY( BlueprintAssignable, Category = "GAS|Attributes" )
 	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
 
-	/** Broadcasts spell points on change */
-	UPROPERTY( BlueprintAssignable, Category = "GAS|Spells" )
-	FOnPlayerStatChangedSignature SpellPointsChangedDelegate;
-
 	/** Activated from blueprint to increase attribute associated with given tag */
 	UFUNCTION(BlueprintCallable)
 	void UpgradeAttribute( const FGameplayTag& AttributeTag );
