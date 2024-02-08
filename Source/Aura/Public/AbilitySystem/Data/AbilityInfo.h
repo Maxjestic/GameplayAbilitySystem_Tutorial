@@ -23,6 +23,10 @@ struct FAuraAbilityInfo
 	UPROPERTY( BlueprintReadOnly )
 	FGameplayTag InputTag = FGameplayTag();
 
+	/** Gameplay tag associated with the input of the ability */
+	UPROPERTY( BlueprintReadOnly )
+	FGameplayTag StatusTag = FGameplayTag();
+
 	/** Gameplay tag associated with the cooldown of the ability */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	FGameplayTag CooldownTag = FGameplayTag();

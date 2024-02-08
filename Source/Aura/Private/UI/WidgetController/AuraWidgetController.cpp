@@ -40,6 +40,7 @@ void UAuraWidgetController::BroadcastAbilityInfo()
 
 			// InputTag is not set in editor, it is dynamic so we have to get it and assign
 			Info.InputTag = GetAuraAbilitySystemComponent()->GetInputTagFromSpec( AbilitySpec );
+			Info.StatusTag = GetAuraAbilitySystemComponent()->GetStatusTagFromSpec( AbilitySpec );
 			AbilityInfoDelegate.Broadcast( Info );
 		} );
 
