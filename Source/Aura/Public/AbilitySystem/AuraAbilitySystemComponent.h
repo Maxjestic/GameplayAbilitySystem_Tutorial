@@ -58,11 +58,14 @@ public:
 	/** Returns input tag from given ability spec, empty if not found*/
 	static FGameplayTag GetInputTagFromSpec( const FGameplayAbilitySpec& AbilitySpec );
 
+	/** Returns status tag from given ability spec, empty if not found*/
+	static FGameplayTag GetStatusTagFromSpec( const FGameplayAbilitySpec& AbilitySpec );
+
 	/** Client side, increase attribute associated with given tag */
 	void UpgradeAttribute( const FGameplayTag& AttributeTag );
 
 	/** Server side, increase attribute associated with given tag */
-	UFUNCTION(Server, Reliable)
+	UFUNCTION( Server, Reliable )
 	void ServerUpgradeAttribute( const FGameplayTag& AttributeTag );
 
 protected:
