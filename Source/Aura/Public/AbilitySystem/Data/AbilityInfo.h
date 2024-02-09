@@ -7,6 +7,7 @@
 #include "Engine/DataAsset.h"
 #include "AbilityInfo.generated.h"
 
+class UGameplayAbility;
 /**
  * Stores data associated with ability and shown in overlay
  */
@@ -23,7 +24,7 @@ struct FAuraAbilityInfo
 	UPROPERTY( BlueprintReadOnly )
 	FGameplayTag InputTag = FGameplayTag();
 
-	/** Gameplay tag associated with the input of the ability */
+	/** Gameplay tag representing status of the ability */
 	UPROPERTY( BlueprintReadOnly )
 	FGameplayTag StatusTag = FGameplayTag();
 
@@ -38,6 +39,14 @@ struct FAuraAbilityInfo
 	/** Background of the ability */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	TObjectPtr<const UMaterialInterface> BackgroundMaterial = nullptr;
+
+	/** Level required to make ability eligible */
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
+	int32 LevelRequirement = 1;
+
+	/** Class of this ability */
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
+	TSubclassOf<UGameplayAbility> AbilityClass;
 };
 
 /**
