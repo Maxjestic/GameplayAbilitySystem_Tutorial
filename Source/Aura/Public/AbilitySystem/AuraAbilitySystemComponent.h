@@ -61,12 +61,18 @@ public:
 	/** Returns status tag from given ability spec, empty if not found*/
 	static FGameplayTag GetStatusTagFromSpec( const FGameplayAbilitySpec& AbilitySpec );
 
+	/** Returns ability spec from given ability tag, nullptr if not found */
+	FGameplayAbilitySpec* GetSpecFromAbilityTag( const FGameplayTag& AbilityTag);
+
 	/** Client side, increase attribute associated with given tag */
 	void UpgradeAttribute( const FGameplayTag& AttributeTag );
 
 	/** Server side, increase attribute associated with given tag */
 	UFUNCTION( Server, Reliable )
 	void ServerUpgradeAttribute( const FGameplayTag& AttributeTag );
+
+	/** Check if player meets level requirement for ability */
+	void UpdateAbilityStatuses( const int32 Level );
 
 protected:
 	//~ Begin UAbilitySystemComponent Interface
