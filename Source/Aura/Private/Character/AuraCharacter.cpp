@@ -20,15 +20,15 @@ AAuraCharacter::AAuraCharacter()
 	CameraBoom->SetupAttachment( GetRootComponent() );
 	CameraBoom->SetUsingAbsoluteRotation( true );
 	CameraBoom->bDoCollisionTest = false;
-	
+
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>( "TopdownCameraComponent" );
 	TopDownCameraComponent->SetupAttachment( CameraBoom, USpringArmComponent::SocketName );
 	TopDownCameraComponent->bUsePawnControlRotation = false;
-	
+
 	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>( "LevelUpNiagaraComponent" );
 	LevelUpNiagaraComponent->SetupAttachment( GetRootComponent() );
 	LevelUpNiagaraComponent->bAutoActivate = false;
-	
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator( 0.f, 400.f, 0.f );
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -100,6 +100,11 @@ void AAuraCharacter::AddToPlayerLevel_Implementation( const int32 InPlayerLevel 
 	check( AuraPlayerState );
 
 	AuraPlayerState->AddToLevel( InPlayerLevel );
+
+	if (UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>( GetAbilitySystemComponent() ))
+	{
+		AuraAbilitySystemComponent->UpdateAbilityStatuses( AuraPlayerState->GetPlayerLevel() );
+	}
 }
 
 int32 AAuraCharacter::GetAttributePoints_Implementation() const
@@ -184,7 +189,7 @@ void AAuraCharacter::InitializeDefaultAttributes() const
 
 void AAuraCharacter::MulticastLevelUpParticles_Implementation() const
 {
-	if(IsValid(LevelUpNiagaraComponent))
+	if (IsValid( LevelUpNiagaraComponent ))
 	{
 		const FVector CameraLocation = TopDownCameraComponent->GetComponentLocation();
 		const FVector NiagaraSystemLocation = LevelUpNiagaraComponent->GetComponentLocation();
@@ -192,7 +197,7 @@ void AAuraCharacter::MulticastLevelUpParticles_Implementation() const
 		const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
 
 		LevelUpNiagaraComponent->SetWorldRotation( ToCameraRotation );
-		
+
 		LevelUpNiagaraComponent->Activate( true );
 	}
 }

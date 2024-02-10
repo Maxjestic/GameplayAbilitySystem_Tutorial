@@ -16,6 +16,9 @@ DECLARE_MULTICAST_DELEGATE( FAbilitiesGiven );
 /** Delegate created in OverlayWidgetController and executed on every activable abilities and broadcasting AbilityInfo to widgets  */
 DECLARE_DELEGATE_OneParam( FForEachAbility, const FGameplayAbilitySpec& /*AbilitySpec*/ );
 
+/** Broadcasts Ability Tag and Status Tag on status change */
+DECLARE_MULTICAST_DELEGATE_TwoParams( FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*StatusTag*/ )
+
 /**
  * A class used as base Ability System Component in Aura
  */
@@ -31,6 +34,9 @@ public:
 	/** Grants given abilities */
 	void AddCharacterAbilities( const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities );
 
+	/** True if startup abilities have been given */
+	bool bStartupAbilitiesGiven = false;
+
 	/** Grants given abilities */
 	void AddCharacterPassiveAbilities( const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities );
 
@@ -40,14 +46,16 @@ public:
 	/** Activating ability on input held */
 	void AbilityInputTagHeld( const FGameplayTag& InputTag );
 
+
 	/** Broadcasts asset tags */
 	FEffectAssetTags EffectAssetTagsDelegate;
 
 	/** Broadcasts when abilities have been given */
 	FAbilitiesGiven AbilitiesGivenDelegate;
 
-	/** True if startup abilities have been given */
-	bool bStartupAbilitiesGiven = false;
+	/** Broadcasts when ability status changes */
+	FAbilityStatusChanged AbilityStatusChanged;
+
 
 	/** Loops through all activatable abilities and calls delegate */
 	void ForEachAbility( const FForEachAbility& Delegate );
@@ -62,7 +70,8 @@ public:
 	static FGameplayTag GetStatusTagFromSpec( const FGameplayAbilitySpec& AbilitySpec );
 
 	/** Returns ability spec from given ability tag, nullptr if not found */
-	FGameplayAbilitySpec* GetSpecFromAbilityTag( const FGameplayTag& AbilityTag);
+	FGameplayAbilitySpec* GetSpecFromAbilityTag( const FGameplayTag& AbilityTag );
+
 
 	/** Client side, increase attribute associated with given tag */
 	void UpgradeAttribute( const FGameplayTag& AttributeTag );
@@ -83,4 +92,9 @@ protected:
 	UFUNCTION( Client, Reliable )
 	void ClientEffectApplied( UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
 	                          FActiveGameplayEffectHandle ActiveEffectHandle );
+
+
+	/** RPC that broadcasts Ability Tag and Status Tag */
+	UFUNCTION( Client, Reliable )
+	void ClientUpdateAbilityStatus( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag );
 };
