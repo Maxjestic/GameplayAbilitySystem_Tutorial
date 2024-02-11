@@ -3,8 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AuraGameplayTags.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "SpellMenuWidgetController.generated.h"
+
+/**
+ * Internal struct associated with currently selected ability
+ */
+struct FSelectedAbility
+{
+	FGameplayTag AbilityTag = FGameplayTag();
+	FGameplayTag StatusTag = FGameplayTag();
+};
 
 /** Broadcasting if Sp */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams( FEnableButtonsSignature, bool, bSpendPointsEnabled, bool, bEquipEnabled );
@@ -38,4 +48,10 @@ public:
 private:
 	/** Sets which buttons should be enabled based on StatusTag and SpellPoints */
 	void ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints ) const;
+
+	/** Currently selected ability */
+	FSelectedAbility SelectedAbility = { FAuraGameplayTags::Get().Abilities_None, FAuraGameplayTags::Get().Abilities_Status_Locked };
+
+	/** Currently available spell points */
+	int32 CurrentSpellPoints = 0;
 };

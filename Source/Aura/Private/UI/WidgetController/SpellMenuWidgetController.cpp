@@ -21,11 +21,20 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		[this]( const int32 NewSpellPoints )
 		{
 			SpellPointsChangedDelegate.Broadcast( NewSpellPoints );
+
+			CurrentSpellPoints = NewSpellPoints;
+			ShouldEnableButtons( SelectedAbility.StatusTag, CurrentSpellPoints );
 		} );
 
 	GetAuraAbilitySystemComponent()->AbilityStatusChanged.AddLambda(
 		[this]( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag )
 		{
+			if (SelectedAbility.AbilityTag.MatchesTagExact( AbilityTag ))
+			{
+				SelectedAbility.StatusTag = StatusTag;
+				ShouldEnableButtons( StatusTag, CurrentSpellPoints );
+			}
+
 			if (AbilityInfo)
 			{
 				FAuraAbilityInfo Info = AbilityInfo->FindAbilityForTag( AbilityTag );
@@ -41,21 +50,26 @@ void USpellMenuWidgetController::SpellGlobeSelected( const FGameplayTag& Ability
 	const bool bNoneTag = AbilityTag.MatchesTag( FAuraGameplayTags::Get().Abilities_None );
 	const FGameplayAbilitySpec* AbilitySpec = GetAuraAbilitySystemComponent()->GetSpecFromAbilityTag( AbilityTag );
 	const bool bAbilitySpecValid = AbilitySpec != nullptr;
-
+	FGameplayTag AbilityStatus;
 	// Check for inappropriate data
 	if (!bAbilityTagValid || bNoneTag || !bAbilitySpecValid)
 	{
-		EnableButtons.Broadcast( false, false );
-		return;
+		AbilityStatus = FAuraGameplayTags::Get().Abilities_Status_Locked;
+	}
+	else
+	{
+		AbilityStatus = GetAuraAbilitySystemComponent()->GetStatusTagFromSpec( *AbilitySpec );
 	}
 
-	const FGameplayTag AbilityStatus = GetAuraAbilitySystemComponent()->GetStatusTagFromSpec( *AbilitySpec );
 	const int32 SpellPoints = GetAuraPlayerState()->GetSpellPoints();
+
+	SelectedAbility.AbilityTag = AbilityTag;
+	SelectedAbility.StatusTag = AbilityStatus;
 
 	ShouldEnableButtons( AbilityStatus, SpellPoints );
 }
 
-void USpellMenuWidgetController::ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints ) const 
+void USpellMenuWidgetController::ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints ) const
 {
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
