@@ -45,6 +45,10 @@ public:
 	UPROPERTY( BlueprintAssignable, Category = "UI" )
 	FEnableButtonsSignature EnableButtons;
 
+	/** Called when Spend Points button is clicked - unlocks/upgrades selected ability */
+	UFUNCTION( BlueprintCallable )
+	void SpendPointButtonPressed();
+
 private:
 	/** Sets which buttons should be enabled based on StatusTag and SpellPoints */
 	void ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints ) const;

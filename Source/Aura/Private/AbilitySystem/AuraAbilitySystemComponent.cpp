@@ -127,7 +127,7 @@ FGameplayTag UAuraAbilitySystemComponent::GetStatusTagFromSpec( const FGameplayA
 
 FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag( const FGameplayTag& AbilityTag )
 {
-	FScopedAbilityListLock ActiveScopeLock(*this);
+	FScopedAbilityListLock ActiveScopeLock( *this );
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		for (const FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
@@ -138,7 +138,7 @@ FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag( const 
 			}
 		}
 	}
-	
+
 	return nullptr;
 }
 
@@ -170,18 +170,46 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses( const int32 Level )
 
 	for (const FAuraAbilityInfo& Info : AbilityInfo->AbilityInformation)
 	{
-		if(!Info.AbilityTag.IsValid() || Level < Info.LevelRequirement)
+		if (!Info.AbilityTag.IsValid() || Level < Info.LevelRequirement)
 		{
 			continue;
 		}
-		if(GetSpecFromAbilityTag( Info.AbilityTag ) == nullptr)
+		if (GetSpecFromAbilityTag( Info.AbilityTag ) == nullptr)
 		{
-			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Info.AbilityClass, 1);
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec( Info.AbilityClass, 1 );
 			AbilitySpec.DynamicAbilityTags.AddTag( FAuraGameplayTags::Get().Abilities_Status_Eligible );
 			GiveAbility( AbilitySpec );
 			MarkAbilitySpecDirty( AbilitySpec );
-			ClientUpdateAbilityStatus( Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible );
+			ClientUpdateAbilityStatus( Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible, AbilitySpec.Level );
 		}
+	}
+}
+
+void UAuraAbilitySystemComponent::ServerSpendSpellPoint_Implementation( const FGameplayTag& AbilityTag )
+{
+	if (FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag( AbilityTag ))
+	{
+		if (GetAvatarActor()->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToSpellPoints( GetAvatarActor(), -1 );
+		}
+
+		const FAuraGameplayTags& AuraGameplayTags = FAuraGameplayTags::Get();
+		FGameplayTag StatusTag = GetStatusTagFromSpec( *AbilitySpec );
+		if (StatusTag.MatchesTagExact( AuraGameplayTags.Abilities_Status_Eligible ))
+		{
+			// Remove Current (Eligible) status and set new (Unlocked) status
+			AbilitySpec->DynamicAbilityTags.RemoveTag( StatusTag );
+			AbilitySpec->DynamicAbilityTags.AddTag( AuraGameplayTags.Abilities_Status_Unlocked );
+			StatusTag = GetStatusTagFromSpec( *AbilitySpec );
+		}
+		else if (!StatusTag.MatchesTagExact( AuraGameplayTags.Abilities_Status_Locked ))
+		{
+			// Increase ability level without canceling it
+			AbilitySpec->Level++;
+		}
+		ClientUpdateAbilityStatus( AbilityTag, StatusTag, AbilitySpec->Level );
+		MarkAbilitySpecDirty( *AbilitySpec );
 	}
 }
 
@@ -195,9 +223,10 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 	}
 }
 
-void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag )
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,
+                                                                            const int32 AbilityLevel )
 {
-	AbilityStatusChanged.Broadcast( AbilityTag, StatusTag );
+	AbilityStatusChanged.Broadcast( AbilityTag, StatusTag, AbilityLevel );
 }
 
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation( UAbilitySystemComponent* AbilitySystemComponent,
