@@ -23,7 +23,16 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			SpellPointsChangedDelegate.Broadcast( NewSpellPoints );
 
 			CurrentSpellPoints = NewSpellPoints;
-			ShouldEnableButtons( SelectedAbility.StatusTag, CurrentSpellPoints );
+			
+			bool bSpendPointsEnabled = false;
+			bool bEquipEnabled = false;
+			ShouldEnableButtons( SelectedAbility.StatusTag, CurrentSpellPoints, bSpendPointsEnabled, bEquipEnabled );
+
+			FString Description = FString();
+			FString NextLevelDescription = FString();
+			GetAuraAbilitySystemComponent()->GetDescriptionsByAbilityTag( SelectedAbility.AbilityTag, Description, NextLevelDescription );
+			
+			SpellGlobeSelectedDelegate.Broadcast( bSpendPointsEnabled, bEquipEnabled, Description, NextLevelDescription);
 		} );
 
 	GetAuraAbilitySystemComponent()->AbilityStatusChanged.AddLambda(
@@ -32,7 +41,16 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 			if (SelectedAbility.AbilityTag.MatchesTagExact( AbilityTag ))
 			{
 				SelectedAbility.StatusTag = StatusTag;
-				ShouldEnableButtons( StatusTag, CurrentSpellPoints );
+				
+				bool bSpendPointsEnabled = false;
+				bool bEquipEnabled = false;
+				ShouldEnableButtons( StatusTag, CurrentSpellPoints, bSpendPointsEnabled, bEquipEnabled );
+
+				FString Description = FString();
+				FString NextLevelDescription = FString();
+				GetAuraAbilitySystemComponent()->GetDescriptionsByAbilityTag( AbilityTag, Description, NextLevelDescription );
+				
+				SpellGlobeSelectedDelegate.Broadcast( bSpendPointsEnabled, bEquipEnabled, Description, NextLevelDescription);
 			}
 
 			if (AbilityInfo)
@@ -65,8 +83,16 @@ void USpellMenuWidgetController::SpellGlobeSelected( const FGameplayTag& Ability
 
 	SelectedAbility.AbilityTag = AbilityTag;
 	SelectedAbility.StatusTag = AbilityStatus;
+	bool bSpendPointsEnabled = false;
+	bool bEquipEnabled = false;
 
-	ShouldEnableButtons( AbilityStatus, SpellPoints );
+	ShouldEnableButtons( AbilityStatus, SpellPoints, bSpendPointsEnabled, bEquipEnabled );
+	
+	FString Description = FString();
+	FString NextLevelDescription = FString();
+	GetAuraAbilitySystemComponent()->GetDescriptionsByAbilityTag( AbilityTag, Description, NextLevelDescription );
+				
+	SpellGlobeSelectedDelegate.Broadcast( bSpendPointsEnabled, bEquipEnabled, Description, NextLevelDescription);
 }
 
 void USpellMenuWidgetController::SpendPointButtonPressed()
@@ -74,7 +100,7 @@ void USpellMenuWidgetController::SpendPointButtonPressed()
 	GetAuraAbilitySystemComponent()->ServerSpendSpellPoint( SelectedAbility.AbilityTag );
 }
 
-void USpellMenuWidgetController::ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints ) const
+void USpellMenuWidgetController::ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints, bool& bOutSpendPointsEnabled, bool& bOutEquipEnabled ) const
 {
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
@@ -86,11 +112,9 @@ void USpellMenuWidgetController::ShouldEnableButtons( const FGameplayTag& Status
 	// Player can spend points only if both are true:
 	// 1) Has >0 spell points available
 	// 2) Ability status is not Locked
-	const bool bSpendPointsEnabled = bSpellPointsAvailable && !StatusTag.MatchesTagExact( GameplayTags.Abilities_Status_Locked );
+	bOutSpendPointsEnabled = bSpellPointsAvailable && !StatusTag.MatchesTagExact( GameplayTags.Abilities_Status_Locked );
 
 	// Player can equip ability if Ability status is Unlocked or Equipped
-	const bool bEquipEnabled = StatusTag.MatchesTagExact( GameplayTags.Abilities_Status_Unlocked ) ||
+	bOutEquipEnabled = StatusTag.MatchesTagExact( GameplayTags.Abilities_Status_Unlocked ) ||
 		StatusTag.MatchesTagExact( GameplayTags.Abilities_Status_Equipped );
-
-	EnableButtons.Broadcast( bSpendPointsEnabled, bEquipEnabled );
 }

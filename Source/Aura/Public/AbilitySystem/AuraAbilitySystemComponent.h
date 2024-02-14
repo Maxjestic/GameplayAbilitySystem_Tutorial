@@ -17,7 +17,10 @@ DECLARE_MULTICAST_DELEGATE( FAbilitiesGiven );
 DECLARE_DELEGATE_OneParam( FForEachAbility, const FGameplayAbilitySpec& /*AbilitySpec*/ );
 
 /** Broadcasts Ability Tag and Status Tag on status change */
-DECLARE_MULTICAST_DELEGATE_ThreeParams( FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*StatusTag*/, const int32 /*AbilityLevel*/ )
+DECLARE_MULTICAST_DELEGATE_ThreeParams( FAbilityStatusChanged,
+                                        const FGameplayTag& /*AbilityTag*/,
+                                        const FGameplayTag& /*StatusTag*/,
+                                        const int32 /*AbilityLevel*/ )
 
 /**
  * A class used as base Ability System Component in Aura
@@ -84,8 +87,11 @@ public:
 	void UpdateAbilityStatuses( const int32 Level );
 
 	/** Called on server to manage spending points on selected ability */
-	UFUNCTION(Server, Reliable)
-	void ServerSpendSpellPoint(const FGameplayTag& AbilityTag);
+	UFUNCTION( Server, Reliable )
+	void ServerSpendSpellPoint( const FGameplayTag& AbilityTag );
+
+	/** Sets current and next level ability description from ability tag, false if ability is locked */
+	bool GetDescriptionsByAbilityTag( const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription );
 
 protected:
 	//~ Begin UAbilitySystemComponent Interface

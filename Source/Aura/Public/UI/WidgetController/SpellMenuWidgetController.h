@@ -17,7 +17,7 @@ struct FSelectedAbility
 };
 
 /** Broadcasting if Sp */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams( FEnableButtonsSignature, bool, bSpendPointsEnabled, bool, bEquipEnabled );
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams( FSpellGlobeSelectedSignature, bool, bSpendPointsEnabled, bool, bEquipEnabled , FString, Description, FString, NextLevelDescription);
 
 /**
  * Widget controller for spell menu
@@ -43,7 +43,7 @@ public:
 
 	/** Broadcasted in SpellGlobeSelected to see if buttons should be enabled */
 	UPROPERTY( BlueprintAssignable, Category = "UI" )
-	FEnableButtonsSignature EnableButtons;
+	FSpellGlobeSelectedSignature SpellGlobeSelectedDelegate;
 
 	/** Called when Spend Points button is clicked - unlocks/upgrades selected ability */
 	UFUNCTION( BlueprintCallable )
@@ -51,7 +51,7 @@ public:
 
 private:
 	/** Sets which buttons should be enabled based on StatusTag and SpellPoints */
-	void ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints ) const;
+	void ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints, bool& bOutSpendPointsEnabled, bool& bOutEquipEnabled ) const;
 
 	/** Currently selected ability */
 	FSelectedAbility SelectedAbility = { FAuraGameplayTags::Get().Abilities_None, FAuraGameplayTags::Get().Abilities_Status_Locked };
