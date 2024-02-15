@@ -32,4 +32,7 @@ protected:
 	/** Returns random attack montage from montages */
 	UFUNCTION( BlueprintPure )
 	FTaggedMontage GetRandomTaggedMontageFromArray( const TArray<FTaggedMontage>& TaggedMontages ) const;
+
+	/** Returns amount of damage for given level and type */
+	float GetDamageByDamageType( const float InLevel, const FGameplayTag& DamageType ) const ;
 };

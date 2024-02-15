@@ -16,12 +16,6 @@ class AURA_API UAuraProjectileSpell : public UAuraDamageGameplayAbility
 {
 	GENERATED_BODY()
 
-public:
-	//~ Begin UAuraGameplayAbility Interface
-	virtual FString GetDescription( const int32 Level ) override;
-	virtual FString GetNextLevelDescription( const int32 Level ) override;
-	//~ End UAuraGameplayAbility Interface
-
 protected:
 	//~ Begin UGameplayAbility Interface
 	virtual void ActivateAbility( const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

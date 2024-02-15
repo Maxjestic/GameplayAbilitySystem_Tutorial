@@ -27,4 +27,11 @@ public:
 
 	/** Returns locked description */
 	static FString GetLockedDescription( const int32 Level );
+
+protected:
+	// Returns mana cost of the ability
+	float GetManaCost( const float InLevel = 1.f ) const;
+
+	// Returns cooldown of the ability
+	float GetCooldown( const float InLevel = 1.f ) const;
 };
