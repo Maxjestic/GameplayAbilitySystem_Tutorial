@@ -17,7 +17,15 @@ struct FSelectedAbility
 };
 
 /** Broadcasting if Sp */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams( FSpellGlobeSelectedSignature, bool, bSpendPointsEnabled, bool, bEquipEnabled , FString, Description, FString, NextLevelDescription);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams( FSpellGlobeSelectedSignature,
+                                               bool,
+                                               bSpendPointsEnabled,
+                                               bool,
+                                               bEquipEnabled,
+                                               FString,
+                                               Description,
+                                               FString,
+                                               NextLevelDescription );
 
 /**
  * Widget controller for spell menu
@@ -49,9 +57,14 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void SpendPointButtonPressed();
 
+	/** Deselects spell globe button associated with given ability tag */
+	UFUNCTION( BlueprintCallable )
+	void GlobeDeselect();
+
 private:
 	/** Sets which buttons should be enabled based on StatusTag and SpellPoints */
-	void ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints, bool& bOutSpendPointsEnabled, bool& bOutEquipEnabled ) const;
+	void ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints, bool& bOutSpendPointsEnabled,
+	                          bool& bOutEquipEnabled ) const;
 
 	/** Currently selected ability */
 	FSelectedAbility SelectedAbility = { FAuraGameplayTags::Get().Abilities_None, FAuraGameplayTags::Get().Abilities_Status_Locked };
