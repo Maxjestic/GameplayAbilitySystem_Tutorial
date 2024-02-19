@@ -91,7 +91,11 @@ protected:
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
 	/** Callback to when experience changes */
-	void OnExperienceChanged(const int32 NewExperience);
+	void OnExperienceChanged( const int32 NewExperience );
+
+	/** Callback to when ability is equipped */
+	void OnAbilityEquipped( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& Slot,
+	                   const FGameplayTag& PreviousSlot ) const;
 };
 
 template <typename T>

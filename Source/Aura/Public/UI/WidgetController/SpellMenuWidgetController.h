@@ -80,7 +80,7 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void SpellRowGlobePressed( const FGameplayTag& SlotTag, const FGameplayTag& AbilityType );
 
-	/** Bound to AbilityEquipped - AuraAbilitySystemComponent delegate */
+	/** Callback to when ability is equipped */
 	void OnAbilityEquipped( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& Slot,
 	                        const FGameplayTag& PreviousSlot );
 

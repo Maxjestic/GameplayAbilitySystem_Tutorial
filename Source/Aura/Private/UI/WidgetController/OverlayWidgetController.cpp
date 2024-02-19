@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
@@ -60,6 +61,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	if (GetAuraAbilitySystemComponent())
 	{
+		GetAuraAbilitySystemComponent()->AbilityEquipped.AddUObject( this, &UOverlayWidgetController::OnAbilityEquipped );
 		GetAuraAbilitySystemComponent()->EffectAssetTagsDelegate.AddLambda(
 			[this]( const FGameplayTagContainer& AssetTags )
 			{
@@ -114,4 +116,22 @@ void UOverlayWidgetController::OnExperienceChanged( const int32 NewExperience )
 	const float ExperiencePercent = static_cast<float>( ExperienceForNextLevel) / static_cast<float>( LevelUpRequirementDelta);
 	
 	OnExperiencePercentChangedDelegate.Broadcast( ExperiencePercent );
+}
+
+void UOverlayWidgetController::OnAbilityEquipped( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& Slot,
+	const FGameplayTag& PreviousSlot ) const
+{
+	const FAuraGameplayTags& Tags = FAuraGameplayTags::Get();
+
+	FAuraAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag =Tags.Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PreviousSlot;
+	LastSlotInfo.AbilityTag = Tags.Abilities_None;
+	// Broadcast empty info if previous slot is a valid slot. Only if equipping an already equipped spell.
+	AbilityInfoDelegate.Broadcast( LastSlotInfo );
+
+	FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag( AbilityTag );
+	Info.StatusTag = StatusTag;
+	Info.InputTag = Slot;
+	AbilityInfoDelegate.Broadcast( Info );
 }
