@@ -176,6 +176,8 @@ void USpellMenuWidgetController::OnAbilityEquipped( const FGameplayTag& AbilityT
 	AbilityInfoDelegate.Broadcast( Info );
 
 	StopWaitingForEquipDelegate.Broadcast( Info.AbilityTypeTag );
+	SpellGlobeReassignedDelegate.Broadcast( AbilityTag );
+	GlobeDeselect();
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints, bool& bOutSpendPointsEnabled,

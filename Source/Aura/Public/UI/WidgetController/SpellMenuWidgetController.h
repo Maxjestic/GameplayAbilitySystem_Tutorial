@@ -30,6 +30,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams( FSpellGlobeSelectedSignature,
 /** Broadcast ability type tag */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FWaitForEquipSelectionSignature, const FGameplayTag&, AbilityType );
 
+/** Broadcast ability tag */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FSpellGlobeReassignedSignature, const FGameplayTag&, AbilityTag );
+
 /**
  * Widget controller for spell menu
  */
@@ -59,6 +62,10 @@ public:
 	/** Broadcasts ability type tag when player cancels equipping ability */
 	UPROPERTY( BlueprintAssignable, Category = "UI" )
 	FWaitForEquipSelectionSignature StopWaitingForEquipDelegate;
+	
+	/** Broadcasts ability tag when player equips ability */
+	UPROPERTY( BlueprintAssignable, Category = "UI" )
+	FSpellGlobeReassignedSignature SpellGlobeReassignedDelegate;
 
 	/** Called when player selects spell from spell trees in spell menu */
 	UFUNCTION( BlueprintCallable )
