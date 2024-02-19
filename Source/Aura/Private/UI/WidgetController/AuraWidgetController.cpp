@@ -36,7 +36,7 @@ void UAuraWidgetController::BroadcastAbilityInfo()
 	BroadcastDelegate.BindLambda(
 		[this]( const FGameplayAbilitySpec& AbilitySpec )
 		{
-			FAuraAbilityInfo Info = AbilityInfo->FindAbilityForTag( GetAuraAbilitySystemComponent()->GetAbilityTagFromSpec( AbilitySpec ) );
+			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag( GetAuraAbilitySystemComponent()->GetAbilityTagFromSpec( AbilitySpec ) );
 
 			// InputTag is not set in editor, it is dynamic so we have to get it and assign
 			Info.InputTag = GetAuraAbilitySystemComponent()->GetInputTagFromSpec( AbilitySpec );

@@ -22,6 +22,13 @@ DECLARE_MULTICAST_DELEGATE_ThreeParams( FAbilityStatusChanged,
                                         const FGameplayTag& /*StatusTag*/,
                                         const int32 /*AbilityLevel*/ )
 
+/** Broadcasts tags associated with equipping ability */
+DECLARE_MULTICAST_DELEGATE_FourParams( FAbilityEquipped,
+                                       const FGameplayTag& /*AbilityTag*/,
+                                       const FGameplayTag& /*StatusTag*/,
+                                       const FGameplayTag& /*Slot*/,
+                                       const FGameplayTag& /*PreviousSlot*/ )
+
 /**
  * A class used as base Ability System Component in Aura
  */
@@ -53,12 +60,14 @@ public:
 	/** Broadcasts asset tags */
 	FEffectAssetTags EffectAssetTagsDelegate;
 
-	/** Broadcasts when abilities have been given */
+	/** Broadcasted when abilities have been given */
 	FAbilitiesGiven AbilitiesGivenDelegate;
 
-	/** Broadcasts when ability status changes */
+	/** Broadcasted when ability status changes */
 	FAbilityStatusChanged AbilityStatusChanged;
 
+	/** Broadcasted when ability is being equipped */
+	FAbilityEquipped AbilityEquipped;
 
 	/** Loops through all activatable abilities and calls delegate */
 	void ForEachAbility( const FForEachAbility& Delegate );
@@ -72,6 +81,12 @@ public:
 	/** Returns status tag from given ability spec, empty if not found*/
 	static FGameplayTag GetStatusTagFromSpec( const FGameplayAbilitySpec& AbilitySpec );
 
+	/** Returns status tag associated with given ability tag, empty if not found */
+	FGameplayTag GetStatusTagFromAbilityTag( const FGameplayTag& AbilityTag );
+
+	/** Returns input tag associated with given ability tag, empty if not found */
+	FGameplayTag GetInputTagFromAbilityTag( const FGameplayTag& AbilityTag );
+
 	/** Returns ability spec from given ability tag, nullptr if not found */
 	FGameplayAbilitySpec* GetSpecFromAbilityTag( const FGameplayTag& AbilityTag );
 
@@ -79,19 +94,37 @@ public:
 	/** Client side, increase attribute associated with given tag */
 	void UpgradeAttribute( const FGameplayTag& AttributeTag );
 
+	/** Check if player meets level requirement for ability */
+	void UpdateAbilityStatuses( const int32 Level );
+
+	/** Sets current and next level ability description from ability tag, false if ability is locked */
+	bool GetDescriptionsByAbilityTag( const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription );
+
+	/** Removes input tag associated with given ability spec */
+	void ClearSlot( FGameplayAbilitySpec* AbilitySpec );
+
+	/** Clear abilities of a given slot */
+	void ClearAbilitiesOfSlot( const FGameplayTag& Slot );
+
+	/** Returns true if given ability contains given input tag */
+	static bool AbilityHasSlot( const FGameplayAbilitySpec* AbilitySpec, const FGameplayTag& Slot );
+
 	/** Server side, increase attribute associated with given tag */
 	UFUNCTION( Server, Reliable )
 	void ServerUpgradeAttribute( const FGameplayTag& AttributeTag );
-
-	/** Check if player meets level requirement for ability */
-	void UpdateAbilityStatuses( const int32 Level );
 
 	/** Called on server to manage spending points on selected ability */
 	UFUNCTION( Server, Reliable )
 	void ServerSpendSpellPoint( const FGameplayTag& AbilityTag );
 
-	/** Sets current and next level ability description from ability tag, false if ability is locked */
-	bool GetDescriptionsByAbilityTag( const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription );
+	/** Called on server when player attempts to equip ability */
+	UFUNCTION( Server, Reliable )
+	void ServerEquipAbility( const FGameplayTag& AbilityTag, const FGameplayTag& Slot );
+
+	/** Called from server on client to inform about equipping ability */
+	UFUNCTION( Client, Reliable )
+	void ClientEquipAbility( const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot,
+	                         const FGameplayTag& PreviousSlot );
 
 protected:
 	//~ Begin UAbilitySystemComponent Interface

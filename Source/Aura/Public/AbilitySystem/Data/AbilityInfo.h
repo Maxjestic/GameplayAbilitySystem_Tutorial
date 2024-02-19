@@ -67,5 +67,5 @@ public:
 	TArray<FAuraAbilityInfo> AbilityInformation;
 
 	/** Returns Ability for given tag, may be empty */
-	FAuraAbilityInfo FindAbilityForTag( const FGameplayTag& AbilityTag, bool bLogNotFound = false ) const;
+	FAuraAbilityInfo FindAbilityInfoForTag( const FGameplayTag& AbilityTag, bool bLogNotFound = false ) const;
 };

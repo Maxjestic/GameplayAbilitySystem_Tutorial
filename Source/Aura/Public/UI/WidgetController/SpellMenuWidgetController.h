@@ -28,7 +28,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams( FSpellGlobeSelectedSignature,
                                                NextLevelDescription );
 
 /** Broadcast ability type tag */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FWaitForEquipSelectionSignature, const FGameplayTag&, AbilityType);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FWaitForEquipSelectionSignature, const FGameplayTag&, AbilityType );
 
 /**
  * Widget controller for spell menu
@@ -76,6 +76,14 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void EquipButtonPressed();
 
+	/** Called when globe in spell row in spell menu is clicked to handle equipping spell */
+	UFUNCTION( BlueprintCallable )
+	void SpellRowGlobePressed( const FGameplayTag& SlotTag, const FGameplayTag& AbilityType );
+
+	/** Bound to AbilityEquipped - AuraAbilitySystemComponent delegate */
+	void OnAbilityEquipped( const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, const FGameplayTag& Slot,
+	                        const FGameplayTag& PreviousSlot );
+
 private:
 	/** Sets which buttons should be enabled based on StatusTag and SpellPoints */
 	void ShouldEnableButtons( const FGameplayTag& StatusTag, const int32 SpellPoints, bool& bOutSpendPointsEnabled,
@@ -89,5 +97,7 @@ private:
 
 	/** Current state of equip action - true if we selected ability, clicked equip button and didn't assign ability to input yet  */
 	bool bWaitingForEquipSelection = false;
-	
+
+	/** Contains Input tag associated with selected spell if it is already equipped */
+	FGameplayTag SelectedSlot;
 };
