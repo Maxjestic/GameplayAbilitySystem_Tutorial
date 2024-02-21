@@ -25,14 +25,16 @@ protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 
-	/** Damage type to damage amount */
+	/** Type of damage dealt by this */
 	UPROPERTY( EditDefaultsOnly, Category="Damage" )
-	TMap<FGameplayTag, FScalableFloat> DamageTypes;
+	FGameplayTag DamageType;
+
+	/** Amount of damage dealt by this */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	FScalableFloat Damage;
 
 	/** Returns random attack montage from montages */
 	UFUNCTION( BlueprintPure )
 	FTaggedMontage GetRandomTaggedMontageFromArray( const TArray<FTaggedMontage>& TaggedMontages ) const;
-
-	/** Returns amount of damage for given level and type */
-	float GetDamageByDamageType( const float InLevel, const FGameplayTag& DamageType ) const ;
+	
 };

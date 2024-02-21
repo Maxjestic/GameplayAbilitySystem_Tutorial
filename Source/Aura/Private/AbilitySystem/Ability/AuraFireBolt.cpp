@@ -3,8 +3,6 @@
 
 #include "AbilitySystem/Ability/AuraFireBolt.h"
 
-#include "AuraGameplayTags.h"
-
 FString UAuraFireBolt::GetDescription( const int32 Level )
 {
 	const float ManaCost = FMath::Abs( GetManaCost( Level ) );
@@ -12,8 +10,7 @@ FString UAuraFireBolt::GetDescription( const int32 Level )
 	const FString Bolts = Level == 1
 		                      ? FString::Printf( TEXT( "a bolt" ) )
 		                      : FString::Printf( TEXT( "%d bolts" ), FMath::Min( Level, NumProjectiles ) );
-
-	const float Damage = GetDamageByDamageType( Level, FAuraGameplayTags::Get().Damage_Fire );
+	const float ScaledDamage = Damage.GetValueAtLevel( Level );
 
 	return FString::Printf( TEXT(
 		// Title
@@ -31,7 +28,7 @@ FString UAuraFireBolt::GetDescription( const int32 Level )
 	                        ManaCost,
 	                        Cooldown,
 	                        *Bolts,
-	                        Damage );
+	                        ScaledDamage );
 }
 
 FString UAuraFireBolt::GetNextLevelDescription( const int32 Level )
@@ -39,7 +36,7 @@ FString UAuraFireBolt::GetNextLevelDescription( const int32 Level )
 	const int32 NextLevel = Level + 1;
 	const float ManaCost = FMath::Abs( GetManaCost( NextLevel ) );
 	const float Cooldown = GetCooldown( NextLevel );
-	const float Damage = GetDamageByDamageType( NextLevel, FAuraGameplayTags::Get().Damage_Fire );
+	const float ScaledDamage = Damage.GetValueAtLevel( Level );
 
 	return FString::Printf( TEXT(
 		// Title
@@ -57,5 +54,5 @@ FString UAuraFireBolt::GetNextLevelDescription( const int32 Level )
 	                        ManaCost,
 	                        Cooldown,
 	                        FMath::Min( NextLevel, NumProjectiles ),
-	                        Damage );
+	                        ScaledDamage );
 }
