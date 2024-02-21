@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+struct FDamageEffectParams;
 class UAbilityInfo;
 class AAuraHUD;
 struct FWidgetControllerParams;
@@ -27,8 +28,9 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 public:
 	/** Creates Widget Controller Params, returns false if failed */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
-	static bool MakeWidgetControllerParams( const UObject* WorldContextObject, FWidgetControllerParams& OutWidgetControllerParams, AAuraHUD*& OutAuraHUD );
-	
+	static bool MakeWidgetControllerParams( const UObject* WorldContextObject, FWidgetControllerParams& OutWidgetControllerParams,
+	                                        AAuraHUD*& OutAuraHUD );
+
 	/** Get overlay widget controller getter, may return nullptr */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
 	static UOverlayWidgetController* GetOverlayWidgetController( const UObject* WorldContextObject );
@@ -51,13 +53,10 @@ public:
 	static void GiveStartupAbilities( const UObject* WorldContextObject,
 	                                  UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass );
 
-	/** Returns amount of experience reward based on level and class of the character */
-	static int32 GetExperienceRewardForClassAndLevel (const UObject* WorldContextObject, const ECharacterClass CharacterClass, const int32 CharacterLevel);
-	
 	/** Character Class Info data asset getter */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static UCharacterClassInfo* GetCharacterClassInfo( const UObject* WorldContextObject );
-	
+
 	/** Character Class Info data asset getter */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static UAbilityInfo* GetAbilityInfo( const UObject* WorldContextObject );
@@ -87,4 +86,11 @@ public:
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
 	static bool IsNotFriend( const AActor* FirstActor, const AActor* SecondActor );
 
+	/** Applies damage effect carried over in FDamageEffectParams */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffects" )
+	static FGameplayEffectContextHandle ApplyDamageEffect( const FDamageEffectParams& DamageEffectParams );
+
+	/** Returns amount of experience reward based on level and class of the character */
+	static int32 GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject, const ECharacterClass CharacterClass,
+	                                                  const int32 CharacterLevel );
 };

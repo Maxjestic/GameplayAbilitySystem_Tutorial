@@ -3,7 +3,9 @@
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AuraAbilityTypes.h"
+#include "AuraGameplayTags.h"
 #include "Game/AuraGameModeBase.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
@@ -134,22 +136,6 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities( const UObject* WorldContex
 	}
 }
 
-int32 UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject,
-                                                                      const ECharacterClass CharacterClass,
-                                                                      const int32 CharacterLevel )
-{
-	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo( WorldContextObject );
-
-	if (CharacterClassInfo == nullptr)
-	{
-		return 0;
-	}
-
-	const FCharacterClassDefaultInfo& ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo( CharacterClass );
-	const float ExperienceReward = ClassDefaultInfo.ExperienceReward.GetValueAtLevel( CharacterLevel );
-	return static_cast<int32>(ExperienceReward);
-}
-
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo( const UObject* WorldContextObject )
 {
 	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(
@@ -242,4 +228,57 @@ bool UAuraAbilitySystemLibrary::IsNotFriend( const AActor* FirstActor, const AAc
 	const bool bBothAreEnemies = FirstActor->ActorHasTag( FName( "Enemy" ) ) && SecondActor->ActorHasTag( FName( "Enemy" ) );
 
 	return !(bBothArePlayers || bBothAreEnemies);
+}
+
+FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffect( const FDamageEffectParams& DamageEffectParams )
+{
+	const FAuraGameplayTags Tags = FAuraGameplayTags::Get();
+	const AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
+	EffectContextHandle.AddSourceObject( SourceAvatarActor );
+
+	const FGameplayEffectSpecHandle EffectSpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(
+		DamageEffectParams.DamageGameplayEffectClass,
+		DamageEffectParams.AbilityLevel,
+		EffectContextHandle );
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+	                                                               DamageEffectParams.DamageType,
+	                                                               DamageEffectParams.BaseDamage );
+	
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+	                                                               Tags.Debuff_Properties_Chance,
+	                                                               DamageEffectParams.DebuffChance );
+	
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+	                                                               Tags.Debuff_Properties_Damage,
+	                                                               DamageEffectParams.DebuffDamage );
+	
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+	                                                               Tags.Debuff_Properties_Duration,
+	                                                               DamageEffectParams.DebuffDuration );
+	
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+	                                                               Tags.Debuff_Properties_Frequency,
+	                                                               DamageEffectParams.DebuffFrequency );
+
+	DamageEffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf( *EffectSpecHandle.Data );
+
+	return EffectContextHandle;
+}
+
+int32 UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject,
+                                                                      const ECharacterClass CharacterClass,
+                                                                      const int32 CharacterLevel )
+{
+	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo( WorldContextObject );
+
+	if (CharacterClassInfo == nullptr)
+	{
+		return 0;
+	}
+
+	const FCharacterClassDefaultInfo& ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo( CharacterClass );
+	const float ExperienceReward = ClassDefaultInfo.ExperienceReward.GetValueAtLevel( CharacterLevel );
+	return static_cast<int32>(ExperienceReward);
 }

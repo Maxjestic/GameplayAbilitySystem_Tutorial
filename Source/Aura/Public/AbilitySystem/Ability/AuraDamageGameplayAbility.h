@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AuraAbilityTypes.h"
 #include "AbilitySystem/Ability/AuraGameplayAbility.h"
 #include "Interaction/CombatInterface.h"
 #include "AuraDamageGameplayAbility.generated.h"
@@ -19,6 +20,10 @@ public:
 	/** Loops through all damage types and apply gameplay effect to given target */
 	UFUNCTION( BlueprintCallable )
 	void CauseDamage( AActor* TargetActor );
+
+	/** Creates FDamageEffectParams struct with all relevant data */
+	UFUNCTION()
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults( AActor* TargetActor = nullptr ) const;
 
 protected:
 	/** Class of gameplay effect that this applies */
@@ -52,5 +57,4 @@ protected:
 	/** Returns random attack montage from montages */
 	UFUNCTION( BlueprintPure )
 	FTaggedMontage GetRandomTaggedMontageFromArray( const TArray<FTaggedMontage>& TaggedMontages ) const;
-	
 };
