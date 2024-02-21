@@ -74,12 +74,20 @@ public:
 	FGameplayTag Attributes_Resistance_Physical;
 
 	/**
-	 * Debuff Tags
+	 * Debuff Type Tags
 	 */
 	FGameplayTag Debuff_Arcane;
 	FGameplayTag Debuff_Burn;
 	FGameplayTag Debuff_Physical;
 	FGameplayTag Debuff_Stun;
+
+	/**
+	 * Debuff Properties Tags
+	 */
+	FGameplayTag Debuff_Properties_Chance;
+	FGameplayTag Debuff_Properties_Damage;
+	FGameplayTag Debuff_Properties_Duration;
+	FGameplayTag Debuff_Properties_Frequency;
 
 	/**
 	 * Ability Tags
@@ -139,7 +147,7 @@ public:
 	/** Map assigning Damage Type Tags to Resistance Tags */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
-	/** Map assigning Damage Type Tags to Debuff Tags */
+	/** Map assigning Damage Type Tags to Debuff Type Tags */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
 
 private:

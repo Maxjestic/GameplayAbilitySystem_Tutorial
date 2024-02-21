@@ -33,6 +33,22 @@ protected:
 	UPROPERTY( EditDefaultsOnly, Category="Damage" )
 	FScalableFloat Damage;
 
+	/** Chance to apply a debuff (%) */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	float DebuffChance = 20.f;
+
+	/** Damage applied by debuff */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	float DebuffDamage = 5.f;
+
+	/** How frequently - period - debuff will be applied (per second) */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	float DebuffFrequency = 1.f;
+
+	/** For how long debuff will be applied (seconds) */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	float DebuffDuration = 5.f;
+
 	/** Returns random attack montage from montages */
 	UFUNCTION( BlueprintPure )
 	FTaggedMontage GetRandomTaggedMontageFromArray( const TArray<FTaggedMontage>& TaggedMontages ) const;

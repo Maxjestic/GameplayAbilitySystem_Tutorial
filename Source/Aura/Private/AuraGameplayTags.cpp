@@ -164,8 +164,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.DamageTypesToResistances.Add( GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical );
 
 	/**
-	 * Debuff Tags
-	*/
+	 * Debuff Type Tags
+	 */
 	GameplayTags.Debuff_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName( "Debuff.Arcane" ),
 		FString( "Debuff for Arcane Damage" ) );
@@ -183,12 +183,31 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString( "Debuff for Lightning Damage" ) );
 
 	/**
-	 * Map of Damage Type Tags to Debuff Tags
+	 * Map of Damage Type Tags to Debuff Type Tags
 	 */
 	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Arcane, GameplayTags.Debuff_Arcane);
 	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Fire, GameplayTags.Debuff_Burn);
 	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Physical, GameplayTags.Debuff_Physical);
 	GameplayTags.DamageTypesToDebuffs.Add(GameplayTags.Damage_Lightning, GameplayTags.Debuff_Stun);
+
+	/**
+	 * Debuff Type Tags
+	 */
+	GameplayTags.Debuff_Properties_Chance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName( "Debuff.Properties.Chance" ),
+		FString( "Chance to Apply the Debuff" ) );
+	
+	GameplayTags.Debuff_Properties_Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName( "Debuff.Properties.Damage" ),
+		FString( "Damage of the Debuff" ) );
+	
+	GameplayTags.Debuff_Properties_Duration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName( "Debuff.Properties.Duration" ),
+		FString( "Duration of the Debuff" ) );
+	
+	GameplayTags.Debuff_Properties_Frequency = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName( "Debuff.Properties.Frequency" ),
+		FString( "Frequency of the Application of the Debuff" ) );	
 
 	/**
 	 * Ability Tags
