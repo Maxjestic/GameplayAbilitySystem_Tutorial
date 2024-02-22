@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Data/CharacterClassInfo.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
@@ -69,13 +70,53 @@ public:
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static bool IsCriticalHit( const FGameplayEffectContextHandle& EffectContextHandle );
 
-	/** Sets if hit was blocked information in FAuraGameplayEffectContext */
+	/** Returns true if debuff was successful from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static bool IsSuccessfulDebuff( const FGameplayEffectContextHandle& EffectContextHandle );
+
+	/** Returns debuff damage from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static float GetDebuffDamage( const FGameplayEffectContextHandle& EffectContextHandle );
+
+	/** Returns debuff duration from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static float GetDebuffDuration( const FGameplayEffectContextHandle& EffectContextHandle );
+
+	/** Returns debuff frequency from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static float GetDebuffFrequency( const FGameplayEffectContextHandle& EffectContextHandle );
+
+	/** Returns damage effect's damage type from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static FGameplayTag GetDamageType( const FGameplayEffectContextHandle& EffectContextHandle );
+
+	/** Sets if hit was blocked in FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetIsBlockedHit( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsBlockedHit );
 
-	/** Sets if hit was critical information in FAuraGameplayEffectContext */
+	/** Sets if hit was critical in FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetIsCriticalHit( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsCriticalHit );
+
+	/** Sets if debuff was succeesful in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetIsSuccessfulDebuff( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsSuccessfulDebuff );
+
+	/** Sets debuff damage in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetDebuffDamage( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const float InDebuffDamage );
+
+	/** Sets debuff duration in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetDebuffDuration( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const float InDebuffDuration );
+
+	/** Sets debuff frequency in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetDebuffFrequency( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const float InDebuffFrequency );
+
+	/** Sets damage effect damage type in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetDamageType( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FGameplayTag& InDamageType );
 
 	/** Gets all alive players in given sphere */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
