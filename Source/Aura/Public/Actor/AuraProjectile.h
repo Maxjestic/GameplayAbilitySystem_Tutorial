@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayEffectTypes.h"
+#include "AuraAbilityTypes.h"
 #include "GameFramework/Actor.h"
 #include "AuraProjectile.generated.h"
 
@@ -29,13 +29,14 @@ public:
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
-	/** Spec handle for damaging gameplay effect */
-	UPROPERTY( BlueprintReadWrite, meta = (ExposeOnSpawn) )
-	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+	/** Contains all data relevant do damage effect */
+	UPROPERTY( BlueprintReadWrite, meta = (ExposeOnSpawn = true) )
+	FDamageEffectParams DamageEffectParams;
 
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
+	void OnHit();
 	virtual void Destroyed() override;
 	//~ End AActor Interface
 
