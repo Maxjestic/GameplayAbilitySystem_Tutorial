@@ -98,6 +98,19 @@ void UExecCalc_Damage::DetermineDebuff( const FGameplayEffectCustomExecutionPara
 			const bool bDebuff = FMath::RandRange( 0, 100 ) < EffectiveDebuffChance;
 			if (bDebuff)
 			{
+				FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
+
+				UAuraAbilitySystemLibrary::SetIsSuccessfulDebuff( ContextHandle, bDebuff );
+				UAuraAbilitySystemLibrary::SetDamageType( ContextHandle, DamageType );
+				
+				const float DebuffDamage = Spec.GetSetByCallerMagnitude( Tags.Debuff_Properties_Damage, false, -1.f );
+				UAuraAbilitySystemLibrary::SetDebuffDamage( ContextHandle, DebuffDamage );
+				
+				const float DebuffDuration = Spec.GetSetByCallerMagnitude( Tags.Debuff_Properties_Duration, false, -1.f );
+				UAuraAbilitySystemLibrary::SetDebuffDuration( ContextHandle, DebuffDuration );
+				
+				const float DebuffFrequency = Spec.GetSetByCallerMagnitude( Tags.Debuff_Properties_Frequency, false, -1.f );
+				UAuraAbilitySystemLibrary::SetDebuffFrequency( ContextHandle, DebuffFrequency );
 			}
 		}
 	}
@@ -108,7 +121,7 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 {
 	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDefs;
 	const FAuraGameplayTags& Tags = FAuraGameplayTags::Get();
-	
+
 	TagsToCaptureDefs.Add( Tags.Attributes_Secondary_Armor, DamageStatics().ArmorDef );
 	TagsToCaptureDefs.Add( Tags.Attributes_Secondary_ArmorPenetration, DamageStatics().ArmorPenetrationDef );
 	TagsToCaptureDefs.Add( Tags.Attributes_Secondary_BlockChance, DamageStatics().BlockChanceDef );

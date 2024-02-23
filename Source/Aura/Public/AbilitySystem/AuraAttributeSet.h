@@ -87,7 +87,7 @@ public:
 	//~ Begin UAttributeSet Interface
 	virtual void PreAttributeChange( const FGameplayAttribute& Attribute, float& NewValue ) override;
 	virtual void PostGameplayEffectExecute( const FGameplayEffectModCallbackData& Data ) override;
-	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+	virtual void PostAttributeChange( const FGameplayAttribute& Attribute, float OldValue, float NewValue ) override;
 	//~ End UAttributeSet Interface
 
 	/** Map assigning gameplay tags to attributes  */
@@ -321,7 +321,16 @@ private:
 	void ShowFloatingText( const FEffectProperties& Properties, const float Damage, const bool bBlockedHit, const bool bCriticalHit ) const;
 
 	/** Informs that Experience should be rewarded */
-	void SendExperienceEvent(const FEffectProperties& Properties);
+	void SendExperienceEvent( const FEffectProperties& Properties );
+
+	/** Handles incoming damage from PostGameplayEffectExecute() */
+	void HandleIncomingDamage( const FEffectProperties& Properties );
+
+	/** Handles debuff in HandleIncomingDamage() */
+	void HandleDebuff(const FEffectProperties& Properties);
+
+	/** Handles incoming experience from PostGameplayEffectExecute() */
+	void HandleIncomingExperience( const FEffectProperties& Properties );
 
 	/** Indicate if we should top off Health/Mana */
 	bool bTopOffHealth = false;
