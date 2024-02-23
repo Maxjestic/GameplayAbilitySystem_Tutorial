@@ -87,7 +87,7 @@ public:
 	//~ Begin UAttributeSet Interface
 	virtual void PreAttributeChange( const FGameplayAttribute& Attribute, float& NewValue ) override;
 	virtual void PostGameplayEffectExecute( const FGameplayEffectModCallbackData& Data ) override;
-	virtual void PostAttributeChange( const FGameplayAttribute& Attribute, float OldValue, float NewValue ) override;
+	virtual void PostAttributeChange( const FGameplayAttribute& Attribute, const float OldValue, const float NewValue ) override;
 	//~ End UAttributeSet Interface
 
 	/** Map assigning gameplay tags to attributes  */
