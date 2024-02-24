@@ -121,6 +121,8 @@ void AAuraEnemy::InitAbilityActorInfo()
 	{
 		InitializeDefaultAttributes();
 	}
+
+	OnAbilitySystemComponentRegistered.Broadcast( AbilitySystemComponent );
 }
 
 void AAuraEnemy::InitializeDefaultAttributes() const

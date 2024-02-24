@@ -8,9 +8,15 @@
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
+class UAbilitySystemComponent;
 class UNiagaraSystem;
 class UAnimMontage;
 
+/** Delegate used to broadcast ability system component as soon as it is valid */
+DECLARE_MULTICAST_DELEGATE_OneParam( FOnAbilitySystemComponentRegisteredSignature, UAbilitySystemComponent* /*AbilitySystemComponent*/ )
+
+/** Delegate used to broadcast when this dies */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnDeathSignature, AActor*, DeadActor );
 
 /**
  * Contains montage with corresponding gameplay tag and sound
@@ -103,4 +109,10 @@ public:
 	/** Returns character class of this */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	ECharacterClass GetCharacterClass();
+
+	/** Returns FOnAbilitySystemComponentRegisteredSignature delegate */
+	virtual FOnAbilitySystemComponentRegisteredSignature GetOnAbilitySystemComponentDelegate() = 0;
+
+	/** Returns FOnDeathSignature delegate */
+	virtual FOnDeathSignature GetOnDeathDelegate() = 0;
 };
