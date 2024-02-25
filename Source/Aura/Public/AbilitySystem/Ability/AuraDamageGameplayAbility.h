@@ -26,6 +26,10 @@ public:
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults( AActor* TargetActor = nullptr ) const;
 
 protected:
+	/** Returns random attack montage from montages */
+	UFUNCTION( BlueprintPure )
+	FTaggedMontage GetRandomTaggedMontageFromArray( const TArray<FTaggedMontage>& TaggedMontages ) const;
+
 	/** Class of gameplay effect that this applies */
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly )
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
@@ -54,7 +58,7 @@ protected:
 	UPROPERTY( EditDefaultsOnly, Category="Damage" )
 	float DebuffDuration = 5.f;
 
-	/** Returns random attack montage from montages */
-	UFUNCTION( BlueprintPure )
-	FTaggedMontage GetRandomTaggedMontageFromArray( const TArray<FTaggedMontage>& TaggedMontages ) const;
+	/** Force applied to target on death */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	float DeathImpulseMagnitude = 60.f;
 };

@@ -90,6 +90,10 @@ public:
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static FGameplayTag GetDamageType( const FGameplayEffectContextHandle& EffectContextHandle );
 
+	/** Returns damage effect's death impulse from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static FVector GetDeathImpulse( const FGameplayEffectContextHandle& EffectContextHandle );
+
 	/** Sets if hit was blocked in FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetIsBlockedHit( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsBlockedHit );
@@ -98,7 +102,7 @@ public:
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetIsCriticalHit( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsCriticalHit );
 
-	/** Sets if debuff was succeesful in FAuraGameplayEffectContext */
+	/** Sets if debuff was successful in FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetIsSuccessfulDebuff( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsSuccessfulDebuff );
 
@@ -117,6 +121,10 @@ public:
 	/** Sets damage effect damage type in FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetDamageType( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FGameplayTag& InDamageType );
+
+	/** Sets damage effect death impulse in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetDeathImpulse( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InDeathImpulse );
 
 	/** Gets all alive players in given sphere */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )

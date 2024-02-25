@@ -82,6 +82,8 @@ void AAuraProjectile::OnSphereOverlap( UPrimitiveComponent* OverlappedComponent,
 	{
 		if (UAbilitySystemComponent* TargetAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent( OtherActor ))
 		{
+			const FVector DeathImpulse = GetActorForwardVector() * DamageEffectParams.DeathImpulseMagnitude;
+			DamageEffectParams.DeathImpulse = DeathImpulse;
 			DamageEffectParams.TargetAbilitySystemComponent = TargetAbilitySystemComponent;
 			UAuraAbilitySystemLibrary::ApplyDamageEffect( DamageEffectParams );
 		}

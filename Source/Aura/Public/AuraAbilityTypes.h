@@ -50,6 +50,12 @@ struct FDamageEffectParams
 
 	UPROPERTY()
 	float DebuffFrequency = 0.f;
+
+	UPROPERTY()
+	float DeathImpulseMagnitude = 0.f;
+
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 };
 
 /**
@@ -62,28 +68,31 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 
 public:
 	/** 
-	 * Simple Accessors to Aura related data
+	 * Simple Accessors to Damage Effect related data
 	 */
 	bool IsBlockedHit() const { return bIsBlockedHit; }
 	void SetIsBlockedHit( bool const bInIsBlockedHit ) { bIsBlockedHit = bInIsBlockedHit; }
-	
+
 	bool IsCriticalHit() const { return bIsCriticalHit; }
 	void SetIsCriticalHit( bool const bInIsCriticalHit ) { bIsCriticalHit = bInIsCriticalHit; }
-	
+
 	bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff; }
 	void SetIsSuccessfulDebuff( const bool bInIsSuccessfulDebuff ) { bIsSuccessfulDebuff = bInIsSuccessfulDebuff; }
-	
+
 	float GetDebuffDamage() const { return DebuffDamage; }
 	void SetDebuffDamage( const float InDebuffDamage ) { DebuffDamage = InDebuffDamage; }
-	
+
 	float GetDebuffDuration() const { return DebuffDuration; }
 	void SetDebuffDuration( const float InDebuffDuration ) { DebuffDuration = InDebuffDuration; }
-	
+
 	float GetDebuffFrequency() const { return DebuffFrequency; }
 	void SetDebuffFrequency( const float InDebuffFrequency ) { DebuffFrequency = InDebuffFrequency; }
-	
+
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
 	void SetDamageType( const TSharedPtr<FGameplayTag>& InDamageType ) { DamageType = InDamageType; }
+
+	FVector GetDeathImpulse() const { return DeathImpulse; }
+	void SetDeathImpulse( const FVector& InDeathImpulse ) { DeathImpulse = InDeathImpulse; }
 
 	//~ Begin FGameplayEffectContext Interface
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -122,6 +131,10 @@ protected:
 
 	/** Type of the damage */
 	TSharedPtr<FGameplayTag> DamageType = nullptr;
+
+	/** Direction of force applied to target on its death */
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 };
 
 template <>
