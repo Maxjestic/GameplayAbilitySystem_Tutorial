@@ -22,7 +22,7 @@ public:
 	void CauseDamage( AActor* TargetActor );
 
 	/** Creates FDamageEffectParams struct with all relevant data */
-	UFUNCTION()
+	UFUNCTION( BlueprintPure )
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults( AActor* TargetActor = nullptr ) const;
 
 protected:
@@ -60,5 +60,13 @@ protected:
 
 	/** Force applied to target on death */
 	UPROPERTY( EditDefaultsOnly, Category="Damage" )
-	float DeathImpulseMagnitude = 60.f;
+	float DeathImpulseMagnitude = 1000.f;
+
+	/** Chance to knockback target (%) */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	float KnockbackChance = 20.f;
+
+	/** Force applied to target on knockback */
+	UPROPERTY( EditDefaultsOnly, Category="Damage" )
+	float KnockbackForceMagnitude = 1000.f;
 };

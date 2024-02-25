@@ -18,44 +18,53 @@ struct FDamageEffectParams
 	{
 	}
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	TObjectPtr<UObject> WorldContextObject = nullptr;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	float BaseDamage = 0.f;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	float AbilityLevel = 1.f;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	FGameplayTag DamageType = FGameplayTag();
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	float DebuffChance = 0.f;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	float DebuffDamage = 0.f;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	float DebuffDuration = 0.f;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	float DebuffFrequency = 0.f;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	float DeathImpulseMagnitude = 0.f;
 
-	UPROPERTY()
+	UPROPERTY( BlueprintReadWrite )
 	FVector DeathImpulse = FVector::ZeroVector;
+
+	UPROPERTY( BlueprintReadWrite )
+	float KnockbackChance = 0.f;
+
+	UPROPERTY( BlueprintReadWrite )
+	float KnockbackForceMagnitude = 0.f;
+
+	UPROPERTY( BlueprintReadWrite )
+	FVector KnockbackForce = FVector::ZeroVector;
 };
 
 /**
@@ -93,6 +102,9 @@ public:
 
 	FVector GetDeathImpulse() const { return DeathImpulse; }
 	void SetDeathImpulse( const FVector& InDeathImpulse ) { DeathImpulse = InDeathImpulse; }
+
+	FVector GetKnockbackForce() const { return KnockbackForce; }
+	void SetKnockbackForce( const FVector& InKnockbackForce ) { KnockbackForce = InKnockbackForce; }
 
 	//~ Begin FGameplayEffectContext Interface
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -135,6 +147,10 @@ protected:
 	/** Direction of force applied to target on its death */
 	UPROPERTY()
 	FVector DeathImpulse = FVector::ZeroVector;
+
+	/** Direction of force applied to target on knockback */
+	UPROPERTY()
+	FVector KnockbackForce = FVector::ZeroVector;
 };
 
 template <>

@@ -94,6 +94,10 @@ public:
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static FVector GetDeathImpulse( const FGameplayEffectContextHandle& EffectContextHandle );
 
+	/** Returns damage effect's knockback impulse from FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static FVector GetKnockbackForce( const FGameplayEffectContextHandle& EffectContextHandle );
+
 	/** Sets if hit was blocked in FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetIsBlockedHit( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const bool bInIsBlockedHit );
@@ -125,6 +129,10 @@ public:
 	/** Sets damage effect death impulse in FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetDeathImpulse( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InDeathImpulse );
+
+	/** Sets damage effect knockback impulse in FAuraGameplayEffectContext */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
+	static void SetKnockbackForce( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InKnockbackForce );
 
 	/** Gets all alive players in given sphere */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
