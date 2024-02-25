@@ -39,7 +39,7 @@ public:
 
 	//~ Begin ICombatInterface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-	virtual void Die() override;
+	virtual void Die( const FVector& DeathImpulse ) override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
@@ -49,21 +49,17 @@ public:
 	virtual void UpdateMinionCount_Implementation( const int32 Amount ) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual FOnAbilitySystemComponentRegisteredSignature GetOnAbilitySystemComponentDelegate() override;
-	virtual FOnDeathSignature GetOnDeathDelegate() override;
 	//~ End ICombat Interface
 
 	/** Broadcasts ability system component as soon as it is valid */
 	FOnAbilitySystemComponentRegisteredSignature OnAbilitySystemComponentRegistered;
 
-	/** Broadcasts this (AActor*) on its death */
-	FOnDeathSignature OnDeath;
-	
 	/** Returns attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 	/** Handles what happens on all clients whenever a character dies */
 	UFUNCTION( NetMulticast, Reliable )
-	virtual void MulticastHandleDeath();
+	virtual void MulticastHandleDeath( const FVector& DeathImpulse );
 
 	/** Montages used to perform an attack */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
@@ -178,7 +174,7 @@ private:
 	/** Set of active ability classes granted to the character at the beginning of the game */
 	UPROPERTY( EditAnywhere, Category = "Abilities" )
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
-	
+
 	/** Set of passive ability classes granted to the character at the beginning of the game */
 	UPROPERTY( EditAnywhere, Category = "Abilities" )
 	TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities;

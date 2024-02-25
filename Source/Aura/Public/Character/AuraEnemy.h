@@ -39,7 +39,7 @@ public:
 
 	//~ Begin ICombat Interface
 	virtual int32 GetCharacterLevel_Implementation() const override;
-	virtual void Die() override;
+	virtual void Die( const FVector& DeathImpulse ) override;
 	//~ End ICombat Interface
 
 	/** Callback responding to Effects.HitReact tag change */

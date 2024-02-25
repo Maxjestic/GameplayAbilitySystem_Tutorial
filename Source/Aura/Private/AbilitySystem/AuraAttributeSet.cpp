@@ -232,7 +232,7 @@ void UAuraAttributeSet::HandleIncomingDamage( const FEffectProperties& Propertie
 		{
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>( Properties.TargetAvatarActor ))
 			{
-				CombatInterface->Die();
+				CombatInterface->Die( UAuraAbilitySystemLibrary::GetDeathImpulse( Properties.EffectContextHandle ));
 			}
 			SendExperienceEvent( Properties );
 		}
