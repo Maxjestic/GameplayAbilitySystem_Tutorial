@@ -25,7 +25,7 @@ protected:
 
 	/** Spawns projectile, when it should be delayed */
 	UFUNCTION( BlueprintCallable, Category = "Projectile" )
-	void SpawnProjectile( const FVector& ProjectileTargetRotation, const FGameplayTag SocketTag, const bool bOverridePitch = false,
+	void SpawnProjectile( const FVector& ProjectileTargetLocation, const FGameplayTag SocketTag, const bool bOverridePitch = false,
 	                      const float PitchOverride = 0.f );
 
 	/** Projectile class to spawn */
@@ -34,5 +34,5 @@ protected:
 
 	/** Maximum number of projectiles */
 	UPROPERTY( EditDefaultsOnly )
-	int32 NumProjectiles = 5;
+	int32 MaxNumProjectiles = 5;
 };

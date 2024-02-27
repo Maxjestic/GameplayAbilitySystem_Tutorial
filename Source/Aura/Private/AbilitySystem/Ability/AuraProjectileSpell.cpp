@@ -16,16 +16,19 @@ void UAuraProjectileSpell::ActivateAbility( const FGameplayAbilitySpecHandle Han
 	Super::ActivateAbility( Handle, ActorInfo, ActivationInfo, TriggerEventData );
 }
 
-void UAuraProjectileSpell::SpawnProjectile( const FVector& ProjectileTargetRotation, const FGameplayTag SocketTag,
+void UAuraProjectileSpell::SpawnProjectile( const FVector& ProjectileTargetLocation, const FGameplayTag SocketTag,
                                             const bool bOverridePitch,
                                             const float PitchOverride )
 {
-	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
+	if (!GetAvatarActorFromActorInfo()->HasAuthority())
+	{
+		return;
+	}
 
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(
 		GetAvatarActorFromActorInfo(),
 		SocketTag );
-	FRotator Rotation = (ProjectileTargetRotation - SocketLocation).Rotation();
+	FRotator Rotation = (ProjectileTargetLocation - SocketLocation).Rotation();
 
 	if (bOverridePitch)
 	{
