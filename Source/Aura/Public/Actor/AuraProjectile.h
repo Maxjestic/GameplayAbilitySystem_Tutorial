@@ -33,6 +33,10 @@ public:
 	UPROPERTY( BlueprintReadWrite, meta = (ExposeOnSpawn = true) )
 	FDamageEffectParams DamageEffectParams;
 
+	/** Scene components used as homing target (To handle garbage collection) */
+	UPROPERTY()
+	TObjectPtr<USceneComponent> HomingTargetSceneComponent;
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;

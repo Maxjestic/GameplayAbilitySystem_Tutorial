@@ -34,8 +34,16 @@ protected:
 	/** Angle of a cone in which projectiles are spawned */
 	UPROPERTY( EditDefaultsOnly, Category="FireBolt" )
 	float ProjectileSpread = 90.f;
-	
-	/**  */
+
+	/** Decide if projectiles are homing */
 	UPROPERTY( EditDefaultsOnly, Category="FireBolt" )
-	int32 NumProjectiles = 2;
+	bool bLaunchHomingProjectiles = true;
+
+	/** Minimum value of homing acceleration */
+	UPROPERTY( EditDefaultsOnly, Category="FireBolt" )
+	float HomingAccelerationMin = 1600.f;
+
+	/** Maximum value of homing acceleration */
+	UPROPERTY( EditDefaultsOnly, Category="FireBolt" )
+	float HomingAccelerationMax = 3200.f;
 };
