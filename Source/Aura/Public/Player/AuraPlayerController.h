@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UNiagaraSystem;
 class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
@@ -125,6 +126,10 @@ private:
 	/** Curve on which this is auto running */
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USplineComponent> Spline;
+
+	/** Niagara system spawned on mouse short click */
+	UPROPERTY( EditDefaultsOnly )
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 
 	/** Widget spawned to show dealt damage */
 	UPROPERTY( EditDefaultsOnly )
