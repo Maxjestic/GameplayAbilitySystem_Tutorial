@@ -147,6 +147,15 @@ public:
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffects" )
 	static FGameplayEffectContextHandle ApplyDamageEffect( const FDamageEffectParams& DamageEffectParams );
 
+	/** Creates given number of rotators spread in defined angle around given axis */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
+	static TArray<FRotator> EvenlySpacedRotators( const FVector& Forward, const FVector& Axis, const float Spread,
+	                                              const int32 NumRotators );
+
+	/** Creates given number of vectors spread in defined angle around given axis */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
+	static TArray<FVector> EvenlyRotatedVectors( const FVector& Forward, const FVector& Axis, const float Spread, const int32 NumVectors );
+
 	/** Returns amount of experience reward based on level and class of the character */
 	static int32 GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject, const ECharacterClass CharacterClass,
 	                                                  const int32 CharacterLevel );
