@@ -50,6 +50,9 @@ public:
 	/** Grants given abilities */
 	void AddCharacterPassiveAbilities( const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities );
 
+	/** Activating ability on input pressed */
+	void AbilityInputTagPressed( const FGameplayTag& InputTag );
+
 	/** Activating ability on input released */
 	void AbilityInputTagReleased( const FGameplayTag& InputTag );
 

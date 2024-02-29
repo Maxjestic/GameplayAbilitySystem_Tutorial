@@ -153,6 +153,10 @@ void AAuraPlayerController::AbilityInputTagPressed( FGameplayTag InputTag )
 		FollowTime = 0.f;
 		bAutoRunning = false;
 	}
+	if(GetAbilitySystemComponent())
+	{
+		GetAbilitySystemComponent()->AbilityInputTagPressed( InputTag );
+	}
 }
 
 void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )

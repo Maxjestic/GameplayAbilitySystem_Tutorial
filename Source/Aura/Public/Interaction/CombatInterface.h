@@ -109,4 +109,8 @@ public:
 
 	/** Returns FOnAbilitySystemComponentRegisteredSignature delegate */
 	virtual FOnAbilitySystemComponentRegisteredSignature GetOnAbilitySystemComponentDelegate() = 0;
+
+	/** Sets shock loop state */
+	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )
+	void SetInShockLoop( bool bInLoop);
 };
