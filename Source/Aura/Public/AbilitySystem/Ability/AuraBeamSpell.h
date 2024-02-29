@@ -21,7 +21,7 @@ public:
 
 	/** Stores player controller of the owner of this */
 	UFUNCTION( BlueprintCallable )
-	void StoreOwnerPlayerController();
+	void StoreOwnerVariables();
 
 protected:
 	/** Mouse location deduced in TargetDataUnderMouse */
@@ -35,4 +35,8 @@ protected:
 	/** Player controller of the owner of this */
 	UPROPERTY( BlueprintReadWrite, Category="Beam" )
 	TObjectPtr<APlayerController> OwnerPlayerController;
+	
+	/** The owner character of this */
+	UPROPERTY( BlueprintReadWrite, Category="Beam" )
+	TObjectPtr<ACharacter> OwnerCharacter;
 };
