@@ -144,6 +144,14 @@ public:
 	FGameplayTag Montage_Attack_3;
 	FGameplayTag Montage_Attack_4;
 
+	/**
+	 * Player tags
+	 */
+	FGameplayTag Player_Block_InputPressed;
+	FGameplayTag Player_Block_InputHeld;
+	FGameplayTag Player_Block_InputReleased;
+	FGameplayTag Player_Block_CursorTrace;
+
 	/** Map assigning Damage Type Tags to Resistance Tags */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 

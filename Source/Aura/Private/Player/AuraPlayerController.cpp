@@ -84,7 +84,13 @@ void AAuraPlayerController::SetupInputComponent()
 }
 
 void AAuraPlayerController::Move( const FInputActionValue& InputActionValue )
-{
+{	
+	if (GetAbilitySystemComponent() &&
+		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed ))
+	{
+		return;
+	}
+	
 	bAutoRunning = false;
 
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
@@ -126,6 +132,21 @@ void AAuraPlayerController::AutoRun()
 
 void AAuraPlayerController::CursorTrace()
 {
+	if (GetAbilitySystemComponent() &&
+		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_CursorTrace ))
+	{
+		if (PreviousActor)
+		{
+			PreviousActor->UnhighlightActor();
+		}
+		if (NewActor)
+		{
+			NewActor->UnhighlightActor();
+		}
+		PreviousActor = nullptr;
+		NewActor = nullptr;
+		return;
+	}
 	GetHitResultUnderCursor( ECC_Visibility, false, CursorHit );
 	if (!CursorHit.bBlockingHit) return;
 
@@ -147,13 +168,18 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPressed( FGameplayTag InputTag )
 {
+	if (GetAbilitySystemComponent() &&
+		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed ))
+	{
+		return;
+	}
 	if (InputTag.MatchesTagExact( FAuraGameplayTags::Get().InputTag_RMB ))
 	{
 		bIsTargeting = NewActor ? true : false;
 		FollowTime = 0.f;
 		bAutoRunning = false;
 	}
-	if(GetAbilitySystemComponent())
+	if (GetAbilitySystemComponent())
 	{
 		GetAbilitySystemComponent()->AbilityInputTagPressed( InputTag );
 	}
@@ -161,6 +187,11 @@ void AAuraPlayerController::AbilityInputTagPressed( FGameplayTag InputTag )
 
 void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 {
+	if (GetAbilitySystemComponent() &&
+		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputReleased ))
+	{
+		return;
+	}
 	// if it's not RMB we just try to activate ability
 	if (!InputTag.MatchesTagExact( FAuraGameplayTags::Get().InputTag_RMB ))
 	{
@@ -199,14 +230,24 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 					CachedDestination = NavPath->PathPoints.Last();
 					bAutoRunning = true;
 				}
+			}			
+			if (GetAbilitySystemComponent() &&
+				!GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed ))
+			{
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation( this, ClickNiagaraSystem, CachedDestination );
 			}
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation( this, ClickNiagaraSystem, CachedDestination );
+			
 		}
 	}
 }
 
 void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
-{
+{	
+	if (GetAbilitySystemComponent() &&
+		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputHeld ))
+	{
+		return;
+	}
 	// if it's not RMB we just try to activate ability
 	if (!InputTag.MatchesTagExact( FAuraGameplayTags::Get().InputTag_RMB ))
 	{
