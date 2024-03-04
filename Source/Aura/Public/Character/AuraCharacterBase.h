@@ -49,6 +49,7 @@ public:
 	virtual void UpdateMinionCount_Implementation( const int32 Amount ) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual FOnAbilitySystemComponentRegisteredSignature GetOnAbilitySystemComponentDelegate() override;
+	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	//~ End ICombat Interface
 
 	/** Broadcasts ability system component as soon as it is valid */

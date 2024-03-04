@@ -113,4 +113,8 @@ public:
 	/** Sets shock loop state */
 	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )
 	void SetInShockLoop( bool bInLoop);
+	
+	/** Returns weapon skeletal mesh component */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	USkeletalMeshComponent* GetWeapon();
 };
