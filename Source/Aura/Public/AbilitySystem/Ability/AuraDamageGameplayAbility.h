@@ -25,6 +25,10 @@ public:
 	UFUNCTION( BlueprintPure )
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults( AActor* TargetActor = nullptr ) const;
 
+	/** Returns amount of damage for current ability level */
+	UFUNCTION( BlueprintPure )
+	float GetDamageAtLevel() const;
+
 protected:
 	/** Returns random attack montage from montages */
 	UFUNCTION( BlueprintPure )
