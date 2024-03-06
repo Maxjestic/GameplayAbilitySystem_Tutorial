@@ -345,6 +345,41 @@ void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius( const UObject* World
 	}
 }
 
+void UAuraAbilitySystemLibrary::GetClosestTargets( const int32 MaxTargets, const TArray<AActor*>& Actors,
+                                                   TArray<AActor*>& OutClosestTargets, const FVector& Origin )
+{
+	if (MaxTargets >= Actors.Num())
+	{
+		OutClosestTargets = Actors;
+		return;
+	}
+	
+	TArray<AActor*> LocalActors = Actors;
+	for (int32 i = 0; i < MaxTargets; i++)
+	{
+		if(LocalActors.Num() == 0)
+		{
+			break;
+		}
+		
+		double ClosestDistance = TNumericLimits<double>::Max();
+		AActor* ActorToAdd = nullptr;
+
+		for (AActor* Actor : LocalActors)
+		{
+			const double Distance = (Actor->GetActorLocation() - Origin).Length();
+			if (Distance < ClosestDistance)
+			{
+				ClosestDistance = Distance;
+				ActorToAdd = Actor;
+			}
+		}
+
+		OutClosestTargets.AddUnique( ActorToAdd );
+		LocalActors.Remove( ActorToAdd );
+	}
+}
+
 bool UAuraAbilitySystemLibrary::IsNotFriend( const AActor* FirstActor, const AActor* SecondActor )
 {
 	const bool bBothArePlayers = FirstActor->ActorHasTag( FName( "Player" ) ) && SecondActor->ActorHasTag( FName( "Player" ) );
@@ -404,12 +439,12 @@ TArray<FRotator> UAuraAbilitySystemLibrary::EvenlySpacedRotators( const FVector&
 		for (int32 i = 0; i < NumRotators; i++)
 		{
 			const FVector Direction = LeftOfSpread.RotateAngleAxis( DeltaSpread * i, FVector::UpVector );
-			Rotators.Add(Direction.Rotation());
+			Rotators.Add( Direction.Rotation() );
 		}
 	}
 	else
 	{
-		Rotators.Add(Forward.Rotation());
+		Rotators.Add( Forward.Rotation() );
 	}
 	return Rotators;
 }
@@ -426,12 +461,12 @@ TArray<FVector> UAuraAbilitySystemLibrary::EvenlyRotatedVectors( const FVector& 
 		for (int32 i = 0; i < NumVectors; i++)
 		{
 			const FVector Direction = LeftOfSpread.RotateAngleAxis( DeltaSpread * i, FVector::UpVector );
-			Vectors.Add(Direction);
+			Vectors.Add( Direction );
 		}
 	}
 	else
 	{
-		Vectors.Add(Forward);
+		Vectors.Add( Forward );
 	}
 	return Vectors;
 }

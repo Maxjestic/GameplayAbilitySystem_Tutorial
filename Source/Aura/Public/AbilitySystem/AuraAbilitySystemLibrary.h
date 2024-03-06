@@ -134,10 +134,14 @@ public:
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetKnockbackForce( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InKnockbackForce );
 
-	/** Gets all alive players in given sphere */
+	/** Fills OutOverlappingActors with all alive players (actors) in given radius */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
 	static void GetLivePlayersWithinRadius( const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors,
 	                                        const TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin );
+
+	/** fills OutClosestTargets with given number of closest actors to Origin from Actors */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
+	static void GetClosestTargets( const int32 MaxTargets, const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets, const FVector& Origin );
 
 	/** Check if two actors are "friends" */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )

@@ -30,6 +30,10 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void TraceFirstTarget( const FVector& BeamTargetLocation );
 
+	/** Stores additional targets in specified radius, number od additional targets is based on ability level */
+	UFUNCTION( BlueprintCallable )
+	void StoreAdditionalTargets( TArray<AActor*>& OutAdditionalTargets );
+
 protected:
 	/** Mouse location deduced in TargetDataUnderMouse */
 	UPROPERTY( BlueprintReadWrite, Category="Beam" )
@@ -46,4 +50,8 @@ protected:
 	/** The owner character of this */
 	UPROPERTY( BlueprintReadWrite, Category="Beam" )
 	TObjectPtr<ACharacter> OwnerCharacter;
+
+	/** Maximum number of targets for this, based on ability level */
+	UPROPERTY( EditDefaultsOnly, Category="Beam" )
+	int32 MaxNumShockTargets = 5;
 };
