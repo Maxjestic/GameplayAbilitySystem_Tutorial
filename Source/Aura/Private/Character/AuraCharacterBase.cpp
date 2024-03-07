@@ -45,6 +45,11 @@ void AAuraCharacterBase::Die( const FVector& DeathImpulse )
 	MulticastHandleDeath( DeathImpulse );
 }
 
+FOnDeathSignature& AAuraCharacterBase::GetOnDeathDelegate()
+{
+	return OnDeath;
+}
+
 bool AAuraCharacterBase::IsDead_Implementation() const
 {
 	return bDead;
@@ -123,6 +128,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation( const FVector& Dea
 
 	bDead = true;
 	BurnDebuffComponent->Deactivate();
+	OnDeath.Broadcast( this );
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()

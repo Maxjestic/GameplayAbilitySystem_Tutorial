@@ -13,7 +13,10 @@ class UNiagaraSystem;
 class UAnimMontage;
 
 /** Delegate used to broadcast ability system component as soon as it is valid */
-DECLARE_MULTICAST_DELEGATE_OneParam( FOnAbilitySystemComponentRegisteredSignature, UAbilitySystemComponent* /*AbilitySystemComponent*/ )
+DECLARE_MULTICAST_DELEGATE_OneParam( FOnAbilitySystemComponentRegisteredSignature, UAbilitySystemComponent* /*AbilitySystemComponent*/ );
+
+/** Delegate used on actor's death */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnDeathSignature, AActor*, DeadActor);
 
 /**
  * Contains montage with corresponding gameplay tag and sound
@@ -74,6 +77,9 @@ public:
 
 	/** Function called when owner's health reaches 0, called on the server */
 	virtual void Die( const FVector& DeathImpulse ) = 0;
+	
+	/** Returns FOnDeathSignature delegate */
+	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
 
 	/** Returns true if owner is dead */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )

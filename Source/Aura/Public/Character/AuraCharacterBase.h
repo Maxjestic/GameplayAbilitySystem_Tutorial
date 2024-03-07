@@ -40,6 +40,7 @@ public:
 	//~ Begin ICombatInterface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die( const FVector& DeathImpulse ) override;
+	virtual FOnDeathSignature& GetOnDeathDelegate() override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
@@ -54,6 +55,9 @@ public:
 
 	/** Broadcasts ability system component as soon as it is valid */
 	FOnAbilitySystemComponentRegisteredSignature OnAbilitySystemComponentRegistered;
+
+	/** Broadcasts this Actor on its death */
+	FOnDeathSignature OnDeath;
 
 	/** Returns attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }

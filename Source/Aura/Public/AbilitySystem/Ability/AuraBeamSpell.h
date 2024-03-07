@@ -34,6 +34,14 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void StoreAdditionalTargets( TArray<AActor*>& OutAdditionalTargets );
 
+	/** Callback to when primary target dies during cast */
+	UFUNCTION( BlueprintImplementableEvent )
+	void PrimaryTargetDied( AActor* DeadActor );
+
+	/** Callback to when additional target dies during cast */
+	UFUNCTION( BlueprintImplementableEvent )
+	void AdditionalTargetDied( AActor* DeadActor );
+
 protected:
 	/** Mouse location deduced in TargetDataUnderMouse */
 	UPROPERTY( BlueprintReadWrite, Category="Beam" )
