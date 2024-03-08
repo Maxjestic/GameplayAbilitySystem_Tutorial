@@ -280,7 +280,17 @@ void UAuraAttributeSet::HandleDebuff( const FEffectProperties& Properties )
 	UTargetTagsGameplayEffectComponent& TargetTagsGameplayEffectComponent = Effect->
 		FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
 
-	InheritedTagContainer.Added.AddTag( Tags.DamageTypesToDebuffs[DamageType] );
+	const FGameplayTag DebuffTag = Tags.DamageTypesToDebuffs[DamageType];
+	InheritedTagContainer.Added.AddTag( DebuffTag );
+
+	if(DebuffTag.MatchesTagExact( Tags.Debuff_Stun ))
+	{
+		InheritedTagContainer.Added.AddTag( Tags.Player_Block_InputPressed );
+		InheritedTagContainer.Added.AddTag( Tags.Player_Block_InputHeld );
+		InheritedTagContainer.Added.AddTag( Tags.Player_Block_InputReleased );
+		InheritedTagContainer.Added.AddTag( Tags.Player_Block_CursorTrace );
+	}
+	
 	TargetTagsGameplayEffectComponent.SetAndApplyTargetTagChanges( InheritedTagContainer );
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;

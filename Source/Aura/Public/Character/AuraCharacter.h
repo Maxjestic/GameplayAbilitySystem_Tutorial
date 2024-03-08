@@ -46,6 +46,10 @@ public:
 	virtual int32 GetSpellPointsReward_Implementation( const int32 PlayerLevel ) const override;
 	virtual void AddToSpellPoints_Implementation( const int32 InSpellPoints ) override;
 	//~ End Player Interface
+	
+	//~ Begin AAuraCharacterBase Interface
+	virtual void OnRep_Stunned() override;
+	//~ End AAuraCharacterBase Interface
 
 protected:
 	/** Gameplay effect initializing primary attributes for the character */

@@ -32,6 +32,10 @@ public:
 	 */
 	AAuraCharacterBase();
 
+	//~ Begin UObject Interface
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	//~ End UObject Interface
+	
 	//~ Begin IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface
@@ -56,19 +60,29 @@ public:
 	/** Broadcasts ability system component as soon as it is valid */
 	FOnAbilitySystemComponentRegisteredSignature OnAbilitySystemComponentRegistered;
 
-	/** Broadcasts this Actor on its death */
+	/** Broadcasts self (Actor) on my death */
 	FOnDeathSignature OnDeath;
 
-	/** Returns attribute set */
+	/** Returns my attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-	/** Handles what happens on all clients whenever a character dies */
+	/** Handles what happens on all clients whenever I die */
 	UFUNCTION( NetMulticast, Reliable )
 	virtual void MulticastHandleDeath( const FVector& DeathImpulse );
 
 	/** Montages used to perform an attack */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	TArray<FTaggedMontage> AttackMontages;
+
+	/** True if I'm stunned */
+	UPROPERTY( ReplicatedUsing = OnRep_Stunned, BlueprintReadOnly )
+	bool bIsStunned = false;
+
+	/**
+	 * Rep notifies
+	 */
+	UFUNCTION()
+	virtual void OnRep_Stunned();
 
 protected:
 	/** A Function that initializes Ability Actor Info for AbilitySystemComponent */
@@ -90,7 +104,10 @@ protected:
 	//~ Begin ICombatInterface
 	virtual FVector GetCombatSocketLocation_Implementation( const FGameplayTag& MontageTag ) override;
 	//~ End ICombat Interface
-
+	
+	/** Callback function when stun tag changes */
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+	
 	/** The skeletal mesh associated with this character's weapon */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -163,6 +180,10 @@ protected:
 
 	/** True if this is dead */
 	bool bDead = false;
+	
+	/** Base walk speed value */
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
+	float BaseWalkSpeed = 600.f;
 
 	/**
 	 * Minions

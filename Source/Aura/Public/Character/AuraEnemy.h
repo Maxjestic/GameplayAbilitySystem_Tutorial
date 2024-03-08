@@ -57,10 +57,6 @@ public:
 	UPROPERTY( BlueprintReadOnly, Category = "Combat" )
 	bool bHitReacting = false;
 
-	/** Base walk speed value */
-	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
-	float BaseWalkSpeed = 250.f;
-
 	/** Life span value */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	float LifeSpan = 5.f;
@@ -77,6 +73,7 @@ protected:
 	//~ Begin AAuraCharacterBase Interface
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
 	//~ End AAuraCharacterBase Interface
 
 	/** Enemy level */
