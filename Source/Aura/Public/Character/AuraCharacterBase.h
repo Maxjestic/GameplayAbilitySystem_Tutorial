@@ -33,9 +33,9 @@ public:
 	AAuraCharacterBase();
 
 	//~ Begin UObject Interface
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const override;
 	//~ End UObject Interface
-	
+
 	//~ Begin IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface
@@ -55,6 +55,8 @@ public:
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual FOnAbilitySystemComponentRegisteredSignature& GetOnAbilitySystemComponentDelegate() override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
+	virtual bool IsBeingShocked_Implementation() const override;
+	virtual void SetIsBeingShocked_Implementation(bool bInIsBeingShocked) override;
 	//~ End ICombat Interface
 
 	/** Broadcasts ability system component as soon as it is valid */
@@ -82,12 +84,16 @@ public:
 	UPROPERTY( ReplicatedUsing = OnRep_Burned, BlueprintReadOnly )
 	bool bIsBurned = false;
 
+	/** True if I'm in shock loop */
+	UPROPERTY( Replicated, BlueprintReadOnly )
+	bool bIsBeingShocked = false;
+
 	/**
 	 * Rep notifies
 	 */
 	UFUNCTION()
 	virtual void OnRep_Burned();
-	
+
 	UFUNCTION()
 	virtual void OnRep_Stunned();
 
@@ -111,10 +117,10 @@ protected:
 	//~ Begin ICombatInterface
 	virtual FVector GetCombatSocketLocation_Implementation( const FGameplayTag& MontageTag ) override;
 	//~ End ICombat Interface
-	
+
 	/** Callback function when stun tag changes */
-	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
-	
+	virtual void StunTagChanged( const FGameplayTag CallbackTag, int32 NewCount );
+
 	/** The skeletal mesh associated with this character's weapon */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -187,7 +193,7 @@ protected:
 
 	/** True if this is dead */
 	bool bDead = false;
-	
+
 	/** Base walk speed value */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )
 	float BaseWalkSpeed = 600.f;

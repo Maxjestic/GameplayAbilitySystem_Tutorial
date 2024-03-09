@@ -232,19 +232,23 @@ void UAuraAttributeSet::HandleIncomingDamage( const FEffectProperties& Propertie
 		{
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>( Properties.TargetAvatarActor ))
 			{
-				CombatInterface->Die( UAuraAbilitySystemLibrary::GetDeathImpulse( Properties.EffectContextHandle ));
+				CombatInterface->Die( UAuraAbilitySystemLibrary::GetDeathImpulse( Properties.EffectContextHandle ) );
 			}
 			SendExperienceEvent( Properties );
 		}
 		else
 		{
-			FGameplayTagContainer TagContainer;
-			TagContainer.AddTag( FAuraGameplayTags::Get().Effects_HitReact );
-			Properties.TargetAbilitySystemComponent->TryActivateAbilitiesByTag( TagContainer );
+			if (Properties.TargetCharacter->Implements<UCombatInterface>()
+				&& !ICombatInterface::Execute_IsBeingShocked( Properties.TargetCharacter ))
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag( FAuraGameplayTags::Get().Effects_HitReact );
+				Properties.TargetAbilitySystemComponent->TryActivateAbilitiesByTag( TagContainer );
+			}			
 
 			const FVector& KnockbackForce = UAuraAbilitySystemLibrary::GetKnockbackForce( Properties.EffectContextHandle );
-			if( !KnockbackForce.IsNearlyZero(1.f))
-			{				
+			if (!KnockbackForce.IsNearlyZero( 1.f ))
+			{
 				Properties.TargetCharacter->LaunchCharacter( KnockbackForce, true, true );
 			}
 		}
@@ -283,14 +287,14 @@ void UAuraAttributeSet::HandleDebuff( const FEffectProperties& Properties )
 	const FGameplayTag DebuffTag = Tags.DamageTypesToDebuffs[DamageType];
 	InheritedTagContainer.Added.AddTag( DebuffTag );
 
-	if(DebuffTag.MatchesTagExact( Tags.Debuff_Stun ))
+	if (DebuffTag.MatchesTagExact( Tags.Debuff_Stun ))
 	{
 		InheritedTagContainer.Added.AddTag( Tags.Player_Block_InputPressed );
 		InheritedTagContainer.Added.AddTag( Tags.Player_Block_InputHeld );
 		InheritedTagContainer.Added.AddTag( Tags.Player_Block_InputReleased );
 		InheritedTagContainer.Added.AddTag( Tags.Player_Block_CursorTrace );
 	}
-	
+
 	TargetTagsGameplayEffectComponent.SetAndApplyTargetTagChanges( InheritedTagContainer );
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;

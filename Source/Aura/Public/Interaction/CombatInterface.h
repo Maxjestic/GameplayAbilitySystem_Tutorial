@@ -16,7 +16,7 @@ class UAnimMontage;
 DECLARE_MULTICAST_DELEGATE_OneParam( FOnAbilitySystemComponentRegisteredSignature, UAbilitySystemComponent* /*AbilitySystemComponent*/ );
 
 /** Delegate used on actor's death */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnDeathSignature, AActor*, DeadActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnDeathSignature, AActor*, DeadActor );
 
 /**
  * Contains montage with corresponding gameplay tag and sound
@@ -77,7 +77,7 @@ public:
 
 	/** Function called when owner's health reaches 0, called on the server */
 	virtual void Die( const FVector& DeathImpulse ) = 0;
-	
+
 	/** Returns FOnDeathSignature delegate */
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
 
@@ -118,9 +118,17 @@ public:
 
 	/** Sets shock loop state */
 	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )
-	void SetInShockLoop( bool bInLoop);
-	
+	void SetInShockLoop( bool bInLoop );
+
 	/** Returns weapon skeletal mesh component */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
 	USkeletalMeshComponent* GetWeapon();
+
+	/** Returns true if owner is being shocked */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	bool IsBeingShocked() const;
+
+	/** Sets if owner is in shock loop */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	void SetIsBeingShocked( bool bInIsBeingShocked );
 };
