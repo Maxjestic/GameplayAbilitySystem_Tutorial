@@ -114,7 +114,7 @@ public:
 	ECharacterClass GetCharacterClass();
 
 	/** Returns FOnAbilitySystemComponentRegisteredSignature delegate */
-	virtual FOnAbilitySystemComponentRegisteredSignature GetOnAbilitySystemComponentDelegate() = 0;
+	virtual FOnAbilitySystemComponentRegisteredSignature& GetOnAbilitySystemComponentDelegate() = 0;
 
 	/** Sets shock loop state */
 	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )

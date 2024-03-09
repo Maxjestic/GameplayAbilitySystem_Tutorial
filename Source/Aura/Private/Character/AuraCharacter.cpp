@@ -8,6 +8,7 @@
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -156,26 +157,40 @@ void AAuraCharacter::AddToSpellPoints_Implementation( const int32 InSpellPoints 
 	AuraPlayerState->AddToSpellPoints( InSpellPoints );
 }
 
+void AAuraCharacter::OnRep_Burned()
+{
+	if (bIsBurned)
+	{
+		BurnDebuffComponent->Activate();
+	}
+	else
+	{
+		BurnDebuffComponent->Deactivate();
+	}
+}
+
 void AAuraCharacter::OnRep_Stunned()
 {
-	if(UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	if (UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>( AbilitySystemComponent ))
 	{
 		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
-		
+
 		FGameplayTagContainer BlockedTags;
 		BlockedTags.AddTag( GameplayTags.Player_Block_CursorTrace );
 		BlockedTags.AddTag( GameplayTags.Player_Block_InputPressed );
 		BlockedTags.AddTag( GameplayTags.Player_Block_InputHeld );
 		BlockedTags.AddTag( GameplayTags.Player_Block_InputReleased );
-		
-		if(bIsStunned)
+
+		if (bIsStunned)
 		{
 			AuraAbilitySystemComponent->AddLooseGameplayTags( BlockedTags );
+			StunDebuffComponent->Activate();
 		}
 		else
 		{
 			AuraAbilitySystemComponent->RemoveLooseGameplayTags( BlockedTags );
-		}		
+			StunDebuffComponent->Deactivate();
+		}
 	}
 }
 

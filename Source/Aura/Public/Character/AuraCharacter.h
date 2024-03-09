@@ -48,6 +48,7 @@ public:
 	//~ End Player Interface
 	
 	//~ Begin AAuraCharacterBase Interface
+	virtual void OnRep_Burned() override;
 	virtual void OnRep_Stunned() override;
 	//~ End AAuraCharacterBase Interface
 

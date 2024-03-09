@@ -15,10 +15,15 @@
 AAuraCharacterBase::AAuraCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>( FName("BurnDebuffComponent") );
 	BurnDebuffComponent->SetupAttachment( GetRootComponent() );
-	BurnDebuffComponent->DebuffTag = FAuraGameplayTags::Get().Debuff_Burn;
+	BurnDebuffComponent->DebuffTag = GameplayTags.Debuff_Burn;
+
+	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>( FName("StunDebuffComponent") );
+	StunDebuffComponent->SetupAttachment( GetRootComponent() );
+	StunDebuffComponent->DebuffTag = GameplayTags.Debuff_Stun;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel( ECC_Camera, ECR_Ignore );
 	GetCapsuleComponent()->SetGenerateOverlapEvents( false );
@@ -35,6 +40,7 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& 
 {
 	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
 
+	DOREPLIFETIME(AAuraCharacterBase, bIsBurned);
 	DOREPLIFETIME(AAuraCharacterBase, bIsStunned);
 }
 
@@ -106,7 +112,7 @@ ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
 	return CharacterClass;
 }
 
-FOnAbilitySystemComponentRegisteredSignature AAuraCharacterBase::GetOnAbilitySystemComponentDelegate()
+FOnAbilitySystemComponentRegisteredSignature& AAuraCharacterBase::GetOnAbilitySystemComponentDelegate()
 {
 	return OnAbilitySystemComponentRegistered;
 }
@@ -137,6 +143,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation( const FVector& Dea
 
 	bDead = true;
 	BurnDebuffComponent->Deactivate();
+	StunDebuffComponent->Deactivate();
 	OnDeath.Broadcast( this );
 }
 
@@ -144,6 +151,10 @@ void AAuraCharacterBase::StunTagChanged( const FGameplayTag CallbackTag, int32 N
 {
 	bIsStunned = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
+}
+
+void AAuraCharacterBase::OnRep_Burned()
+{
 }
 
 void AAuraCharacterBase::OnRep_Stunned()

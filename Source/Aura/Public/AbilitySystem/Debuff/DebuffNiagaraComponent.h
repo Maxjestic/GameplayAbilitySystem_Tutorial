@@ -33,8 +33,4 @@ protected:
 
 	/** Callback to when tags changes on the owner */
 	void DebuffTagChanged( const FGameplayTag CallbackTag, int32 NewCount );
-
-	/** Callback to when owner dies */
-	UFUNCTION()
-	void OnOwnerDeath( AActor* DeadActor );
 };

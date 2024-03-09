@@ -53,7 +53,7 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void UpdateMinionCount_Implementation( const int32 Amount ) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
-	virtual FOnAbilitySystemComponentRegisteredSignature GetOnAbilitySystemComponentDelegate() override;
+	virtual FOnAbilitySystemComponentRegisteredSignature& GetOnAbilitySystemComponentDelegate() override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	//~ End ICombat Interface
 
@@ -78,9 +78,16 @@ public:
 	UPROPERTY( ReplicatedUsing = OnRep_Stunned, BlueprintReadOnly )
 	bool bIsStunned = false;
 
+	/** True if I'm burned */
+	UPROPERTY( ReplicatedUsing = OnRep_Burned, BlueprintReadOnly )
+	bool bIsBurned = false;
+
 	/**
 	 * Rep notifies
 	 */
+	UFUNCTION()
+	virtual void OnRep_Burned();
+	
 	UFUNCTION()
 	virtual void OnRep_Stunned();
 
@@ -192,9 +199,13 @@ protected:
 	/** How many minions does this have */
 	int32 MinionCount = 0;
 
-	/** Niagara component activated when this gets burn debuff */
+	/** Niagara component activated when I get burn debuff */
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+
+	/** Niagara component activated when I get stun debuff */
+	UPROPERTY( VisibleAnywhere )
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
 
 private:
 	/** Set of active ability classes granted to the character at the beginning of the game */

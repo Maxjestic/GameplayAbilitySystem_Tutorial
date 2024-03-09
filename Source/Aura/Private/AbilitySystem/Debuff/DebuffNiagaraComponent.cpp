@@ -47,8 +47,3 @@ void UDebuffNiagaraComponent::DebuffTagChanged( const FGameplayTag CallbackTag, 
 	}
 	Deactivate();
 }
-
-void UDebuffNiagaraComponent::OnOwnerDeath( AActor* DeadActor )
-{
-	Deactivate();
-}
