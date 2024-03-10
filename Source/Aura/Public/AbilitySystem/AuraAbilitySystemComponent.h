@@ -93,12 +93,30 @@ public:
 	/** Returns status tag associated with given ability tag, empty if not found */
 	FGameplayTag GetStatusTagFromAbilityTag( const FGameplayTag& AbilityTag );
 
-	/** Returns input tag associated with given ability tag, empty if not found */
-	FGameplayTag GetInputTagFromAbilityTag( const FGameplayTag& AbilityTag );
+	/** Returns slot associated with given ability tag, empty if not found */
+	FGameplayTag GetSlotFromAbilityTag( const FGameplayTag& AbilityTag );
 
 	/** Returns ability spec from given ability tag, nullptr if not found */
 	FGameplayAbilitySpec* GetSpecFromAbilityTag( const FGameplayTag& AbilityTag );
 
+	/** Returns true if given Slot is empty */
+	bool SlotIsEmpty( const FGameplayTag& Slot );
+
+	/** Returns true if given Spec has given Slot */
+	static bool AbilityHasSlot(const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+
+	/** Returns true if given Spec has any Slot */
+	static bool AbilityHasAnySlot(const FGameplayAbilitySpec& Spec);
+
+	/** Returns ability spec associated with given slot, nullptr if not found */
+	FGameplayAbilitySpec* GetSpecWithSlot(const FGameplayTag& Slot);
+
+	/** Returns true if given ability is passive */
+	bool IsPassiveAbility(const FGameplayAbilitySpec& Spec) const;
+
+	/** Clears slot and assigns new ability to it */
+	static void AssignSlotToAbility(FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+	
 
 	/** Client side, increase attribute associated with given tag */
 	void UpgradeAttribute( const FGameplayTag& AttributeTag );
@@ -110,7 +128,7 @@ public:
 	bool GetDescriptionsByAbilityTag( const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription );
 
 	/** Removes input tag associated with given ability spec */
-	void ClearSlot( FGameplayAbilitySpec* AbilitySpec );
+	static void ClearSlot( FGameplayAbilitySpec* AbilitySpec );
 
 	/** Clear abilities of a given slot */
 	void ClearAbilitiesOfSlot( const FGameplayTag& Slot );
