@@ -29,6 +29,9 @@ DECLARE_MULTICAST_DELEGATE_FourParams( FAbilityEquipped,
                                        const FGameplayTag& /*Slot*/,
                                        const FGameplayTag& /*PreviousSlot*/ )
 
+/** Broadcasts tag associated with passive ability that should be deactivated */
+DECLARE_MULTICAST_DELEGATE_OneParam( FDeactivatePassiveAbility, const FGameplayTag& /*AbilityTag*/ )
+
 /**
  * A class used as base Ability System Component in Aura
  */
@@ -71,6 +74,9 @@ public:
 
 	/** Broadcasted when ability is being equipped */
 	FAbilityEquipped AbilityEquipped;
+
+	/** Broadcasted when player deactivates ability in spell menu */
+	FDeactivatePassiveAbility DeactivatePassiveAbility;
 
 	/** Loops through all activatable abilities and calls delegate */
 	void ForEachAbility( const FForEachAbility& Delegate );
