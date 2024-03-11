@@ -216,7 +216,7 @@ bool UAuraAbilitySystemComponent::AbilityHasSlot( const FGameplayAbilitySpec& Sp
 
 bool UAuraAbilitySystemComponent::AbilityHasAnySlot( const FGameplayAbilitySpec& Spec )
 {
-	return Spec.DynamicAbilityTags.HasTag(FGameplayTag::RequestGameplayTag( FName("InputTag") ));
+	return Spec.DynamicAbilityTags.HasTag( FGameplayTag::RequestGameplayTag( FName( "InputTag" ) ) );
 }
 
 FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecWithSlot( const FGameplayTag& Slot )
@@ -238,7 +238,7 @@ bool UAuraAbilitySystemComponent::IsPassiveAbility( const FGameplayAbilitySpec& 
 	const FGameplayTag AbilityTag = GetAbilityTagFromSpec( Spec );
 	const FAuraAbilityInfo& Info = AbilityInfo->FindAbilityInfoForTag( AbilityTag );
 	const FGameplayTag AbilityType = Info.AbilityTypeTag;
-	
+
 	return AbilityType.MatchesTagExact( FAuraGameplayTags::Get().Abilities_Type_Passive );
 }
 
@@ -246,6 +246,11 @@ void UAuraAbilitySystemComponent::AssignSlotToAbility( FGameplayAbilitySpec& Spe
 {
 	ClearSlot( &Spec );
 	Spec.DynamicAbilityTags.AddTag( Slot );
+}
+
+void UAuraAbilitySystemComponent::MulticastActivatePassiveEffect_Implementation( const FGameplayTag& AbilityTag, const bool bActivate )
+{
+	ActivatePassiveEffect.Broadcast( AbilityTag, bActivate );
 }
 
 void UAuraAbilitySystemComponent::UpgradeAttribute( const FGameplayTag& AttributeTag )
@@ -391,7 +396,7 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation( const FGame
 			if (!SlotIsEmpty( Slot ))
 			{
 				FGameplayAbilitySpec* SpecWithSlot = GetSpecWithSlot( Slot );
-				
+
 				if (SpecWithSlot)
 				{
 					// is current and previous ability the same? if so return
@@ -401,8 +406,9 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation( const FGame
 						return;
 					}
 
-					if(IsPassiveAbility( *SpecWithSlot ))
+					if (IsPassiveAbility( *SpecWithSlot ))
 					{
+						MulticastActivatePassiveEffect( GetAbilityTagFromSpec( *SpecWithSlot ), false );
 						DeactivatePassiveAbility.Broadcast( GetAbilityTagFromSpec( *SpecWithSlot ) );
 					}
 
@@ -413,9 +419,10 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation( const FGame
 			// Ability doesn't have a slot (not active)
 			if (!AbilityHasAnySlot( *AbilitySpec ))
 			{
-				if(IsPassiveAbility( *AbilitySpec ))
+				if (IsPassiveAbility( *AbilitySpec ))
 				{
 					TryActivateAbility( AbilitySpec->Handle );
+					MulticastActivatePassiveEffect( AbilityTag, true );
 				}
 			}
 			AssignSlotToAbility( *AbilitySpec, Slot );

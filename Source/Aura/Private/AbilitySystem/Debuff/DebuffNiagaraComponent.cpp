@@ -24,7 +24,7 @@ void UDebuffNiagaraComponent::BeginPlay()
 	}
 	else if (CombatInterface)
 	{
-		CombatInterface->GetOnAbilitySystemComponentDelegate().AddWeakLambda( this,
+		CombatInterface->GetOnAbilitySystemComponentRegistered().AddWeakLambda( this,
 		                                                                      [this]( UAbilitySystemComponent* InAbilitySystemComponent )
 		                                                                      {
 			                                                                      InAbilitySystemComponent->RegisterGameplayTagEvent(

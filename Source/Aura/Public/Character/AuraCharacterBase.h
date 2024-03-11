@@ -9,6 +9,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UPassiveNiagaraComponent;
 class UDebuffNiagaraComponent;
 class UNiagaraSystem;
 class UGameplayAbility;
@@ -40,6 +41,9 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface
 
+	//~ Begin AActor Interface
+	virtual void Tick(float DeltaSeconds) override;
+	//~ End AActor Interface
 
 	//~ Begin ICombatInterface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
@@ -53,10 +57,10 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void UpdateMinionCount_Implementation( const int32 Amount ) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
-	virtual FOnAbilitySystemComponentRegisteredSignature& GetOnAbilitySystemComponentDelegate() override;
+	virtual FOnAbilitySystemComponentRegisteredSignature& GetOnAbilitySystemComponentRegistered() override;
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	virtual bool IsBeingShocked_Implementation() const override;
-	virtual void SetIsBeingShocked_Implementation(bool bInIsBeingShocked) override;
+	virtual void SetIsBeingShocked_Implementation( bool bInIsBeingShocked ) override;
 	//~ End ICombat Interface
 
 	/** Broadcasts ability system component as soon as it is valid */
@@ -225,4 +229,20 @@ private:
 	/** Animation montage played when character is reacting to hit, may be nullptr */
 	UPROPERTY( EditAnywhere, Category = "Combat" )
 	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	/** Niagara component for halo of protection passive ability */
+	UPROPERTY( VisibleAnywhere )
+	TObjectPtr<UPassiveNiagaraComponent> HaloOfProtectionNiagaraComponent;
+
+	/** Niagara component for life siphon passive ability */
+	UPROPERTY( VisibleAnywhere )
+	TObjectPtr<UPassiveNiagaraComponent> LifeSiphonNiagaraComponent;
+
+	/** Niagara component for mana siphon passive ability */
+	UPROPERTY( VisibleAnywhere )
+	TObjectPtr<UPassiveNiagaraComponent> ManaSiphonNiagaraComponent;
+
+	/** Scene component to attach the effects to */
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> EffectAttachComponent;
 };

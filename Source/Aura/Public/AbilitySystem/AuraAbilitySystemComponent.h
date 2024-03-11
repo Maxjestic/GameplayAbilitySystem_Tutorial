@@ -32,6 +32,9 @@ DECLARE_MULTICAST_DELEGATE_FourParams( FAbilityEquipped,
 /** Broadcasts tag associated with passive ability that should be deactivated */
 DECLARE_MULTICAST_DELEGATE_OneParam( FDeactivatePassiveAbility, const FGameplayTag& /*AbilityTag*/ )
 
+/** Broadcasts ability tag related to ability that should or shouldn't be activated based on bActivate */
+DECLARE_MULTICAST_DELEGATE_TwoParams( FActivatePassiveEffect, const FGameplayTag& /*AbilityTag*/, bool /*bActivate*/ );
+
 /**
  * A class used as base Ability System Component in Aura
  */
@@ -78,6 +81,9 @@ public:
 	/** Broadcasted when player deactivates ability in spell menu */
 	FDeactivatePassiveAbility DeactivatePassiveAbility;
 
+	/** Broadcasted when player activates/deactivates ability in spell menu to activate related niagara component */
+	FActivatePassiveEffect ActivatePassiveEffect;
+
 	/** Loops through all activatable abilities and calls delegate */
 	void ForEachAbility( const FForEachAbility& Delegate );
 
@@ -103,20 +109,25 @@ public:
 	bool SlotIsEmpty( const FGameplayTag& Slot );
 
 	/** Returns true if given Spec has given Slot */
-	static bool AbilityHasSlot(const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+	static bool AbilityHasSlot( const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot );
 
 	/** Returns true if given Spec has any Slot */
-	static bool AbilityHasAnySlot(const FGameplayAbilitySpec& Spec);
+	static bool AbilityHasAnySlot( const FGameplayAbilitySpec& Spec );
 
 	/** Returns ability spec associated with given slot, nullptr if not found */
-	FGameplayAbilitySpec* GetSpecWithSlot(const FGameplayTag& Slot);
+	FGameplayAbilitySpec* GetSpecWithSlot( const FGameplayTag& Slot );
 
 	/** Returns true if given ability is passive */
-	bool IsPassiveAbility(const FGameplayAbilitySpec& Spec) const;
+	bool IsPassiveAbility( const FGameplayAbilitySpec& Spec ) const;
 
 	/** Clears slot and assigns new ability to it */
-	static void AssignSlotToAbility(FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
-	
+	static void AssignSlotToAbility( FGameplayAbilitySpec& Spec, const FGameplayTag& Slot );
+
+
+	/** RPC function to show passive spell niagara component */
+	UFUNCTION( NetMulticast, Unreliable )
+	void MulticastActivatePassiveEffect( const FGameplayTag& AbilityTag, const bool bActivate );
+
 
 	/** Client side, increase attribute associated with given tag */
 	void UpgradeAttribute( const FGameplayTag& AttributeTag );

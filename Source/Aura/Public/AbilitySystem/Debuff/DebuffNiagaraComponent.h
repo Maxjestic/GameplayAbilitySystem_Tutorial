@@ -8,7 +8,7 @@
 #include "DebuffNiagaraComponent.generated.h"
 
 /**
- * 
+ * Niagara component for offensive ability debuffs
  */
 UCLASS()
 class AURA_API UDebuffNiagaraComponent : public UNiagaraComponent
