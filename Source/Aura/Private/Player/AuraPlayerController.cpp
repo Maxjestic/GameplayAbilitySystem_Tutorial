@@ -10,6 +10,7 @@
 #include "NavigationSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Actor/MagicCircle.h"
 #include "Components/SplineComponent.h"
 #include "GameFramework/Character.h"
 #include "Input/AuraInputComponent.h"
@@ -30,6 +31,23 @@ void AAuraPlayerController::PlayerTick( float DeltaTime )
 	if (bAutoRunning)
 	{
 		AutoRun();
+	}
+	UpdateMagicCircleLocation();
+}
+
+void AAuraPlayerController::ShowMagicCircle()
+{
+	if (!IsValid( MagicCircle ))
+	{
+		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>( MagicCircleClass );
+	}
+}
+
+void AAuraPlayerController::HideMagicCircle() const
+{
+	if (IsValid( MagicCircle ))
+	{
+		MagicCircle->Destroy();
 	}
 }
 
@@ -84,13 +102,13 @@ void AAuraPlayerController::SetupInputComponent()
 }
 
 void AAuraPlayerController::Move( const FInputActionValue& InputActionValue )
-{	
+{
 	if (GetAbilitySystemComponent() &&
 		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed ))
 	{
 		return;
 	}
-	
+
 	bAutoRunning = false;
 
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
@@ -230,19 +248,18 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 					CachedDestination = NavPath->PathPoints.Last();
 					bAutoRunning = true;
 				}
-			}			
+			}
 			if (GetAbilitySystemComponent() &&
 				!GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed ))
 			{
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation( this, ClickNiagaraSystem, CachedDestination );
 			}
-			
 		}
 	}
 }
 
 void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
-{	
+{
 	if (GetAbilitySystemComponent() &&
 		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputHeld ))
 	{
@@ -291,4 +308,12 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetAbilitySystemComponent()
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent( GetPawn<APawn>() ) );
 	}
 	return AuraAbilitySystemComponent;
+}
+
+void AAuraPlayerController::UpdateMagicCircleLocation()
+{
+	if (IsValid( MagicCircle ))
+	{
+		MagicCircle->SetActorLocation( CursorHit.ImpactPoint );
+	}
 }

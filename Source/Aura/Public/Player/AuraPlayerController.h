@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class AMagicCircle;
 class UNiagaraSystem;
 class UDamageTextComponent;
 class USplineComponent;
@@ -40,6 +41,14 @@ public:
 	UFUNCTION( Client, Reliable )
 	void ShowDamageNumber( const float Damage, ACharacter* TargetCharacter, const bool bBlockedHit, const bool bCriticalHit );
 
+	/** Lazy creates magic circle under mouse */
+	UFUNCTION( BlueprintCallable )
+	void ShowMagicCircle();
+
+	/** Destroys magic circle */
+	UFUNCTION( BlueprintCallable )
+	void HideMagicCircle() const;
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
@@ -71,6 +80,9 @@ private:
 
 	/** A getter for AbilitySystemComponent, if ASC property is nullptr function tries to get it but may fail and return nullptr */
 	UAuraAbilitySystemComponent* GetAbilitySystemComponent();
+
+	/** Updates magic circle location based on mouse location */
+	void UpdateMagicCircleLocation();
 
 	/** Input Mapping Context used to map input */
 	UPROPERTY( EditAnywhere, Category = "Input" )
@@ -134,4 +146,12 @@ private:
 	/** Widget spawned to show dealt damage */
 	UPROPERTY( EditDefaultsOnly )
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
+
+	/** Used to create MagicCircle */
+	UPROPERTY( EditDefaultsOnly )
+	TSubclassOf<AMagicCircle> MagicCircleClass;
+
+	/** Shown to indicate place under mouse to cast arcane shards */
+	UPROPERTY()
+	TObjectPtr<AMagicCircle> MagicCircle;
 };

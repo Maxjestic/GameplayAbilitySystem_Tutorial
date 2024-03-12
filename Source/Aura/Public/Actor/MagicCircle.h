@@ -13,13 +13,13 @@ UCLASS()
 class AURA_API AMagicCircle : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	/** Default constructor */
 	AMagicCircle();
-	
+
 	//~ Begin AActor Interface
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick( float DeltaTime ) override;
 	//~ End AActor Interface
 
 protected:
@@ -28,6 +28,6 @@ protected:
 	//~ End AActor Interface
 
 	/** Decal component for magic circle */
-	UPROPERTY( VisibleAnywhere)
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UDecalComponent> MagicCircleDecal;
 };
