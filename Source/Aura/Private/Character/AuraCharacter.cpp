@@ -157,6 +157,22 @@ void AAuraCharacter::AddToSpellPoints_Implementation( const int32 InSpellPoints 
 	AuraPlayerState->AddToSpellPoints( InSpellPoints );
 }
 
+void AAuraCharacter::ShowMagicCircle_Implementation( UMaterialInterface* DecalMaterial )
+{
+	if(AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		AuraPlayerController->ShowMagicCircle(DecalMaterial);
+	}
+}
+
+void AAuraCharacter::HideMagicCircle_Implementation()
+{
+	if(const AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		AuraPlayerController->HideMagicCircle();
+	}	
+}
+
 void AAuraCharacter::OnRep_Burned()
 {
 	if (bIsBurned)

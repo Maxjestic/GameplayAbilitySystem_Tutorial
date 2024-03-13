@@ -68,4 +68,12 @@ public:
 	/** Adds given amount to spell points */
 	UFUNCTION( BlueprintNativeEvent )
 	void AddToSpellPoints( const int32 InSpellPoints );
+
+	/** Shows magic circle, material can be changed by passing new one */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ShowMagicCircle(UMaterialInterface* DecalMaterial = nullptr);
+
+	/** Hides magic circle */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void HideMagicCircle();
 };

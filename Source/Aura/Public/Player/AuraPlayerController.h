@@ -43,7 +43,7 @@ public:
 
 	/** Lazy creates magic circle under mouse */
 	UFUNCTION( BlueprintCallable )
-	void ShowMagicCircle();
+	void ShowMagicCircle( UMaterialInterface* DecalMaterial = nullptr );
 
 	/** Destroys magic circle */
 	UFUNCTION( BlueprintCallable )

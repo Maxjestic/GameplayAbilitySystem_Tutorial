@@ -22,12 +22,12 @@ public:
 	virtual void Tick( float DeltaTime ) override;
 	//~ End AActor Interface
 
+	/** Decal component for magic circle */
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
+	TObjectPtr<UDecalComponent> MagicCircleDecal;
+	
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
 	//~ End AActor Interface
-
-	/** Decal component for magic circle */
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
-	TObjectPtr<UDecalComponent> MagicCircleDecal;
 };
