@@ -215,6 +215,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName( "Abilities.None" ),
 		FString( "NoAbility - like the nullptr for Ability Tags" ) );
+
+	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName( "Abilities.HitReact" ),
+		FString( "Hit React Ability Tag" ) );
 	
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName( "Abilities.Attack" ),
@@ -224,6 +228,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName( "Abilities.Summon" ),
 		FString( "Summon Ability Tag" ) );
 
+	/**
+	 * Offensive
+	 */
 	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName( "Abilities.Fire.FireBolt" ),
 		FString( "Fire Bolt Ability Tag" ) );
@@ -232,10 +239,13 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName( "Abilities.Lightning.Electrocute" ),
 		FString( "Electrocute Ability Tag" ) );
 
-	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName( "Abilities.HitReact" ),
-		FString( "Hit React Ability Tag" ) );
+	GameplayTags.Abilities_Arcane_ArcaneShards = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName( "Abilities.Arcane.ArcaneShards" ),
+		FString( "Arcane Shards Ability Tag" ) );
 
+	/**
+	 * Passive
+	 */
 	GameplayTags.Abilities_Passive_LifeSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName( "Abilities.Passive.LifeSiphon" ),
 	FString( "Life Siphon" ) );
