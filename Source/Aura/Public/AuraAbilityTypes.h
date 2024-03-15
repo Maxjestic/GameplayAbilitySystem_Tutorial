@@ -65,6 +65,18 @@ struct FDamageEffectParams
 
 	UPROPERTY( BlueprintReadWrite )
 	FVector KnockbackForce = FVector::ZeroVector;
+
+	UPROPERTY( BlueprintReadWrite )
+	bool bIsRadialDamage = false;
+
+	UPROPERTY( BlueprintReadWrite )
+	float RadialDamageInnerRadius = 0.f;
+
+	UPROPERTY( BlueprintReadWrite )
+	float RadialDamageOuterRadius = 0.f;
+
+	UPROPERTY( BlueprintReadWrite )
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 /**
@@ -105,6 +117,18 @@ public:
 
 	FVector GetKnockbackForce() const { return KnockbackForce; }
 	void SetKnockbackForce( const FVector& InKnockbackForce ) { KnockbackForce = InKnockbackForce; }
+
+	bool IsRadialDamage() const { return bIsRadialDamage; }
+	void SetIsRadialDamage( const bool bInIsRadialDamage ) { bIsRadialDamage = bInIsRadialDamage; }
+
+	float GetRadialDamageInnerRadius() const { return RadialDamageInnerRadius; }
+	void SetRadialDamageInnerRadius( const float InRadialDamageInnerRadius ) { RadialDamageInnerRadius = InRadialDamageInnerRadius; }
+
+	float GetRadialDamageOuterRadius() const { return RadialDamageOuterRadius; }
+	void SetRadialDamageOuterRadius( const float InRadialDamageOuterRadius ) { RadialDamageOuterRadius = InRadialDamageOuterRadius; }
+
+	FVector GetRadialDamageOrigin() const { return RadialDamageOrigin; }
+	void SetRadialDamageOrigin( const FVector& InRadialDamageOrigin ) { RadialDamageOrigin = InRadialDamageOrigin; }
 
 	//~ Begin FGameplayEffectContext Interface
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -151,6 +175,22 @@ protected:
 	/** Direction of force applied to target on knockback */
 	UPROPERTY()
 	FVector KnockbackForce = FVector::ZeroVector;
+
+	/** Indicates if damage is radial */
+	UPROPERTY()
+	bool bIsRadialDamage = false;
+
+	/** Inner radius of radial damage */
+	UPROPERTY()
+	float RadialDamageInnerRadius = 0.f;
+
+	/** Outer radius of radial damage */
+	UPROPERTY()
+	float RadialDamageOuterRadius = 0.f;
+
+	/** Origin of radial damage */
+	UPROPERTY()
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 template <>
