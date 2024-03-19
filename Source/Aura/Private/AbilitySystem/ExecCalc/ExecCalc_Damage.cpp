@@ -189,6 +189,11 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 
 		DamageTypeValue *= (100.f - Resistance) * 0.01f;
 
+		if(DamageTypeValue <= 0.f)
+		{
+			continue;
+		}
+		
 		if (UAuraAbilitySystemLibrary::IsRadialDamage( EffectContextHandle ))
 		{
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>( TargetAvatar ))
