@@ -18,6 +18,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam( FOnAbilitySystemComponentRegisteredSignatur
 /** Delegate used on actor's death */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FOnDeathSignature, AActor*, DeadActor );
 
+/** Delegate used when actor take damage */
+DECLARE_MULTICAST_DELEGATE_OneParam( FOnDamageSignature, float /*DamageAmount*/ )
+
 /**
  * Contains montage with corresponding gameplay tag and sound
  */
@@ -80,6 +83,8 @@ public:
 
 	/** Returns FOnDeathSignature delegate */
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
+
+	virtual FOnDamageSignature& GetOnDamageDelegate() = 0;
 
 	/** Returns true if owner is dead */
 	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )

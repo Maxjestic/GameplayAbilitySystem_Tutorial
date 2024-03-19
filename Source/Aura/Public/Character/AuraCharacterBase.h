@@ -21,7 +21,6 @@ class UAnimMontage;
  * Base class for all characters in game
  * Contains common properties and functionalities to all characters
  */
-
 UCLASS( Abstract )
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
@@ -43,12 +42,14 @@ public:
 
 	//~ Begin AActor Interface
 	virtual void Tick(float DeltaSeconds) override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	//~ End AActor Interface
 
 	//~ Begin ICombatInterface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die( const FVector& DeathImpulse ) override;
 	virtual FOnDeathSignature& GetOnDeathDelegate() override;
+	virtual FOnDamageSignature& GetOnDamageDelegate() override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
@@ -68,6 +69,9 @@ public:
 
 	/** Broadcasts self (Actor) on my death */
 	FOnDeathSignature OnDeath;
+
+	/** Broadcast damage amount that was dealt to me */
+	FOnDamageSignature OnDamage;
 
 	/** Returns my attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }

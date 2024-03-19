@@ -10,6 +10,7 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 /**
  * Stores all needed Attributes, internal to cpp file
@@ -102,13 +103,13 @@ void UExecCalc_Damage::DetermineDebuff( const FGameplayEffectCustomExecutionPara
 
 				UAuraAbilitySystemLibrary::SetIsSuccessfulDebuff( ContextHandle, bDebuff );
 				UAuraAbilitySystemLibrary::SetDamageType( ContextHandle, DamageType );
-				
+
 				const float DebuffDamage = Spec.GetSetByCallerMagnitude( Tags.Debuff_Properties_Damage, false, -1.f );
 				UAuraAbilitySystemLibrary::SetDebuffDamage( ContextHandle, DebuffDamage );
-				
+
 				const float DebuffDuration = Spec.GetSetByCallerMagnitude( Tags.Debuff_Properties_Duration, false, -1.f );
 				UAuraAbilitySystemLibrary::SetDebuffDuration( ContextHandle, DebuffDuration );
-				
+
 				const float DebuffFrequency = Spec.GetSetByCallerMagnitude( Tags.Debuff_Properties_Frequency, false, -1.f );
 				UAuraAbilitySystemLibrary::SetDebuffFrequency( ContextHandle, DebuffFrequency );
 			}
@@ -137,12 +138,12 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 	const UAbilitySystemComponent* SourceAbilitySystemComponent = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetAbilitySystemComponent = ExecutionParams.GetTargetAbilitySystemComponent();
 
-	const AActor* SourceAvatar = SourceAbilitySystemComponent
-		                             ? SourceAbilitySystemComponent->GetAvatarActor()
-		                             : nullptr;
-	const AActor* TargetAvatar = TargetAbilitySystemComponent
-		                             ? TargetAbilitySystemComponent->GetAvatarActor()
-		                             : nullptr;
+	AActor* SourceAvatar = SourceAbilitySystemComponent
+		                       ? SourceAbilitySystemComponent->GetAvatarActor()
+		                       : nullptr;
+	AActor* TargetAvatar = TargetAbilitySystemComponent
+		                       ? TargetAbilitySystemComponent->GetAvatarActor()
+		                       : nullptr;
 	int32 SourceLevel = 1;
 	if (SourceAvatar->Implements<UCombatInterface>())
 	{
@@ -156,6 +157,7 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 	}
 
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
 
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
@@ -166,7 +168,6 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 
 	// Debuff
 	DetermineDebuff( ExecutionParams, Spec, EvaluateParameters, TagsToCaptureDefs );
-
 
 	// Get Damage Set by Caller Magnitude
 	float Damage = 0.f;
@@ -188,6 +189,28 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 
 		DamageTypeValue *= (100.f - Resistance) * 0.01f;
 
+		if (UAuraAbilitySystemLibrary::IsRadialDamage( EffectContextHandle ))
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>( TargetAvatar ))
+			{
+				CombatInterface->GetOnDamageDelegate().AddLambda(
+					[&]( const float DamageAmount )
+					{
+						DamageTypeValue = DamageAmount;
+					} );
+			}
+			UGameplayStatics::ApplyRadialDamageWithFalloff( TargetAvatar,
+			                                                DamageTypeValue,
+			                                                0.f,
+			                                                UAuraAbilitySystemLibrary::GetRadialDamageOrigin( EffectContextHandle ),
+			                                                UAuraAbilitySystemLibrary::GetRadialDamageInnerRadius( EffectContextHandle ),
+			                                                UAuraAbilitySystemLibrary::GetRadialDamageOuterRadius( EffectContextHandle ),
+			                                                1.f,
+			                                                UDamageType::StaticClass(),
+			                                                TArray<AActor*>(),
+			                                                SourceAvatar );
+		}
+
 		Damage += DamageTypeValue;
 	}
 
@@ -202,7 +225,6 @@ void UExecCalc_Damage::Execute_Implementation( const FGameplayEffectCustomExecut
 	// Determine if there was a successful Block
 	const bool bBlocked = FMath::RandRange( 1, 100 ) < TargetBlockChance;
 
-	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
 	UAuraAbilitySystemLibrary::SetIsBlockedHit( EffectContextHandle, bBlocked );
 
 	// If Block was successful halve the Damage

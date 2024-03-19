@@ -18,11 +18,11 @@ AAuraCharacterBase::AAuraCharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
-	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>( FName("BurnDebuffComponent") );
+	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>( FName( "BurnDebuffComponent" ) );
 	BurnDebuffComponent->SetupAttachment( GetRootComponent() );
 	BurnDebuffComponent->DebuffTag = GameplayTags.Debuff_Burn;
 
-	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>( FName("StunDebuffComponent") );
+	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>( FName( "StunDebuffComponent" ) );
 	StunDebuffComponent->SetupAttachment( GetRootComponent() );
 	StunDebuffComponent->DebuffTag = GameplayTags.Debuff_Stun;
 
@@ -51,9 +51,9 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& 
 {
 	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
 
-	DOREPLIFETIME(AAuraCharacterBase, bIsBurned);
-	DOREPLIFETIME(AAuraCharacterBase, bIsStunned);
-	DOREPLIFETIME(AAuraCharacterBase, bIsBeingShocked);
+	DOREPLIFETIME( AAuraCharacterBase, bIsBurned );
+	DOREPLIFETIME( AAuraCharacterBase, bIsStunned );
+	DOREPLIFETIME( AAuraCharacterBase, bIsBeingShocked );
 }
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
@@ -66,6 +66,14 @@ void AAuraCharacterBase::Tick( float DeltaSeconds )
 	Super::Tick( DeltaSeconds );
 
 	EffectAttachComponent->SetWorldRotation( FRotator::ZeroRotator );
+}
+
+float AAuraCharacterBase::TakeDamage( float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+                                      AActor* DamageCauser )
+{
+	const float DamageTaken = Super::TakeDamage( DamageAmount, DamageEvent, EventInstigator, DamageCauser );
+	OnDamage.Broadcast( DamageTaken );
+	return DamageTaken;
 }
 
 UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation()
@@ -82,6 +90,11 @@ void AAuraCharacterBase::Die( const FVector& DeathImpulse )
 FOnDeathSignature& AAuraCharacterBase::GetOnDeathDelegate()
 {
 	return OnDeath;
+}
+
+FOnDamageSignature& AAuraCharacterBase::GetOnDamageDelegate()
+{
+	return OnDamage;
 }
 
 bool AAuraCharacterBase::IsDead_Implementation() const
@@ -188,7 +201,6 @@ void AAuraCharacterBase::OnRep_Burned()
 
 void AAuraCharacterBase::OnRep_Stunned()
 {
-	
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
@@ -215,7 +227,7 @@ void AAuraCharacterBase::AddCharacterAbilities() const
 	if (!HasAuthority()) return;
 
 	UAuraAbilitySystemComponent* AuraAbilitySystemComponent = CastChecked<UAuraAbilitySystemComponent>( AbilitySystemComponent );
-	
+
 	AuraAbilitySystemComponent->AddCharacterAbilities( StartupAbilities );
 	AuraAbilitySystemComponent->AddCharacterPassiveAbilities( StartupPassiveAbilities );
 }
