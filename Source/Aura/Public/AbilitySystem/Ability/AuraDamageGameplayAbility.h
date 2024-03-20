@@ -24,7 +24,13 @@ public:
 	/** Creates FDamageEffectParams struct with all relevant data */
 	UFUNCTION( BlueprintPure )
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults( AActor* TargetActor = nullptr,
-	                                                             const FVector InRadialDamageOrigin = FVector::ZeroVector ) const;
+	                                                             const FVector InRadialDamageOrigin = FVector::ZeroVector,
+	                                                             const bool bOverrideKnockbackDirection = false,
+	                                                             FVector KnockbackDirectionOverride = FVector::ZeroVector,
+	                                                             const bool bOverrideDeathImpulse = false,
+	                                                             FVector DeathImpulseDirectionOverride = FVector::ZeroVector,
+	                                                             const bool bOverridePitch = false,
+	                                                             const float PitchOverride = 0.f) const;
 
 	/** Returns amount of damage for current ability level */
 	UFUNCTION( BlueprintPure )
