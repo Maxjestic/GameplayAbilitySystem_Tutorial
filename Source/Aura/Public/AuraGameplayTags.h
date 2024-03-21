@@ -100,6 +100,7 @@ public:
 	FGameplayTag Abilities_HitReact;
 	
 	FGameplayTag Abilities_Fire_FireBolt;
+	FGameplayTag Abilities_Fire_FireBlast;
 	
 	FGameplayTag Abilities_Lightning_Electrocute;
 	
