@@ -40,13 +40,15 @@ public:
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
-	void OnHit();
 	virtual void Destroyed() override;
 	//~ End AActor Interface
 
+	/** Called when projectile hits something */
+	void OnHit();
+	
 	/** On overlap callback */
 	UFUNCTION()
-	void OnSphereOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	virtual void OnSphereOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                      int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult );
 	
 	/** Collision sphere component */
