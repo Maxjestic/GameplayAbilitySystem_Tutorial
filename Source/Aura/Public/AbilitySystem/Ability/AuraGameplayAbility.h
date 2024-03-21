@@ -19,11 +19,8 @@ public:
 	UPROPERTY( EditDefaultsOnly, Category="Input" )
 	FGameplayTag StartupInputTag;
 
-	/** Returns spell description for given level */
-	virtual FString GetDescription( const int32 Level );
-
-	/** Returns spell description for next level */
-	virtual FString GetNextLevelDescription( const int32 Level );
+	/** Returns spell description for given or following given level */
+	virtual FString GetDescription( const int32 Level, const bool bForNextLevel = false);
 
 	/** Returns locked description */
 	static FString GetLockedDescription( const int32 Level );

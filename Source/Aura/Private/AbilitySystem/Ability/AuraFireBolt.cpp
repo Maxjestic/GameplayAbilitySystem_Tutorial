@@ -7,18 +7,30 @@
 #include "Actor/AuraProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
-FString UAuraFireBolt::GetDescription( const int32 Level )
+FString UAuraFireBolt::GetDescription( const int32 Level, const bool bForNextLevel )
 {
-	const float ManaCost = FMath::Abs( GetManaCost( Level ) );
-	const float Cooldown = GetCooldown( Level );
-	const FString Bolts = Level == 1
-		                      ? FString::Printf( TEXT( "a bolt" ) )
-		                      : FString::Printf( TEXT( "%d bolts" ), FMath::Min( Level, MaxNumProjectiles ) );
-	const float ScaledDamage = Damage.GetValueAtLevel( Level );
+	int32 DescriptionLevel;
+	FString Title;
+	if (bForNextLevel)
+	{
+		DescriptionLevel = Level + 1;
+		Title = FString::Printf( TEXT( "Next Level" ) );
+	}
+	else
+	{
+		DescriptionLevel = Level;
+		Title = FString::Printf( TEXT( "Fire Bolt" ) );
+	}
+	const float ManaCost = FMath::Abs( GetManaCost( DescriptionLevel ) );
+	const float Cooldown = GetCooldown( DescriptionLevel );
+	const FString Bolts = DescriptionLevel == 1
+							  ? FString::Printf( TEXT( "a bolt" ) )
+							  : FString::Printf( TEXT( "%d bolts" ), FMath::Min( DescriptionLevel, MaxNumProjectiles ) );
+	const float ScaledDamage = Damage.GetValueAtLevel( DescriptionLevel );
 
 	return FString::Printf( TEXT(
 		// Title
-		"<Title>Fire Bolt</>\n\n"
+		"<Title>%s</>\n\n"
 
 		// Details
 		"<Small>Level: </><Level>%d</>\n"
@@ -26,39 +38,14 @@ FString UAuraFireBolt::GetDescription( const int32 Level )
 		"<Small>Cooldown: </><Cooldown>%.1f</><Small>s</>\n\n"
 
 		// Description
-		"<Default>Launches %s of fire, exploding on impact and dealing </><Damage>%.2f</>"
-		"<Default> fire damage with a chance to burn.</>" ),
-	                        Level,
-	                        ManaCost,
-	                        Cooldown,
-	                        *Bolts,
-	                        ScaledDamage );
-}
-
-FString UAuraFireBolt::GetNextLevelDescription( const int32 Level )
-{
-	const int32 NextLevel = Level + 1;
-	const float ManaCost = FMath::Abs( GetManaCost( NextLevel ) );
-	const float Cooldown = GetCooldown( NextLevel );
-	const float ScaledDamage = Damage.GetValueAtLevel( NextLevel );
-	
-	return FString::Printf( TEXT(
-		// Title
-		"<Title>Next Level:</>\n\n"
-	
-		// Details
-		"<Small>Level: </><Level>%d</>\n"
-		"<Small>Cost: </><ManaCost>%.1f</>\n"
-		"<Small>Cooldown: </><Cooldown>%.1f</><Small>s</>\n\n"
-	
-		// Description
-		"<Default>Launches %d bolts of fire, exploding on impact and dealing: </><Damage>%.2f</>"
-		"<Default> fire damage with a chance to burn.</>" ),
-	                        NextLevel,
-	                        ManaCost,
-	                        Cooldown,
-	                        FMath::Min( NextLevel, MaxNumProjectiles ),
-	                        ScaledDamage );
+		"<Default>Launches %s of fire, exploding on impact and dealing</><Damage> %.2f </>"
+		"<Default>fire damage with a chance to burn.</>" ),
+							*Title,
+							DescriptionLevel,
+							ManaCost,
+							Cooldown,
+							*Bolts,
+							ScaledDamage );
 }
 
 void UAuraFireBolt::SpawnProjectiles( const FVector& ProjectileTargetLocation, const FGameplayTag SocketTag, const bool bOverridePitch,

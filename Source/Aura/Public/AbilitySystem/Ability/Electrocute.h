@@ -16,8 +16,7 @@ class AURA_API UElectrocute : public UAuraBeamSpell
 	
 public:
 	//~ Begin UAuraGameplayAbility Interface
-	virtual FString GetDescription( const int32 Level ) override;
-	virtual FString GetNextLevelDescription( const int32 Level ) override;
+	virtual FString GetDescription(const int32 Level, const bool bForNextLevel) override;
 	//~ End UAuraGameplayAbility Interface
 	
 };
