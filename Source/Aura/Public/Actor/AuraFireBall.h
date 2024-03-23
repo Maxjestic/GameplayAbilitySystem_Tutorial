@@ -23,6 +23,10 @@ public:
 	UPROPERTY( BlueprintReadOnly )
 	TObjectPtr<AActor> ReturnToActor;
 
+	/** Damage effect params for explosion of the projectile */
+	UPROPERTY( BlueprintReadWrite )
+	FDamageEffectParams ExplosionDamageParams;
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;

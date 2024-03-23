@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
 #include "Data/CharacterClassInfo.h"
@@ -28,11 +29,10 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-
 	/**
 	 * Widget Controller
 	 */
-	
+
 	/** Creates Widget Controller Params, returns false if failed */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
 	static bool MakeWidgetControllerParams( const UObject* WorldContextObject, FWidgetControllerParams& OutWidgetControllerParams,
@@ -50,11 +50,11 @@ public:
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject") )
 	static USpellMenuWidgetController* GetSpellMenuWidgetController( const UObject* WorldContextObject );
 
-	
+
 	/**
 	 * Ability system class defaults
 	 */
-	
+
 	/** Initializes default attribute values for enemies */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static void InitializeDefaultAttributes( const UObject* WorldContextObject, ECharacterClass CharacterClass,
@@ -84,7 +84,7 @@ public:
 
 	/** Returns true if hit was critical from FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
-	static bool IsCriticalHit( const FGameplayEffectContextHandle& EffectContextHandle );	
+	static bool IsCriticalHit( const FGameplayEffectContextHandle& EffectContextHandle );
 
 	/** Returns true if debuff was successful from FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
@@ -92,7 +92,7 @@ public:
 
 	/** Returns debuff damage from FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
-	static float GetDebuffDamage( const FGameplayEffectContextHandle& EffectContextHandle );	
+	static float GetDebuffDamage( const FGameplayEffectContextHandle& EffectContextHandle );
 
 	/** Returns debuff duration from FAuraGameplayEffectContext */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
@@ -116,19 +116,19 @@ public:
 
 	/** Returns true if damage is considered radial */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
-	static bool IsRadialDamage(const FGameplayEffectContextHandle& EffectContextHandle);
+	static bool IsRadialDamage( const FGameplayEffectContextHandle& EffectContextHandle );
 
 	/** Returns inner radius of radial damage */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
-	static float GetRadialDamageInnerRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+	static float GetRadialDamageInnerRadius( const FGameplayEffectContextHandle& EffectContextHandle );
 
 	/** Returns outer radius of radial damage */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
-	static float GetRadialDamageOuterRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+	static float GetRadialDamageOuterRadius( const FGameplayEffectContextHandle& EffectContextHandle );
 
 	/** Returns origin location of radial damage */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
-	static FVector GetRadialDamageOrigin(const FGameplayEffectContextHandle& EffectContextHandle);	
+	static FVector GetRadialDamageOrigin( const FGameplayEffectContextHandle& EffectContextHandle );
 
 
 	/**
@@ -186,12 +186,12 @@ public:
 	/** Sets radial damage origin location */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayEffects" )
 	static void SetRadialDamageOrigin( UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InOrigin );
-	
+
 
 	/**
 	 * Gameplay mechanics
 	 */
-	
+
 	/** Fills OutOverlappingActors with all alive players (actors) in given radius */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
 	static void GetLivePlayersWithinRadius( const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors,
@@ -199,7 +199,8 @@ public:
 
 	/** fills OutClosestTargets with given number of closest actors to Origin from Actors */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
-	static void GetClosestTargets( const int32 MaxTargets, const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets, const FVector& Origin );
+	static void GetClosestTargets( const int32 MaxTargets, const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets,
+	                               const FVector& Origin );
 
 	/** Check if two actors are "friends" */
 	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
@@ -221,4 +222,28 @@ public:
 	/** Returns amount of experience reward based on level and class of the character */
 	static int32 GetExperienceRewardForClassAndLevel( const UObject* WorldContextObject, const ECharacterClass CharacterClass,
 	                                                  const int32 CharacterLevel );
+
+	/**
+	 * Damage effect params
+	 */
+
+	/** Sets radial damage parameters in DamageEffectParams */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffects" )
+	static void SetRadialDamageEffectParam( UPARAM( ref )FDamageEffectParams& DamageEffectParams, bool bInIsRadial,
+	                                        const float InInnerRadius, const float InOuterRadius, UPARAM( ref )const FVector& InOrigin );
+
+	/** Sets knockback direction in DamageEffectParams */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffects" )
+	static void SetKnockbackDirection( UPARAM( ref )FDamageEffectParams& DamageEffectParams, UPARAM( ref )FVector& InKnockbackDirection,
+	                                   const float Magnitude = 0.f );
+
+	/** Sets death impulse direction in DamageEffectParams */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffects" )
+	static void SetDeathImpulseDirection( UPARAM( ref )FDamageEffectParams& DamageEffectParams, UPARAM( ref )FVector& InImpulseDirection,
+	                                      const float Magnitude = 0.f );
+
+	/** Sets target's ability system component in DamageEffectParams */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffects" )
+	static void SetTargetAbilitySystemComponentEffectParams( UPARAM( ref )FDamageEffectParams& DamageEffectParams,
+	                                                   UAbilitySystemComponent* InAbilitySystemComponent );
 };

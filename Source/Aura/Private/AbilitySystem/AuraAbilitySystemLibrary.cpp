@@ -380,7 +380,7 @@ void UAuraAbilitySystemLibrary::SetRadialDamageOuterRadius( FGameplayEffectConte
 }
 
 void UAuraAbilitySystemLibrary::SetRadialDamageOrigin( FGameplayEffectContextHandle& EffectContextHandle, const FVector& InOrigin )
-{	
+{
 	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		AuraEffectContext->SetRadialDamageOrigin( InOrigin );
@@ -462,7 +462,7 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffect( const
 	const AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	EffectContextHandle.AddSourceObject( SourceAvatarActor );
-	
+
 	SetDeathImpulse( EffectContextHandle, DamageEffectParams.DeathImpulse );
 	SetKnockbackForce( EffectContextHandle, DamageEffectParams.KnockbackForce );
 
@@ -559,4 +559,45 @@ int32 UAuraAbilitySystemLibrary::GetExperienceRewardForClassAndLevel( const UObj
 	const FCharacterClassDefaultInfo& ClassDefaultInfo = CharacterClassInfo->GetClassDefaultInfo( CharacterClass );
 	const float ExperienceReward = ClassDefaultInfo.ExperienceReward.GetValueAtLevel( CharacterLevel );
 	return static_cast<int32>(ExperienceReward);
+}
+
+void UAuraAbilitySystemLibrary::SetRadialDamageEffectParam( FDamageEffectParams& DamageEffectParams, const bool bInIsRadial,
+                                                            const float InInnerRadius, const float InOuterRadius, const FVector& InOrigin )
+{
+	DamageEffectParams.bIsRadialDamage = bInIsRadial;
+	DamageEffectParams.RadialDamageInnerRadius = InInnerRadius;
+	DamageEffectParams.RadialDamageOuterRadius = InOuterRadius;
+	DamageEffectParams.RadialDamageOrigin = InOrigin;
+}
+
+void UAuraAbilitySystemLibrary::SetKnockbackDirection( FDamageEffectParams& DamageEffectParams, FVector& InKnockbackDirection, const float Magnitude )
+{
+	InKnockbackDirection.Normalize();
+	if(Magnitude == 0.f)
+	{
+		DamageEffectParams.KnockbackForce = InKnockbackDirection * DamageEffectParams.KnockbackForceMagnitude;
+	}
+	else
+	{
+		DamageEffectParams.KnockbackForce = InKnockbackDirection * Magnitude;
+	}
+}
+
+void UAuraAbilitySystemLibrary::SetDeathImpulseDirection( FDamageEffectParams& DamageEffectParams, FVector& InImpulseDirection, const float Magnitude )
+{
+	InImpulseDirection.Normalize();
+	if(Magnitude == 0.f)
+	{
+		DamageEffectParams.DeathImpulse = InImpulseDirection * DamageEffectParams.DeathImpulseMagnitude;
+	}
+	else
+	{
+		DamageEffectParams.DeathImpulse = InImpulseDirection * Magnitude;
+	}	
+}
+
+void UAuraAbilitySystemLibrary::SetTargetAbilitySystemComponentEffectParams( FDamageEffectParams& DamageEffectParams,
+	UAbilitySystemComponent* InAbilitySystemComponent )
+{
+	DamageEffectParams.TargetAbilitySystemComponent = InAbilitySystemComponent;
 }
