@@ -165,6 +165,11 @@ public:
 	/** Map assigning Damage Type Tags to Debuff Type Tags */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
 
+	/**
+	 * Gameplay cue tags
+	 */
+	FGameplayTag GameplayCue_FireBlast;
+
 private:
 	/** The only instance of GameplayTags */
 	static FAuraGameplayTags GameplayTags;

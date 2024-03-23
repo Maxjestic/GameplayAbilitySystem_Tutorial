@@ -45,7 +45,7 @@ protected:
 
 	/** Called when projectile hits something */
 	UFUNCTION( BlueprintCallable )
-	void OnHit();
+	virtual void OnHit();
 
 	/** On overlap callback */
 	UFUNCTION()
@@ -58,6 +58,10 @@ protected:
 	/** Collision sphere component */
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<USphereComponent> Sphere;
+
+	/** Looping sound component used to stop playing that sound */
+	UPROPERTY()
+	TObjectPtr<UAudioComponent> LoopingSoundComponent;
 
 	/** Did effects got taken care of */
 	bool bHit = false;
@@ -74,10 +78,6 @@ private:
 	/** Looping sound when projectile flies */
 	UPROPERTY( EditAnywhere )
 	TObjectPtr<USoundBase> LoopingSound;
-
-	/** Looping sound component used to stop playing that sound */
-	UPROPERTY()
-	TObjectPtr<UAudioComponent> LoopingSoundComponent;
 
 	/** LifeSpan of the projectile */
 	UPROPERTY( EditDefaultsOnly )
