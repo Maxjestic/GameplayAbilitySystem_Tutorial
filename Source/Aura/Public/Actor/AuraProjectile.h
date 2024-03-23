@@ -44,13 +44,14 @@ protected:
 	//~ End AActor Interface
 
 	/** Called when projectile hits something */
+	UFUNCTION( BlueprintCallable )
 	void OnHit();
-	
+
 	/** On overlap callback */
 	UFUNCTION()
 	virtual void OnSphereOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                      int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult );
-	
+	                              int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult );
+
 	/** Collision sphere component */
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<USphereComponent> Sphere;
