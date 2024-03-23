@@ -52,9 +52,15 @@ protected:
 	virtual void OnSphereOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                              int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult );
 
+	/** Ture if overlap is valid */
+	bool IsValidOverlap( const AActor* OtherActor );
+
 	/** Collision sphere component */
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<USphereComponent> Sphere;
+
+	/** Did effects got taken care of */
+	bool bHit = false;
 
 private:
 	/** Niagara effect for impact */
@@ -72,9 +78,6 @@ private:
 	/** Looping sound component used to stop playing that sound */
 	UPROPERTY()
 	TObjectPtr<UAudioComponent> LoopingSoundComponent;
-
-	/** Did effects got taken care of */
-	bool bHit = false;
 
 	/** LifeSpan of the projectile */
 	UPROPERTY( EditDefaultsOnly )
