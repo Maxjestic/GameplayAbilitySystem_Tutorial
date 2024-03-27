@@ -14,4 +14,8 @@ class AURA_API ULoadScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	/** Blueprint implemented and called in C++ to initialize the widget with all of its important stuff */
+	UFUNCTION( BlueprintImplementableEvent, BlueprintCallable )
+	void BlueprintInitializeWidget();
 };
