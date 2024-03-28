@@ -30,8 +30,31 @@ public:
 	UPROPERTY( EditDefaultsOnly )
 	TSubclassOf<UMVVM_LoadSlot> LoadSlotViewModelClass;
 
+	/**
+	 * Called when new slot button is pressed
+	 * @param Slot index of caller slot
+	 * @param EnteredName name provided by player
+	 */
+	UFUNCTION( BlueprintCallable )
+	void NewSlotButtonPressed( int32 Slot, const FString& EnteredName );
+
+	/**
+	 * Called when new game button is pressed
+	 * Switches to widget where player can set name
+	 * @param Slot index of caller slot
+	 */
+	UFUNCTION( BlueprintCallable )
+	void NewGameButtonPressed( int32 Slot );
+
+	/**
+	 * Called when select slot button is pressed
+	 * @param Slot index of caller slot
+	 */
+	UFUNCTION( BlueprintCallable )
+	void SelectSlotButtonPressed( int32 Slot );
+
 private:
-	/** Container for all load slot ViewModels */
+	/** Container for all load slot ViewModels for given widget switcher */
 	UPROPERTY()
 	TMap<int32, UMVVM_LoadSlot*> LoadSlots;
 

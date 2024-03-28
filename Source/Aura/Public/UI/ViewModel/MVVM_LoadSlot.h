@@ -6,8 +6,11 @@
 #include "MVVMViewModelBase.h"
 #include "MVVM_LoadSlot.generated.h"
 
+/** Broadcast widget switcher index */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FSetWidgetSwitcherIndex, int32, WidgetSwitcherIndex );
+
 /**
- * 
+ * ViewModel for load slots
  */
 UCLASS()
 class AURA_API UMVVM_LoadSlot : public UMVVMViewModelBase
@@ -15,6 +18,13 @@ class AURA_API UMVVM_LoadSlot : public UMVVMViewModelBase
 	GENERATED_BODY()
 
 public:
+	/** Broadcasts index to witch widget switcher should switch */
+	UPROPERTY( BlueprintAssignable )
+	FSetWidgetSwitcherIndex SetWidgetSwitcherIndex;
+
+	/** Initializes slot */
+	void InitializeSlot();
+	
 	/** Simple Accessors */
 	void SetLoadSlotName( const FString& InLoadSlotName );
 	FString GetLoadSlotName() const { return LoadSlotName; }
