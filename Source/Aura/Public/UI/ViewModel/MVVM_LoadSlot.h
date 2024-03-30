@@ -25,20 +25,23 @@ public:
 	/** Initializes slot */
 	void InitializeSlot();
 
-	/** Name provided by player */
-	UPROPERTY()
-	FString PlayerName;
+	/** Simple Accessors */
+	void SetLoadSlotName( const FString& InLoadSlotName );
+	FString GetLoadSlotName() const { return LoadSlotName; }
+
+	void SetPlayerName( const FString& InPlayerName );
+	FString GetPlayerName() const { return PlayerName; }
 
 	/** Index associated with save slot */
 	UPROPERTY()
 	FString SlotIndex;
 
-	/** Simple Accessors */
-	void SetLoadSlotName( const FString& InLoadSlotName );
-	FString GetLoadSlotName() const { return LoadSlotName; }
-
 private:
 	/** Name associated with save slot */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess="true") )
 	FString LoadSlotName;
+
+	/** Name provided by player */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess="true") )
+	FString PlayerName;
 };
