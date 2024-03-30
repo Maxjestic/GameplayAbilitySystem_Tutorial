@@ -3,6 +3,8 @@
 
 #include "UI/ViewModel/MVVM_LoadScreen.h"
 
+#include "Game/AuraGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 
 void UMVVM_LoadScreen::InitializeLoadSlots()
@@ -34,6 +36,12 @@ void UMVVM_LoadScreen::SetNumLoadSlots( const int32 InNumLoadSlots )
 
 void UMVVM_LoadScreen::NewSlotButtonPressed( int32 Slot, const FString& EnteredName )
 {
+	if (AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( this ) ))
+	{
+		LoadSlots[Slot]->PlayerName = EnteredName;
+		AuraGameMode->SaveSlotData( LoadSlots[Slot], Slot );
+		LoadSlots[Slot]->InitializeSlot();
+	}
 }
 
 void UMVVM_LoadScreen::NewGameButtonPressed( int32 Slot )
