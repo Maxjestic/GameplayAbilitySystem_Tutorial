@@ -49,13 +49,17 @@ void UMVVM_LoadScreen::NewSlotButtonPressed( const int32 Slot, const FString& En
 	}
 }
 
-void UMVVM_LoadScreen::NewGameButtonPressed( int32 Slot )
+void UMVVM_LoadScreen::NewGameButtonPressed( const int32 Slot )
 {
 	LoadSlots[Slot]->SetWidgetSwitcherIndex.Broadcast( 1 );
 }
 
-void UMVVM_LoadScreen::SelectSlotButtonPressed( int32 Slot )
+void UMVVM_LoadScreen::SelectSlotButtonPressed( const int32 Slot )
 {
+	for (const TTuple<int, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	{
+		LoadSlot.Value->EnableSelectSlotButton.Broadcast( Slot != LoadSlot.Key );
+	}
 }
 
 void UMVVM_LoadScreen::LoadData()

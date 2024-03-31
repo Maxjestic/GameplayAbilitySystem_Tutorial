@@ -44,14 +44,14 @@ public:
 	 * @param Slot index of caller slot
 	 */
 	UFUNCTION( BlueprintCallable )
-	void NewGameButtonPressed( int32 Slot );
+	void NewGameButtonPressed( const int32 Slot );
 
 	/**
 	 * Called when select slot button is pressed
 	 * @param Slot index of caller slot
 	 */
 	UFUNCTION( BlueprintCallable )
-	void SelectSlotButtonPressed( int32 Slot );
+	void SelectSlotButtonPressed( const int32 Slot );
 
 	/** Loads data from saved files to load slots */
 	void LoadData();
