@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "AuraGameModeBase.generated.h"
 
+class ULoadScreenSaveGame;
 class USaveGame;
 class UMVVM_LoadSlot;
 class UAbilityInfo;
@@ -20,8 +21,11 @@ class AURA_API AAuraGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	/** Main function to save game data, returns true if successful */
-	bool SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex );
+	/** Function to save load screen data, returns true if successful */
+	bool SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex ) const;
+
+	/** Function to load saved load screen data to display correct slot data */
+	ULoadScreenSaveGame* GetSaveSlotData( const FString& SlotName, const int32 SlotIndex ) const;
 
 	/** Data asset used to initialize enemy attributes */
 	UPROPERTY( EditDefaultsOnly, Category = "Character Class Defaults" )

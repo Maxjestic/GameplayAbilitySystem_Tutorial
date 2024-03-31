@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MVVMViewModelBase.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "MVVM_LoadSlot.generated.h"
 
 /** Broadcast widget switcher index */
@@ -35,6 +36,10 @@ public:
 	/** Index associated with save slot */
 	UPROPERTY()
 	FString SlotIndex;
+
+	/** Status of the slot */
+	UPROPERTY()
+	TEnumAsByte<ESaveSlotStatus> SlotStatus;
 
 private:
 	/** Name associated with save slot */

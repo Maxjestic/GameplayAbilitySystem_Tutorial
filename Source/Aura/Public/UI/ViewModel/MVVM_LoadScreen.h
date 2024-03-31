@@ -36,7 +36,7 @@ public:
 	 * @param EnteredName name provided by player
 	 */
 	UFUNCTION( BlueprintCallable )
-	void NewSlotButtonPressed( int32 Slot, const FString& EnteredName );
+	void NewSlotButtonPressed( const int32 Slot, const FString& EnteredName );
 
 	/**
 	 * Called when new game button is pressed
@@ -52,6 +52,9 @@ public:
 	 */
 	UFUNCTION( BlueprintCallable )
 	void SelectSlotButtonPressed( int32 Slot );
+
+	/** Loads data from saved files to load slots */
+	void LoadData();
 
 private:
 	/** Container for all load slot ViewModels for given widget switcher */
