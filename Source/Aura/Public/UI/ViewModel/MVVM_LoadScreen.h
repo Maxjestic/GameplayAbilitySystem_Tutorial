@@ -6,6 +6,9 @@
 #include "MVVMViewModelBase.h"
 #include "MVVM_LoadScreen.generated.h"
 
+/** Broadcast to inform about slot selection */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE( FSlotSelected );
+
 class UMVVM_LoadSlot;
 /**
  * MVVM view model class for load screen
@@ -18,6 +21,10 @@ class AURA_API UMVVM_LoadScreen : public UMVVMViewModelBase
 public:
 	/** Initializes load slots */
 	void InitializeLoadSlots();
+
+	/** Broadcasted on select slot button clicked */
+	UPROPERTY( BlueprintAssignable )
+	FSlotSelected SlotSelected;
 
 	UFUNCTION( BlueprintPure )
 	UMVVM_LoadSlot* GetLoadSlotViewModelByIndex( const int32 Index ) const;
