@@ -35,6 +35,10 @@ public:
 	UPROPERTY()
 	FString PlayerName = FString( "Default Name" );
 
+	/** Saved level name */
+	UPROPERTY()
+	FString LevelName = FString( "Default Level Name" );
+
 	/** Saved slot status */
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;

@@ -72,7 +72,7 @@ void UMVVM_LoadScreen::DeleteButtonPressed()
 {
 	if (IsValid( SelectedSlot ))
 	{
-		AAuraGameModeBase::DeleteSlot( SelectedSlot->GetLoadSlotName(), SelectedSlot->SlotIndex );
+		AAuraGameModeBase::DeleteSlotIfExists( SelectedSlot->GetLoadSlotName(), SelectedSlot->SlotIndex );
 		SelectedSlot->SlotStatus = Vacant;
 		SelectedSlot->InitializeSlot();
 		SelectedSlot->EnableSelectSlotButton.Broadcast( true );
@@ -86,10 +86,12 @@ void UMVVM_LoadScreen::LoadData()
 	{
 		const ULoadScreenSaveGame* SaveObject = AuraGameMode->GetSaveSlotData( LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key );
 		const FString PlayerName = SaveObject->PlayerName;
+		const FString LevelName = SaveObject->LevelName;
 		const TEnumAsByte<ESaveSlotStatus> SlotStatus = SaveObject->SaveSlotStatus;
 
 		LoadSlot.Value->SlotStatus = SlotStatus;
 		LoadSlot.Value->SetPlayerName( PlayerName );
+		LoadSlot.Value->SetLevelName( LevelName );
 		LoadSlot.Value->InitializeSlot();
 	}
 }

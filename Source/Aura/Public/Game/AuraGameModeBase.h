@@ -28,7 +28,7 @@ public:
 	ULoadScreenSaveGame* GetSaveSlotData( const FString& SlotName, const int32 SlotIndex ) const;
 
 	/** Deletes saved slot if exists */
-	static void DeleteSlot( const FString& SlotName, const int32 SlotIndex );
+	static void DeleteSlotIfExists( const FString& SlotName, const int32 SlotIndex );
 
 	/** Data asset used to initialize enemy attributes */
 	UPROPERTY( EditDefaultsOnly, Category = "Character Class Defaults" )
