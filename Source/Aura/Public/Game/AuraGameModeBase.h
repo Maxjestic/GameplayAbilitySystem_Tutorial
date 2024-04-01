@@ -41,4 +41,21 @@ public:
 	/** Class used to save game */
 	UPROPERTY( EditDefaultsOnly )
 	TSubclassOf<USaveGame> LoadScreenSaveGameClass;
+	
+	/** Name of starting map */
+	UPROPERTY( EditDefaultsOnly )
+	FString DefaultLevelName;
+	
+	/** Starting level */
+	UPROPERTY( EditDefaultsOnly )
+	TSoftObjectPtr<UWorld> DefaultLevel;
+
+	/** Map of all levels in game */
+	UPROPERTY( EditDefaultsOnly )
+	TMap<FString, TSoftObjectPtr<UWorld>> Levels;
+
+protected:
+	//~ Begin AActor Interface
+	virtual void BeginPlay() override;
+	//~ End AActor Interface
 };

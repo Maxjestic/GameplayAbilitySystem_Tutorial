@@ -46,6 +46,7 @@ void UMVVM_LoadScreen::NewSlotButtonPressed( const int32 Slot, const FString& En
 		if (AuraGameMode->SaveSlotData( LoadSlots[Slot], Slot ))
 		{
 			LoadSlots[Slot]->SlotStatus = Taken;
+			LoadSlots[Slot]->SetLevelName( AuraGameMode->DefaultLevelName );
 		}
 
 		LoadSlots[Slot]->InitializeSlot();
