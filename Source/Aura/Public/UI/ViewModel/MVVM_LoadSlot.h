@@ -42,7 +42,7 @@ public:
 
 	/** Index associated with save slot */
 	UPROPERTY()
-	FString SlotIndex;
+	int32 SlotIndex;
 
 	/** Status of the slot */
 	UPROPERTY()

@@ -10,10 +10,7 @@
 bool AAuraGameModeBase::SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex ) const
 {
 	// If save exists, remove it
-	if (UGameplayStatics::DoesSaveGameExist( LoadSlot->GetLoadSlotName(), SlotIndex ))
-	{
-		UGameplayStatics::DeleteGameInSlot( LoadSlot->GetLoadSlotName(), SlotIndex );
-	}
+	
 
 	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject( LoadScreenSaveGameClass );
 	if (ULoadScreenSaveGame* LoadScreenSaveGame = Cast<ULoadScreenSaveGame>( SaveGameObject ))
@@ -39,4 +36,12 @@ ULoadScreenSaveGame* AAuraGameModeBase::GetSaveSlotData( const FString& SlotName
 	}
 	ULoadScreenSaveGame* LoadScreenSaveGame = Cast<ULoadScreenSaveGame>( SaveGameObject );
 	return LoadScreenSaveGame;
+}
+
+void AAuraGameModeBase::DeleteSlot( const FString& SlotName, const int32 SlotIndex )
+{
+	if (UGameplayStatics::DoesSaveGameExist( SlotName, SlotIndex ))
+	{
+		UGameplayStatics::DeleteGameInSlot( SlotName, SlotIndex );
+	}
 }

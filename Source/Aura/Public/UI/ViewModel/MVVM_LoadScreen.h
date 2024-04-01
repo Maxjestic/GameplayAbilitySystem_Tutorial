@@ -60,6 +60,12 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void SelectSlotButtonPressed( const int32 Slot );
 
+	/**
+	 * Called when delete button in "are you sure?" is pressed
+	 */
+	UFUNCTION( BlueprintCallable )
+	void DeleteButtonPressed();
+
 	/** Loads data from saved files to load slots */
 	void LoadData();
 
@@ -77,6 +83,10 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UMVVM_LoadSlot> LoadSlot_2;
+
+	/** Currently selected load slot */
+	UPROPERTY()
+	TObjectPtr<UMVVM_LoadSlot> SelectedSlot;
 
 	/** Test variable to force mvvm initialization */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess="true") )
