@@ -30,6 +30,9 @@ public:
 	/** Deletes saved slot if exists */
 	static void DeleteSlotIfExists( const FString& SlotName, const int32 SlotIndex );
 
+	/** Handles traveling to map when loading */
+	void TravelToMap(const UMVVM_LoadSlot* Slot);
+
 	/** Data asset used to initialize enemy attributes */
 	UPROPERTY( EditDefaultsOnly, Category = "Character Class Defaults" )
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
@@ -44,15 +47,15 @@ public:
 	
 	/** Name of starting map */
 	UPROPERTY( EditDefaultsOnly )
-	FString DefaultLevelName;
+	FString DefaultMapName;
 	
-	/** Starting level */
+	/** Starting map */
 	UPROPERTY( EditDefaultsOnly )
-	TSoftObjectPtr<UWorld> DefaultLevel;
+	TSoftObjectPtr<UWorld> DefaultMap;
 
-	/** Map of all levels in game */
+	/** Map of all playable maps in game */
 	UPROPERTY( EditDefaultsOnly )
-	TMap<FString, TSoftObjectPtr<UWorld>> Levels;
+	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
 
 protected:
 	//~ Begin AActor Interface

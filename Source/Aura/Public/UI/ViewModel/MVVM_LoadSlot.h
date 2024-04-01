@@ -40,8 +40,8 @@ public:
 	void SetPlayerName( const FString& InPlayerName );
 	FString GetPlayerName() const { return PlayerName; }
 
-	void SetLevelName( const FString& InLevelName );
-	FString GetLevelName() const { return LevelName; }
+	void SetMapName( const FString& InLevelName );
+	FString GetMapName() const { return MapName; }
 
 	/** Index associated with save slot */
 	UPROPERTY()
@@ -62,5 +62,5 @@ private:
 
 	/** Level name */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess="true") )
-	FString LevelName;
+	FString MapName;
 };

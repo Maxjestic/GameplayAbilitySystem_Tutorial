@@ -35,9 +35,9 @@ public:
 	UPROPERTY()
 	FString PlayerName = FString( "Default Name" );
 
-	/** Saved level name */
+	/** Saved map name */
 	UPROPERTY()
-	FString LevelName = FString( "Default Level Name" );
+	FString MapName = FString( "Default Map Name" );
 
 	/** Saved slot status */
 	UPROPERTY()

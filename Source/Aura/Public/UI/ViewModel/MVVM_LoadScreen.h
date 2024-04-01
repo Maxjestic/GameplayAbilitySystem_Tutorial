@@ -60,11 +60,13 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void SelectSlotButtonPressed( const int32 Slot );
 
-	/**
-	 * Called when delete button in "are you sure?" is pressed
-	 */
+	/** Called when delete button in "are you sure?" is pressed */
 	UFUNCTION( BlueprintCallable )
 	void DeleteButtonPressed();
+
+	/** Called when delete button in "are you sure?" is pressed */
+	UFUNCTION( BlueprintCallable )
+	void PlayButtonPressed();
 
 	/** Loads data from saved files to load slots */
 	void LoadData();

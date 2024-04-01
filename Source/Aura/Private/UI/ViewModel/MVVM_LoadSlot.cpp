@@ -19,7 +19,7 @@ void UMVVM_LoadSlot::SetPlayerName( const FString& InPlayerName )
 	UE_MVVM_SET_PROPERTY_VALUE( PlayerName, InPlayerName );
 }
 
-void UMVVM_LoadSlot::SetLevelName( const FString& InLevelName )
+void UMVVM_LoadSlot::SetMapName( const FString& InLevelName )
 {
-	UE_MVVM_SET_PROPERTY_VALUE( LevelName, InLevelName );
+	UE_MVVM_SET_PROPERTY_VALUE( MapName, InLevelName );
 }
