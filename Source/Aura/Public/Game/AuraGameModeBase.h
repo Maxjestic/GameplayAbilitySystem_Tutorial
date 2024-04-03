@@ -21,7 +21,6 @@ class AURA_API AAuraGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-
 	//~ Begin AGameModeBase Interface
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 	//~ End AGameModeBase Interface
@@ -61,6 +60,10 @@ public:
 	/** Map of all playable maps in game */
 	UPROPERTY( EditDefaultsOnly )
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+
+	/** Default tag to find player start */
+	UPROPERTY( EditDefaultsOnly )
+	FName DefaultPlayerStartTag;
 
 protected:
 	//~ Begin AActor Interface
