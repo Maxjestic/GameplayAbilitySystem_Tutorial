@@ -10,8 +10,12 @@
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Game/AuraGameInstance.h"
+#include "Game/AuraGameModeBase.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
@@ -159,20 +163,35 @@ void AAuraCharacter::AddToSpellPoints_Implementation( const int32 InSpellPoints 
 
 void AAuraCharacter::ShowMagicCircle_Implementation( UMaterialInterface* DecalMaterial )
 {
-	if(AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>( GetController() ))
 	{
-		AuraPlayerController->ShowMagicCircle(DecalMaterial);
+		AuraPlayerController->ShowMagicCircle( DecalMaterial );
 		AuraPlayerController->bShowMouseCursor = false;
 	}
 }
 
 void AAuraCharacter::HideMagicCircle_Implementation()
 {
-	if(AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>( GetController() ))
 	{
 		AuraPlayerController->HideMagicCircle();
 		AuraPlayerController->bShowMouseCursor = true;
-	}	
+	}
+}
+
+void AAuraCharacter::SaveProgress_Implementation( const FName& CheckpointTag )
+{
+	if(const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( this ) ))
+	{
+		ULoadScreenSaveGame* SaveData = AuraGameMode->RetrieveInGameSaveData();
+		if(!SaveData)
+		{
+			return;
+		}
+		
+		SaveData->PlayerStartTag = CheckpointTag;
+		AuraGameMode->SaveInGameProgressData( SaveData );
+	}
 }
 
 void AAuraCharacter::OnRep_Burned()
