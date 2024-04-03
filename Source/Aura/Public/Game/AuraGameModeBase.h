@@ -21,6 +21,11 @@ class AURA_API AAuraGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+
+	//~ Begin AGameModeBase Interface
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+	//~ End AGameModeBase Interface
+	
 	/** Function to save load screen data, returns true if successful */
 	bool SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex ) const;
 
