@@ -25,8 +25,8 @@ public:
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 	//~ End AGameModeBase Interface
 	
-	/** Function to save load screen data, returns true if successful */
-	bool SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex ) const;
+	/** Function to save load screen data */
+	void SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex ) const;
 
 	/** Function to load saved load screen data to display correct slot data */
 	ULoadScreenSaveGame* GetSaveSlotData( const FString& SlotName, const int32 SlotIndex ) const;

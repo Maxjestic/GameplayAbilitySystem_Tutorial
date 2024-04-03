@@ -51,6 +51,10 @@ public:
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SlotStatus;
 
+	/** Tag for player start to spawn on */
+	UPROPERTY()
+	FName PlayerStartTag;
+
 private:
 	/** Name associated with save slot */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess="true") )

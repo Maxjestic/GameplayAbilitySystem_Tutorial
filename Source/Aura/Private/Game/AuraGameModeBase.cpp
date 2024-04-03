@@ -31,21 +31,20 @@ AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation( AController* Player
 	return nullptr;
 }
 
-bool AAuraGameModeBase::SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex ) const
+void AAuraGameModeBase::SaveSlotData( const UMVVM_LoadSlot* LoadSlot, const int32 SlotIndex ) const
 {
 	// If save exists, remove it
 	DeleteSlotIfExists( LoadSlot->GetLoadSlotName(), SlotIndex );
 
 	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject( LoadScreenSaveGameClass );
-	if (ULoadScreenSaveGame* LoadScreenSaveGame = Cast<ULoadScreenSaveGame>( SaveGameObject ))
-	{
-		LoadScreenSaveGame->PlayerName = LoadSlot->GetPlayerName();
-		LoadScreenSaveGame->SaveSlotStatus = Taken;
-		LoadScreenSaveGame->MapName = LoadSlot->GetMapName();
-		return UGameplayStatics::SaveGameToSlot( LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex );
-	}
+	ULoadScreenSaveGame* LoadScreenSaveGame = Cast<ULoadScreenSaveGame>( SaveGameObject );
 
-	return false;
+	LoadScreenSaveGame->PlayerName = LoadSlot->GetPlayerName();
+	LoadScreenSaveGame->SaveSlotStatus = Taken;
+	LoadScreenSaveGame->MapName = LoadSlot->GetMapName();
+	LoadScreenSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
+	
+	UGameplayStatics::SaveGameToSlot( LoadScreenSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex );
 }
 
 ULoadScreenSaveGame* AAuraGameModeBase::GetSaveSlotData( const FString& SlotName, const int32 SlotIndex ) const

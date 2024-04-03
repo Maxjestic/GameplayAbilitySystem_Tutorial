@@ -42,4 +42,8 @@ public:
 	/** Saved slot status */
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
+
+	/** Saved tag for player start */
+	UPROPERTY()
+	FName PlayerStartTag;
 };
