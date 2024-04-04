@@ -96,15 +96,6 @@ public:
 	UPROPERTY( Replicated, BlueprintReadOnly )
 	bool bIsBeingShocked = false;
 
-	/**
-	 * Rep notifies
-	 */
-	UFUNCTION()
-	virtual void OnRep_Burned();
-
-	UFUNCTION()
-	virtual void OnRep_Stunned();
-
 protected:
 	/** A Function that initializes Ability Actor Info for AbilitySystemComponent */
 	virtual void InitAbilityActorInfo();
@@ -128,6 +119,15 @@ protected:
 
 	/** Callback function when stun tag changes */
 	virtual void StunTagChanged( const FGameplayTag CallbackTag, int32 NewCount );
+
+	/**
+	 * Rep notifies
+	 */
+	UFUNCTION()
+	virtual void OnRep_Burned();
+
+	UFUNCTION()
+	virtual void OnRep_Stunned();
 
 	/** The skeletal mesh associated with this character's weapon */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Combat" )

@@ -47,6 +47,10 @@ public:
 	UPROPERTY()
 	FName PlayerStartTag;
 
+	/** Used to determine if default attributes and abilities should be loaded in */
+	UPROPERTY()
+	bool bFirstTimeLoadIn = true;
+
 	/**
 	 * Player related
 	 */

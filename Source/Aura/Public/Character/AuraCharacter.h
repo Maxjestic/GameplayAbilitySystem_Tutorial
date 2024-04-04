@@ -49,13 +49,16 @@ public:
 	virtual void HideMagicCircle_Implementation() override;
 	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;
 	//~ End Player Interface
-	
+
+protected:
 	//~ Begin AAuraCharacterBase Interface
 	virtual void OnRep_Burned() override;
 	virtual void OnRep_Stunned() override;
 	//~ End AAuraCharacterBase Interface
 
-protected:
+	/** Loads character data from disk */
+	void LoadProgress();
+	
 	/** Gameplay effect initializing primary attributes for the character */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Attributes" )
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;

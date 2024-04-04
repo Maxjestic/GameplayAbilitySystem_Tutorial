@@ -11,7 +11,6 @@
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Game/AuraGameInstance.h"
 #include "Game/AuraGameModeBase.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -54,6 +53,9 @@ void AAuraCharacter::PossessedBy( AController* NewController )
 
 	// Init ability actor info for the server
 	InitAbilityActorInfo();
+	LoadProgress();
+
+	// TODO: Load in abilities from disk
 	AddCharacterAbilities();
 }
 
@@ -191,6 +193,7 @@ void AAuraCharacter::SaveProgress_Implementation( const FName& CheckpointTag )
 		}
 
 		SaveData->PlayerStartTag = CheckpointTag;
+		SaveData->bFirstTimeLoadIn = false;
 
 		if (const AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ))
 		{
@@ -246,6 +249,36 @@ void AAuraCharacter::OnRep_Stunned()
 	}
 }
 
+void AAuraCharacter::LoadProgress()
+{
+	if (const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( this ) ))
+	{
+		ULoadScreenSaveGame* SaveData = AuraGameMode->RetrieveInGameSaveData();
+		if (!SaveData)
+		{
+			return;
+		}
+
+		if (AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ))
+		{
+			AuraPlayerState->SetLevel( SaveData->PlayerLevel );
+			AuraPlayerState->SetExperience( SaveData->ExperiencePoints );
+			AuraPlayerState->SetAttributePoints( SaveData->AttributePoints );
+			AuraPlayerState->SetSpellPoints( SaveData->SpellPoints );
+		}
+
+		if (SaveData->bFirstTimeLoadIn)
+		{
+			InitializeDefaultAttributes();
+			AddCharacterAbilities();
+		}
+		else
+		{
+			
+		}
+	}
+}
+
 void AAuraCharacter::InitAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
@@ -272,8 +305,6 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay( AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet );
 		}
 	}
-
-	InitializeDefaultAttributes();
 }
 
 void AAuraCharacter::InitializeDefaultAttributes() const
