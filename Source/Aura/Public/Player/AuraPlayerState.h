@@ -49,7 +49,7 @@ public:
 
 
 	/** Player Experience getter */
-	FORCEINLINE int32 GetPlayerExperience() const { return Experience; }
+	FORCEINLINE int32 GetExperience() const { return Experience; }
 
 	/** Sets Experience to given amount */
 	void SetExperience( const int32 InExperience );

@@ -15,7 +15,7 @@ enum ESaveSlotStatus
 };
 
 /**
- * saved data from the load screen
+ * SaveGame object specified for Aura
  */
 UCLASS()
 class AURA_API ULoadScreenSaveGame : public USaveGame
@@ -31,6 +31,10 @@ public:
 	UPROPERTY()
 	int32 SlotIndex = 0;
 
+	/** Saved slot status */
+	UPROPERTY()
+	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
+
 	/** Saved player name */
 	UPROPERTY()
 	FString PlayerName = FString( "Default Name" );
@@ -39,11 +43,43 @@ public:
 	UPROPERTY()
 	FString MapName = FString( "Default Map Name" );
 
-	/** Saved slot status */
-	UPROPERTY()
-	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
-
 	/** Saved tag for player start */
 	UPROPERTY()
 	FName PlayerStartTag;
+
+	/**
+	 * Player related
+	 */
+
+	/** Saved player level*/
+	UPROPERTY()
+	int32 PlayerLevel = 0;
+
+	/** Saved experience points*/
+	UPROPERTY()
+	int32 ExperiencePoints = 0;
+
+	/** Saved left spell points*/
+	UPROPERTY()
+	int32 SpellPoints = 0;
+
+	/** Saved left attribute points */
+	UPROPERTY()
+	int32 AttributePoints = 0;
+
+	/** Saved strength attribute value */
+	UPROPERTY()
+	float Strength = 0;
+
+	/** Saved intelligence attribute value */
+	UPROPERTY()
+	float Intelligence = 0;
+
+	/** Saved resilience attribute value */
+	UPROPERTY()
+	float Resilience = 0;
+
+	/** Saved vigor attribute value */
+	UPROPERTY()
+	float Vigor = 0;
 };
