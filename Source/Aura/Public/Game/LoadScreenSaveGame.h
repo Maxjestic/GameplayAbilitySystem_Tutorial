@@ -57,7 +57,7 @@ public:
 
 	/** Saved player level*/
 	UPROPERTY()
-	int32 PlayerLevel = 0;
+	int32 PlayerLevel = 1;
 
 	/** Saved experience points*/
 	UPROPERTY()

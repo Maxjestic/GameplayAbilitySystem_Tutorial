@@ -42,8 +42,9 @@ void UMVVM_LoadScreen::NewSlotButtonPressed( const int32 Slot, const FString& En
 {
 	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( this ) );
 
-	LoadSlots[Slot]->SetPlayerName( EnteredName );
 	LoadSlots[Slot]->SetMapName( AuraGameMode->DefaultMapName );
+	LoadSlots[Slot]->SetPlayerName( EnteredName );
+	LoadSlots[Slot]->SetPlayerLevel( 1 );
 	LoadSlots[Slot]->PlayerStartTag = AuraGameMode->DefaultPlayerStartTag;
 	LoadSlots[Slot]->SlotStatus = Taken;
 
@@ -83,13 +84,13 @@ void UMVVM_LoadScreen::DeleteButtonPressed()
 }
 
 void UMVVM_LoadScreen::PlayButtonPressed()
-{	
+{
 	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( this ) );
 	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>( AuraGameMode->GetGameInstance() );
 	AuraGameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
 	AuraGameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
 	AuraGameInstance->LoadSlotIndex = SelectedSlot->SlotIndex;
-	
+
 	if (IsValid( SelectedSlot ))
 	{
 		AuraGameMode->TravelToMap( SelectedSlot );
@@ -102,14 +103,16 @@ void UMVVM_LoadScreen::LoadData()
 	for (const TTuple<int, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
 		const ULoadScreenSaveGame* SaveObject = AuraGameMode->GetSaveSlotData( LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key );
-		const FString PlayerName = SaveObject->PlayerName;
 		const FString MapName = SaveObject->MapName;
+		const FString PlayerName = SaveObject->PlayerName;
+		const int32 PlayerLevel = SaveObject->PlayerLevel;
 		const TEnumAsByte<ESaveSlotStatus> SlotStatus = SaveObject->SaveSlotStatus;
 		const FName PlayerStartTag = SaveObject->PlayerStartTag;
 
 		LoadSlot.Value->SlotStatus = SlotStatus;
-		LoadSlot.Value->SetPlayerName( PlayerName );
 		LoadSlot.Value->SetMapName( MapName );
+		LoadSlot.Value->SetPlayerName( PlayerName );
+		LoadSlot.Value->SetPlayerLevel( PlayerLevel );
 		LoadSlot.Value->PlayerStartTag = PlayerStartTag;
 		LoadSlot.Value->InitializeSlot();
 	}
