@@ -7,6 +7,7 @@
 #include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "Game/AuraGameModeBase.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
@@ -105,6 +106,55 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes( const UObject* Worl
 		Level,
 		AttributesContextHandle );
 	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf( *VitalAttributeSpecHandle.Data.Get() );
+}
+
+void UAuraAbilitySystemLibrary::InitializeDefaultAttributesFromSavedData( const UObject* WorldContextObject,
+                                                                          UAbilitySystemComponent* AbilitySystemComponent,
+                                                                          ULoadScreenSaveGame* SaveGame )
+{
+	if (const UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo( WorldContextObject ))
+	{
+		const FAuraGameplayTags Tags = FAuraGameplayTags::Get();
+		const AActor* SourceAvatarActor = AbilitySystemComponent->GetAvatarActor();
+		FGameplayEffectContextHandle EffectContextHandle = AbilitySystemComponent->MakeEffectContext();
+		EffectContextHandle.AddSourceObject( SourceAvatarActor );
+
+		const FGameplayEffectSpecHandle EffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(
+			CharacterClassInfo->PrimaryAttributes_SetByCaller,
+			1.f,
+			EffectContextHandle );
+
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+		                                                               Tags.Attributes_Primary_Strength,
+		                                                               SaveGame->Strength );
+
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+		                                                               Tags.Attributes_Primary_Intelligence,
+		                                                               SaveGame->Intelligence );
+
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+		                                                               Tags.Attributes_Primary_Resilience,
+		                                                               SaveGame->Resilience );
+
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( EffectSpecHandle,
+		                                                               Tags.Attributes_Primary_Vigor,
+		                                                               SaveGame->Vigor );
+
+		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf( *EffectSpecHandle.Data );
+
+		const FGameplayEffectSpecHandle SecondaryAttributeSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(
+			CharacterClassInfo->SecondaryAttributes_Infinite,
+			1.f,
+			EffectContextHandle );
+		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf( *SecondaryAttributeSpecHandle.Data.Get() );
+
+		const FGameplayEffectSpecHandle VitalAttributeSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(
+			CharacterClassInfo->VitalAttributes,
+			1.f,
+			EffectContextHandle );
+		
+		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf( *VitalAttributeSpecHandle.Data.Get() );
+	}
 }
 
 void UAuraAbilitySystemLibrary::GiveStartupAbilities( const UObject* WorldContextObject,
@@ -570,10 +620,11 @@ void UAuraAbilitySystemLibrary::SetRadialDamageEffectParam( FDamageEffectParams&
 	DamageEffectParams.RadialDamageOrigin = InOrigin;
 }
 
-void UAuraAbilitySystemLibrary::SetKnockbackDirection( FDamageEffectParams& DamageEffectParams, FVector& InKnockbackDirection, const float Magnitude )
+void UAuraAbilitySystemLibrary::SetKnockbackDirection( FDamageEffectParams& DamageEffectParams, FVector& InKnockbackDirection,
+                                                       const float Magnitude )
 {
 	InKnockbackDirection.Normalize();
-	if(Magnitude == 0.f)
+	if (Magnitude == 0.f)
 	{
 		DamageEffectParams.KnockbackForce = InKnockbackDirection * DamageEffectParams.KnockbackForceMagnitude;
 	}
@@ -583,21 +634,22 @@ void UAuraAbilitySystemLibrary::SetKnockbackDirection( FDamageEffectParams& Dama
 	}
 }
 
-void UAuraAbilitySystemLibrary::SetDeathImpulseDirection( FDamageEffectParams& DamageEffectParams, FVector& InImpulseDirection, const float Magnitude )
+void UAuraAbilitySystemLibrary::SetDeathImpulseDirection( FDamageEffectParams& DamageEffectParams, FVector& InImpulseDirection,
+                                                          const float Magnitude )
 {
 	InImpulseDirection.Normalize();
-	if(Magnitude == 0.f)
+	if (Magnitude == 0.f)
 	{
 		DamageEffectParams.DeathImpulse = InImpulseDirection * DamageEffectParams.DeathImpulseMagnitude;
 	}
 	else
 	{
 		DamageEffectParams.DeathImpulse = InImpulseDirection * Magnitude;
-	}	
+	}
 }
 
 void UAuraAbilitySystemLibrary::SetTargetAbilitySystemComponentEffectParams( FDamageEffectParams& DamageEffectParams,
-	UAbilitySystemComponent* InAbilitySystemComponent )
+                                                                             UAbilitySystemComponent* InAbilitySystemComponent )
 {
 	DamageEffectParams.TargetAbilitySystemComponent = InAbilitySystemComponent;
 }

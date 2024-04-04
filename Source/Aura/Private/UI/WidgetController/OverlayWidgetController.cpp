@@ -22,9 +22,9 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	GetAuraPlayerState()->OnExperienceChangedDelegate.AddUObject( this, &UOverlayWidgetController::OnExperienceChanged );
 	GetAuraPlayerState()->OnLevelChangedDelegate.AddLambda(
-		[this](const int32 NewLevel)
+		[this](const int32 NewLevel, const bool bLevelUp)
 		{
-			OnPlayerLevelChangedDelegate.Broadcast( NewLevel );
+			OnPlayerLevelChangedDelegate.Broadcast( NewLevel, bLevelUp );
 		} );
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(

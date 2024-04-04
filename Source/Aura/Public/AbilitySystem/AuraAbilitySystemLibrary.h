@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemComponent.h"
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
 #include "Data/CharacterClassInfo.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class ULoadScreenSaveGame;
 struct FDamageEffectParams;
 class UAbilityInfo;
 class AAuraHUD;
@@ -55,10 +55,15 @@ public:
 	 * Ability system class defaults
 	 */
 
-	/** Initializes default attribute values for enemies */
+	/** Initializes default attribute values for characters */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static void InitializeDefaultAttributes( const UObject* WorldContextObject, ECharacterClass CharacterClass,
 	                                         float Level, UAbilitySystemComponent* AbilitySystemComponent );
+
+	/** Initializes default attribute from saved data */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
+	static void InitializeDefaultAttributesFromSavedData( const UObject* WorldContextObject,
+	                                                      UAbilitySystemComponent* AbilitySystemComponent, ULoadScreenSaveGame* SaveGame );
 
 	/** Initializes startup abilities for enemy */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
@@ -245,5 +250,5 @@ public:
 	/** Sets target's ability system component in DamageEffectParams */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffects" )
 	static void SetTargetAbilitySystemComponentEffectParams( UPARAM( ref )FDamageEffectParams& DamageEffectParams,
-	                                                   UAbilitySystemComponent* InAbilitySystemComponent );
+	                                                         UAbilitySystemComponent* InAbilitySystemComponent );
 };

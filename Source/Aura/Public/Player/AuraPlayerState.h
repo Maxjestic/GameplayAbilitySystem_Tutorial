@@ -13,6 +13,9 @@ class UAttributeSet;
 /** Broadcasts single value related to player stats */
 DECLARE_MULTICAST_DELEGATE_OneParam( FOnPlayerStatChanged, int32 /*StatValue*/ );
 
+/** Broadcasts level and if its level up */
+DECLARE_MULTICAST_DELEGATE_TwoParams( FOnLevelChanged, int32 /*StatValue*/, bool /*bLevelUp*/ );
+
 /**
  * Player State class used as default player state in game
  */
@@ -34,7 +37,7 @@ public:
 	/** AttributeSet getter */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-
+	
 	/** Player level getter */
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
 
@@ -45,7 +48,7 @@ public:
 	void AddToLevel( const int32 InLevel );
 
 	/** Broadcast Experience amount on change */
-	FOnPlayerStatChanged OnLevelChangedDelegate;
+	FOnLevelChanged OnLevelChangedDelegate;
 
 
 	/** Player Experience getter */
@@ -59,7 +62,7 @@ public:
 
 	/** Broadcast Experience progress percent on change */
 	FOnPlayerStatChanged OnExperienceChangedDelegate;
-	
+
 
 	/** Player attribute points getter */
 	FORCEINLINE int32 GetAttributePoints() const { return AttributePoints; }
@@ -72,7 +75,7 @@ public:
 
 	/** Broadcasts new amount of Attribute Points */
 	FOnPlayerStatChanged OnAttributePointsChangedDelegate;
-	
+
 
 	/** Player Spell Points getter */
 	FORCEINLINE int32 GetSpellPoints() const { return SpellPoints; }

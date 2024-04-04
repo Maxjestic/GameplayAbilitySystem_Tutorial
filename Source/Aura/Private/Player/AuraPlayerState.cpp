@@ -31,13 +31,13 @@ void AAuraPlayerState::SetLevel( const int32 InLevel )
 {
 	Level = InLevel;
 	Level = FMath::Clamp( Level, 0, Level );
-	OnLevelChangedDelegate.Broadcast( Level );
+	OnLevelChangedDelegate.Broadcast( Level, false );
 }
 
 void AAuraPlayerState::AddToLevel( const  int32 InLevel )
 {
 	Level += InLevel;
-	OnLevelChangedDelegate.Broadcast( Level );
+	OnLevelChangedDelegate.Broadcast( Level, true );
 }
 
 void AAuraPlayerState::SetExperience( const int32 InExperience )
@@ -86,7 +86,7 @@ UAbilitySystemComponent* AAuraPlayerState::GetAbilitySystemComponent() const
 
 void AAuraPlayerState::OnRep_Level( int32 OldLevel )
 {
-	OnLevelChangedDelegate.Broadcast( Level );
+	OnLevelChangedDelegate.Broadcast( Level, true );
 }
 
 void AAuraPlayerState::OnRep_Experience( int32 OldExperience )

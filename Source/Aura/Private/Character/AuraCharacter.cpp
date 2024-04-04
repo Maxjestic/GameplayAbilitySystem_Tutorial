@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
@@ -55,8 +56,10 @@ void AAuraCharacter::PossessedBy( AController* NewController )
 	InitAbilityActorInfo();
 	LoadProgress();
 
-	// TODO: Load in abilities from disk
-	AddCharacterAbilities();
+	//if (AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( this ) ))
+	//{
+	//	//AuraGameMode->LoadWorldState();
+	//}
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -249,7 +252,7 @@ void AAuraCharacter::OnRep_Stunned()
 	}
 }
 
-void AAuraCharacter::LoadProgress()
+void AAuraCharacter::LoadProgress() const
 {
 	if (const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( this ) ))
 	{
@@ -259,14 +262,6 @@ void AAuraCharacter::LoadProgress()
 			return;
 		}
 
-		if (AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ))
-		{
-			AuraPlayerState->SetLevel( SaveData->PlayerLevel );
-			AuraPlayerState->SetExperience( SaveData->ExperiencePoints );
-			AuraPlayerState->SetAttributePoints( SaveData->AttributePoints );
-			AuraPlayerState->SetSpellPoints( SaveData->SpellPoints );
-		}
-
 		if (SaveData->bFirstTimeLoadIn)
 		{
 			InitializeDefaultAttributes();
@@ -274,7 +269,16 @@ void AAuraCharacter::LoadProgress()
 		}
 		else
 		{
-			
+			// TODO: Load in abilities from disk
+			if (AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ))
+			{
+				AuraPlayerState->SetLevel( SaveData->PlayerLevel );
+				AuraPlayerState->SetExperience( SaveData->ExperiencePoints );
+				AuraPlayerState->SetAttributePoints( SaveData->AttributePoints );
+				AuraPlayerState->SetSpellPoints( SaveData->SpellPoints );
+			}
+
+			UAuraAbilitySystemLibrary::InitializeDefaultAttributesFromSavedData( this, AbilitySystemComponent, SaveData );
 		}
 	}
 }

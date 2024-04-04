@@ -57,7 +57,7 @@ protected:
 	//~ End AAuraCharacterBase Interface
 
 	/** Loads character data from disk */
-	void LoadProgress();
+	void LoadProgress() const;
 	
 	/** Gameplay effect initializing primary attributes for the character */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Attributes" )

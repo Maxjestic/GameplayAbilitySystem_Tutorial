@@ -61,9 +61,13 @@ public:
 	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults" )
 	TSubclassOf<UGameplayEffect> PrimaryAttributes_SetByCaller;
 
-	/** Gameplay effect setting default secondary attributes, common to all characters */
+	/** Gameplay effect setting default secondary attributes for enemies */
 	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults" )
 	TSubclassOf<UGameplayEffect> SecondaryAttributes;
+
+	/** Gameplay effect setting default secondary attributes for aura */
+	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults" )
+	TSubclassOf<UGameplayEffect> SecondaryAttributes_Infinite;
 
 	/** Gameplay effect setting default vital attributes, common to all characters */
 	UPROPERTY( EditDefaultsOnly, Category = "Common Class Defaults" )
