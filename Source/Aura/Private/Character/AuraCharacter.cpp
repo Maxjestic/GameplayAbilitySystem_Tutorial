@@ -9,6 +9,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
@@ -210,6 +211,33 @@ void AAuraCharacter::SaveProgress_Implementation( const FName& CheckpointTag )
 		SaveData->Intelligence = UAuraAttributeSet::GetIntelligenceAttribute().GetNumericValue( GetAttributeSet() );
 		SaveData->Resilience = UAuraAttributeSet::GetResilienceAttribute().GetNumericValue( GetAttributeSet() );
 		SaveData->Vigor = UAuraAttributeSet::GetVigorAttribute().GetNumericValue( GetAttributeSet() );
+
+		if (!HasAuthority())
+		{
+			return;
+		}
+		
+		UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>( AbilitySystemComponent );
+		FForEachAbility SaveAbilityDelegate;
+		SaveAbilityDelegate.BindLambda( [this, AuraAbilitySystemComponent, SaveData]( const FGameplayAbilitySpec& AbilitySpec )
+		{
+			const FGameplayTag AbilityTag = AuraAbilitySystemComponent->GetAbilityTagFromSpec( AbilitySpec );
+			UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo( this );
+			const FAuraAbilityInfo AuraAbilityInfo = AbilityInfo->FindAbilityInfoForTag( AbilityTag );
+			FSavedAbility SavedAbility;
+			
+			SavedAbility.GameplayAbilityClass = AuraAbilityInfo.AbilityClass;
+			SavedAbility.AbilityTag = AbilityTag;
+			SavedAbility.AbilitySlot = AuraAbilitySystemComponent->GetSlotFromAbilityTag( AbilityTag );
+			SavedAbility.AbilityStatus = AuraAbilitySystemComponent->GetStatusTagFromAbilityTag( AbilityTag );
+			SavedAbility.AbilityType = AuraAbilityInfo.AbilityTypeTag;
+			SavedAbility.AbilityLevel = AbilitySpec.Level;
+			
+
+			SaveData->SavedAbilities.Add( SavedAbility );
+		} );
+
+		AuraAbilitySystemComponent->ForEachAbility( SaveAbilityDelegate );
 
 		AuraGameMode->SaveInGameProgressData( SaveData );
 	}
