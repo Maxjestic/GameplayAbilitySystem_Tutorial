@@ -7,6 +7,7 @@
 #include "AuraAbilitySystemComponent.generated.h"
 
 
+class ULoadScreenSaveGame;
 /** Declaration of delegate broadcasting  */
 DECLARE_MULTICAST_DELEGATE_OneParam( FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/ )
 
@@ -49,6 +50,9 @@ public:
 
 	/** Grants given abilities */
 	void AddCharacterAbilities( const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities );
+
+	/** Grants abilities from saved data */
+	void AddCharacterAbilitiesFromSaveData( ULoadScreenSaveGame* SaveData );
 
 	/** True if startup abilities have been given */
 	bool bStartupAbilitiesGiven = false;

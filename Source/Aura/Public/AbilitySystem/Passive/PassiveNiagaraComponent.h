@@ -7,6 +7,7 @@
 #include "NiagaraComponent.h"
 #include "PassiveNiagaraComponent.generated.h"
 
+class UAuraAbilitySystemComponent;
 /**
  * Niagara component for passive abilities
  */
@@ -33,4 +34,8 @@ protected:
 
 	/** Callback to on when passive ability is activated/deactivated */
 	void OnPassiveActivate(const FGameplayTag& AbilityTag, const bool bActivate);
+
+private:
+	/** Called if activation broadcast was missed */
+	void ActivateIfEquipped(UAuraAbilitySystemComponent* AuraAbilitySystemComponent);
 };

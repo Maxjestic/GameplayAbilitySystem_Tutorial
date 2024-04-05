@@ -216,25 +216,25 @@ void AAuraCharacter::SaveProgress_Implementation( const FName& CheckpointTag )
 		{
 			return;
 		}
-		
+
 		UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>( AbilitySystemComponent );
 		FForEachAbility SaveAbilityDelegate;
+		SaveData->SavedAbilities.Empty();
 		SaveAbilityDelegate.BindLambda( [this, AuraAbilitySystemComponent, SaveData]( const FGameplayAbilitySpec& AbilitySpec )
 		{
 			const FGameplayTag AbilityTag = AuraAbilitySystemComponent->GetAbilityTagFromSpec( AbilitySpec );
 			UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo( this );
 			const FAuraAbilityInfo AuraAbilityInfo = AbilityInfo->FindAbilityInfoForTag( AbilityTag );
 			FSavedAbility SavedAbility;
-			
+
 			SavedAbility.GameplayAbilityClass = AuraAbilityInfo.AbilityClass;
 			SavedAbility.AbilityTag = AbilityTag;
 			SavedAbility.AbilitySlot = AuraAbilitySystemComponent->GetSlotFromAbilityTag( AbilityTag );
 			SavedAbility.AbilityStatus = AuraAbilitySystemComponent->GetStatusTagFromAbilityTag( AbilityTag );
 			SavedAbility.AbilityType = AuraAbilityInfo.AbilityTypeTag;
 			SavedAbility.AbilityLevel = AbilitySpec.Level;
-			
 
-			SaveData->SavedAbilities.Add( SavedAbility );
+			SaveData->SavedAbilities.AddUnique( SavedAbility );
 		} );
 
 		AuraAbilitySystemComponent->ForEachAbility( SaveAbilityDelegate );
@@ -297,7 +297,11 @@ void AAuraCharacter::LoadProgress() const
 		}
 		else
 		{
-			// TODO: Load in abilities from disk
+			if(UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>( AbilitySystemComponent ))
+			{
+				AuraAbilitySystemComponent->AddCharacterAbilitiesFromSaveData( SaveData );
+			}
+
 			if (AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ))
 			{
 				AuraPlayerState->SetLevel( SaveData->PlayerLevel );
