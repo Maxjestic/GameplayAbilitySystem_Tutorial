@@ -17,6 +17,48 @@ enum ESaveSlotStatus
 	Taken
 };
 
+/**
+ * used to save and load actors
+ */
+USTRUCT()
+struct FSavedActor
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName ActorName = FName();
+
+	UPROPERTY()
+	FTransform Transform = FTransform();
+
+	/** Serialized variables from the Actor (only those marked with SaveGame specifier) */
+	UPROPERTY()
+	TArray<uint8> Bytes;
+};
+
+inline bool operator==( const FSavedActor& Left, const FSavedActor& Right )
+{
+	return Left.ActorName == Right.ActorName;
+}
+
+/**
+ * used to save and load maps
+ */
+USTRUCT()
+struct FSavedMap
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FString MapAssetName = FString();
+
+	UPROPERTY()
+	TArray<FSavedActor> SavedActors;
+};
+
+/**
+ * used to save and load abilities
+ */
 USTRUCT( BlueprintType )
 struct FSavedAbility
 {
@@ -39,11 +81,9 @@ struct FSavedAbility
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = "ClassDefaults" )
 	int32 AbilityLevel = 1;
-
-	
 };
 
-inline bool operator==(const FSavedAbility& Left, const FSavedAbility& Right)
+inline bool operator==( const FSavedAbility& Left, const FSavedAbility& Right )
 {
 	return Left.AbilityTag.MatchesTagExact( Right.AbilityTag );
 }
@@ -57,6 +97,14 @@ class AURA_API ULoadScreenSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
+	/**
+	 * Tries to find map with given map name in saved maps
+	 * @param InMapName saved map identifier
+	 * @param OutSavedMap filled with saved map if found
+	 * @return true if map was found
+	 */
+	bool GetSavedMapWithMapName( const FString& InMapName, FSavedMap& OutSavedMap );
+
 	/** Slot name associated with save */
 	UPROPERTY()
 	FString SlotName = FString();
@@ -124,8 +172,16 @@ public:
 	/**
 	 * Abilities
 	 */
-	
+
+	/** Saved abilities */
 	UPROPERTY()
 	TArray<FSavedAbility> SavedAbilities;
-	
+
+	/**
+	 * World
+	 */
+
+	/** Saved maps containing saved actors */
+	UPROPERTY()
+	TArray<FSavedMap> SavedMaps;
 };
