@@ -4,14 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interaction/SaveInterface.h"
 #include "Checkpoint.generated.h"
 
 class USphereComponent;
+
 /**
  * PlayerStart that can save data
  */
 UCLASS()
-class AURA_API ACheckpoint : public APlayerStart
+class AURA_API ACheckpoint : public APlayerStart, public ISaveInterface
 {
 	GENERATED_BODY()
 
@@ -21,6 +23,10 @@ public:
 	 * sets tick, sphere overlap
 	 */
 	ACheckpoint( const FObjectInitializer& ObjectInitializer );
+
+	/** True if player reached this checkpoint already */
+	UPROPERTY(BlueprintReadOnly, SaveGame)
+	bool bReached = false;
 
 protected:
 	//~ Begin AActor Interface
@@ -38,6 +44,7 @@ protected:
 
 	/** Handles glow effect of the static mesh */
 	void HandleGlowEffects();
+
 private:
 	/** Representing checkpoint */
 	UPROPERTY( VisibleAnywhere )
