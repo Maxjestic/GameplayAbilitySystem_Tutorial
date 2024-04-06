@@ -4,6 +4,7 @@
 #include "Game/AuraGameModeBase.h"
 
 #include "EngineUtils.h"
+#include "Aura/AuraLogChannels.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
@@ -60,7 +61,7 @@ void AAuraGameModeBase::SaveInGameProgressData( ULoadScreenSaveGame* SaveObject 
 	UGameplayStatics::SaveGameToSlot( SaveObject, InGameLoadSlotName, InGameLoadSlotIndex );
 }
 
-void AAuraGameModeBase::SaveWorldState( UWorld* World )
+void AAuraGameModeBase::SaveWorldState( UWorld* World ) const
 {
 	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart( World->StreamingLevelsPrefix );
@@ -112,6 +113,60 @@ void AAuraGameModeBase::SaveWorldState( UWorld* World )
 			}
 		}
 		UGameplayStatics::SaveGameToSlot( SaveGame, AuraGameInstance->LoadSlotName, AuraGameInstance->LoadSlotIndex );
+	}
+}
+
+void AAuraGameModeBase::LoadWorldState( UWorld* World ) const
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart( World->StreamingLevelsPrefix );
+
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>( GetGameInstance() );
+	check( AuraGameInstance );
+
+	if (UGameplayStatics::DoesSaveGameExist( AuraGameInstance->LoadSlotName, AuraGameInstance->LoadSlotIndex ))
+	{
+		ULoadScreenSaveGame* SaveGame = Cast<ULoadScreenSaveGame>(
+			UGameplayStatics::LoadGameFromSlot( AuraGameInstance->LoadSlotName, AuraGameInstance->LoadSlotIndex ) );
+
+		if (SaveGame == nullptr)
+		{
+			UE_LOG( LogAura, Error, TEXT("Failed to load slot") )
+			return;
+		}
+
+		for (FActorIterator ActorIterator( World ); ActorIterator; ++ActorIterator)
+		{
+			AActor* Actor = *ActorIterator;
+
+			if (!Actor->Implements<USaveInterface>())
+			{
+				continue;
+			}
+
+			FSavedMap SavedMap;
+			SaveGame->GetSavedMapWithMapName( WorldName, SavedMap );
+			for (FSavedActor SavedActor : SavedMap.SavedActors)
+			{
+				if (SavedActor.ActorName == Actor->GetName())
+				{
+					if (ISaveInterface::Execute_ShouldLoadTransform( Actor ))
+					{
+						Actor->SetActorTransform( SavedActor.Transform );
+					}
+
+					FMemoryReader MemoryReader( SavedActor.Bytes );
+
+					FObjectAndNameAsStringProxyArchive Archive( MemoryReader, true );
+					Archive.ArIsSaveGame = true;
+
+					// converts binary bytes back into variables
+					Actor->Serialize( Archive );
+
+					ISaveInterface::Execute_LoadActor( Actor );
+				}
+			}
+		}
 	}
 }
 

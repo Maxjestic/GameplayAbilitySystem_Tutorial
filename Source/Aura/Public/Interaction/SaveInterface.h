@@ -7,7 +7,7 @@
 #include "SaveInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE( MinimalAPI )
 class USaveInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -22,4 +22,11 @@ class AURA_API ISaveInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	/** True if owner should load its transform from save */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	bool ShouldLoadTransform();
+
+	/** Handles loading owner from save */
+	UFUNCTION( BlueprintCallable, BlueprintNativeEvent )
+	void LoadActor();
 };

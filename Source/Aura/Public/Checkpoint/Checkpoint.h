@@ -24,8 +24,13 @@ public:
 	 */
 	ACheckpoint( const FObjectInitializer& ObjectInitializer );
 
+	//~ Begin ISaveInterface
+	virtual bool ShouldLoadTransform_Implementation() override { return false; }
+	virtual void LoadActor_Implementation() override;
+	//~ End ISaveInterface
+
 	/** True if player reached this checkpoint already */
-	UPROPERTY(BlueprintReadOnly, SaveGame)
+	UPROPERTY( BlueprintReadOnly, SaveGame )
 	bool bReached = false;
 
 protected:

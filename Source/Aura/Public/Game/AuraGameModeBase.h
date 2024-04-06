@@ -32,7 +32,10 @@ public:
 	void SaveInGameProgressData( ULoadScreenSaveGame* SaveObject ) const;
 
 	/** Saves world state - map with actors */
-	void SaveWorldState( UWorld* World );
+	void SaveWorldState( UWorld* World ) const;
+
+	/** Loads world state - actors from given map */
+	void LoadWorldState( UWorld* World ) const;
 
 	/** Loads saved load screen data to display correct slot data */
 	ULoadScreenSaveGame* GetSaveSlotData( const FString& SlotName, const int32 SlotIndex ) const;
