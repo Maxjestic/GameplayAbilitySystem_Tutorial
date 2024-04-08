@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
+#include "Interaction/HighlightInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
 
@@ -15,7 +16,7 @@ class UWidgetComponent;
  * Class for AI-controlled characters
  */
 UCLASS()
-class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface
+class AURA_API AAuraEnemy : public AAuraCharacterBase, public IEnemyInterface, public IHighlightInterface
 {
 	GENERATED_BODY()
 
@@ -27,11 +28,14 @@ public:
 	AAuraEnemy();
 
 	//~ Begin IEnemy Interface
-	virtual void HighlightActor() override;
-	virtual void UnhighlightActor() override;
-	virtual void SetCombatTarget_Implementation(AActor* InTargetActor) override;
+	virtual void SetCombatTarget_Implementation( AActor* InTargetActor ) override;
 	virtual AActor* GetCombatTarget_Implementation() override;
 	//~ End IEnemy Interface
+
+	//~ Begin IHighlight Interface	
+	virtual void HighlightActor() override;
+	virtual void UnhighlightActor() override;
+	//~ End IHighlight Interface
 
 	//~ Begin APawn Interface
 	virtual void PossessedBy( AController* NewController ) override;
@@ -73,7 +77,7 @@ protected:
 	//~ Begin AAuraCharacterBase Interface
 	virtual void InitAbilityActorInfo() override;
 	virtual void InitializeDefaultAttributes() const override;
-	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount) override;
+	virtual void StunTagChanged( const FGameplayTag CallbackTag, int32 NewCount ) override;
 	//~ End AAuraCharacterBase Interface
 
 	/** Enemy level */

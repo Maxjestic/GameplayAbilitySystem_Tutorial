@@ -14,7 +14,7 @@ class USaveInterface : public UInterface
 };
 
 /**
- * 
+ * Interface for saving/loading data
  */
 class AURA_API ISaveInterface
 {

@@ -20,12 +20,6 @@ class AURA_API IEnemyInterface
 	GENERATED_BODY()
 
 public:
-	/** Highlights the Actor */
-	virtual void HighlightActor() = 0;
-	
-	/** Unhighlights the Actor */
-	virtual void UnhighlightActor() = 0;
-
 	/** Sets enemy's combat target  */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetCombatTarget(AActor* InTargetActor);
