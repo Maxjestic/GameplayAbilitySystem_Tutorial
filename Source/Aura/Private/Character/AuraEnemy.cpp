@@ -20,7 +20,9 @@ AAuraEnemy::AAuraEnemy()
 	GetMesh()->SetCollisionResponseToChannel( ECC_Visibility, ECR_Block );
 
 	GetMesh()->SetCustomDepthStencilValue( CUSTOM_DEPTH_RED );
+	GetMesh()->MarkRenderStateDirty();
 	Weapon->SetCustomDepthStencilValue( CUSTOM_DEPTH_RED );
+	Weapon->MarkRenderStateDirty();
 
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>( "AbilitySystemComponent" );
 	AbilitySystemComponent->SetIsReplicated( true );
@@ -49,6 +51,11 @@ void AAuraEnemy::UnHighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth( false );
 	Weapon->SetRenderCustomDepth( false );
+}
+
+void AAuraEnemy::SetMoveToLocation_Implementation( FVector& OutDestination )
+{
+	// Do not change OutDestination
 }
 
 void AAuraEnemy::SetCombatTarget_Implementation( AActor* InTargetActor )
