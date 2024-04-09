@@ -50,11 +50,11 @@ protected:
 	/** Handles glow effect of the static mesh */
 	void HandleGlowEffects();
 
-private:
 	/** Representing checkpoint */
-	UPROPERTY( VisibleAnywhere )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly )
 	TObjectPtr<UStaticMeshComponent> CheckpointMesh;
 
+private:
 	/** Used to detect overlap */
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USphereComponent> Sphere;

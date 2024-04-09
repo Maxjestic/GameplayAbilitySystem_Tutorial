@@ -291,7 +291,7 @@ void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
 		return;
 	}
 
-	// it it's RMB we check - is this targeting or is shift key pressed? true: try to activate ability; false: run to cursor
+	// if it's RMB we check - is this targeting or is shift key pressed? true: try to activate ability; false: run to cursor
 	if (TargetingStatus == ETargetingStatus::TargetingEnemy || bShiftKeyDown)
 	{
 		if (GetAbilitySystemComponent())
