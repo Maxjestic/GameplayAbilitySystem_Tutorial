@@ -38,8 +38,12 @@ public:
 	//~ End IHighlight Interface
 
 	/** True if player reached this checkpoint already */
-	UPROPERTY( BlueprintReadOnly, SaveGame )
+	UPROPERTY( BlueprintReadWrite, SaveGame )
 	bool bReached = false;
+
+	/** True if overlap callback should be bound */
+	UPROPERTY( EditAnywhere )
+	bool bBindOverlapCallback = true;
 
 protected:
 	//~ Begin AActor Interface
@@ -56,6 +60,7 @@ protected:
 	void CheckpointReached( UMaterialInstanceDynamic* DynamicMaterialInstance );
 
 	/** Handles glow effect of the static mesh */
+	UFUNCTION( BlueprintCallable )
 	void HandleGlowEffects();
 
 	/** Component used to get move to location for player when clicked */
