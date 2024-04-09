@@ -39,13 +39,13 @@ AAuraEnemy::AAuraEnemy()
 	BaseWalkSpeed = 250.f;
 }
 
-void AAuraEnemy::HighlightActor()
+void AAuraEnemy::HighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth( true );
 	Weapon->SetRenderCustomDepth( true );
 }
 
-void AAuraEnemy::UnhighlightActor()
+void AAuraEnemy::UnHighlightActor_Implementation()
 {
 	GetMesh()->SetRenderCustomDepth( false );
 	Weapon->SetRenderCustomDepth( false );

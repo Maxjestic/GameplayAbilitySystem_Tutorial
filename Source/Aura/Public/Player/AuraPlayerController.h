@@ -19,6 +19,13 @@ class UInputAction;
 
 struct FInputActionValue;
 
+enum class ETargetingStatus : uint8
+{
+	TargetingEnemy,
+	TargetingNonEnemy,
+	NotTargeting
+};
+
 /**
  * Controller class used as default controller class in game
  */
@@ -82,7 +89,11 @@ private:
 	UAuraAbilitySystemComponent* GetAbilitySystemComponent();
 
 	/** Updates magic circle location based on mouse location */
-	void UpdateMagicCircleLocation();
+	void UpdateMagicCircleLocation() const;
+
+	/** Performs a check if Actor implements Highlight interface, if so, executes correct function */
+	static void HighlightActor( AActor* InActor );
+	static void UnHighlightActor( AActor* InActor );
 
 	/** Input Mapping Context used to map input */
 	UPROPERTY( EditAnywhere, Category = "Input" )
@@ -107,8 +118,8 @@ private:
 	/**
 	 * Interactable actors under cursor
 	 */
-	IHighlightInterface* PreviousActor;
-	IHighlightInterface* NewActor;
+	TObjectPtr<AActor> PreviousActor;
+	TObjectPtr<AActor> NewActor;
 
 	/** Hit result from under cursor trace */
 	FHitResult CursorHit;
@@ -125,8 +136,8 @@ private:
 	/** Is this in auto running state? */
 	bool bAutoRunning = false;
 
-	/** Is mouse hovering above target? */
-	bool bIsTargeting = false;
+	/** Status of targeting - what is underneath the cursor? */
+	ETargetingStatus TargetingStatus = ETargetingStatus::NotTargeting;
 
 	/** Is shift pressed */
 	bool bShiftKeyDown = false;

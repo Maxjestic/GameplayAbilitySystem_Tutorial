@@ -33,8 +33,8 @@ public:
 	//~ End IEnemy Interface
 
 	//~ Begin IHighlight Interface	
-	virtual void HighlightActor() override;
-	virtual void UnhighlightActor() override;
+	virtual void HighlightActor_Implementation() override;
+	virtual void UnHighlightActor_Implementation() override;
 	//~ End IHighlight Interface
 
 	//~ Begin APawn Interface

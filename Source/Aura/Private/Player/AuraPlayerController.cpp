@@ -39,11 +39,11 @@ void AAuraPlayerController::PlayerTick( float DeltaTime )
 }
 
 void AAuraPlayerController::ShowMagicCircle( UMaterialInterface* DecalMaterial )
-{	
+{
 	if (!IsValid( MagicCircle ))
 	{
 		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>( MagicCircleClass );
-		if(DecalMaterial)
+		if (DecalMaterial)
 		{
 			MagicCircle->MagicCircleDecal->SetMaterial( 0, DecalMaterial );
 		}
@@ -160,36 +160,35 @@ void AAuraPlayerController::CursorTrace()
 	if (GetAbilitySystemComponent() &&
 		GetAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_CursorTrace ))
 	{
-		if (PreviousActor)
-		{
-			PreviousActor->UnhighlightActor();
-		}
-		if (NewActor)
-		{
-			NewActor->UnhighlightActor();
-		}
+		UnHighlightActor( PreviousActor );
+		UnHighlightActor( NewActor );
 		PreviousActor = nullptr;
 		NewActor = nullptr;
 		return;
 	}
 
-	const ECollisionChannel TraceChannel = IsValid(MagicCircle) ? ECC_ExcludePlayers : ECC_Visibility;
+	const ECollisionChannel TraceChannel = IsValid( MagicCircle ) ? ECC_ExcludePlayers : ECC_Visibility;
 	GetHitResultUnderCursor( TraceChannel, false, CursorHit );
-	if (!CursorHit.bBlockingHit) return;
+
+	if (!CursorHit.bBlockingHit)
+	{
+		return;
+	}
 
 	PreviousActor = NewActor;
-	NewActor = Cast<IHighlightInterface>( CursorHit.GetActor() );
+	if (IsValid( CursorHit.GetActor() ) && CursorHit.GetActor()->Implements<UHighlightInterface>())
+	{
+		NewActor = CursorHit.GetActor();
+	}
+	else
+	{
+		NewActor = nullptr;
+	}
 
 	if (PreviousActor != NewActor)
 	{
-		if (PreviousActor)
-		{
-			PreviousActor->UnhighlightActor();
-		}
-		if (NewActor)
-		{
-			NewActor->HighlightActor();
-		}
+		UnHighlightActor( PreviousActor );
+		HighlightActor( NewActor );
 	}
 }
 
@@ -202,9 +201,15 @@ void AAuraPlayerController::AbilityInputTagPressed( FGameplayTag InputTag )
 	}
 	if (InputTag.MatchesTagExact( FAuraGameplayTags::Get().InputTag_RMB ))
 	{
-		bIsTargeting = NewActor ? true : false;
-		FollowTime = 0.f;
-		bAutoRunning = false;
+		if(IsValid(NewActor))
+		{
+			TargetingStatus = NewActor->Implements<UEnemyInterface>() ? ETargetingStatus::TargetingEnemy : ETargetingStatus::TargetingNonEnemy;
+			bAutoRunning = false;
+		}
+		else
+		{
+			TargetingStatus = ETargetingStatus::NotTargeting;
+		}
 	}
 	if (GetAbilitySystemComponent())
 	{
@@ -236,7 +241,7 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 	}
 
 	// if it's RMB we check - is this not targeting and shift key is not pressed? true: start auto running to clicked destination
-	if (!bIsTargeting && !bShiftKeyDown)
+	if (TargetingStatus != ETargetingStatus::TargetingEnemy && !bShiftKeyDown)
 	{
 		const APawn* ControllerPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControllerPawn)
@@ -264,6 +269,8 @@ void AAuraPlayerController::AbilityInputTagReleased( FGameplayTag InputTag )
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation( this, ClickNiagaraSystem, CachedDestination );
 			}
 		}
+		FollowTime = 0.f;
+		TargetingStatus = ETargetingStatus::NotTargeting;
 	}
 }
 
@@ -285,7 +292,7 @@ void AAuraPlayerController::AbilityInputTagHeld( FGameplayTag InputTag )
 	}
 
 	// it it's RMB we check - is this targeting or is shift key pressed? true: try to activate ability; false: run to cursor
-	if (bIsTargeting || bShiftKeyDown)
+	if (TargetingStatus == ETargetingStatus::TargetingEnemy || bShiftKeyDown)
 	{
 		if (GetAbilitySystemComponent())
 		{
@@ -319,10 +326,26 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetAbilitySystemComponent()
 	return AuraAbilitySystemComponent;
 }
 
-void AAuraPlayerController::UpdateMagicCircleLocation()
+void AAuraPlayerController::UpdateMagicCircleLocation() const
 {
 	if (IsValid( MagicCircle ))
 	{
 		MagicCircle->SetActorLocation( CursorHit.ImpactPoint );
+	}
+}
+
+void AAuraPlayerController::HighlightActor( AActor* InActor )
+{
+	if (IsValid( InActor ) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_HighlightActor( InActor );
+	}
+}
+
+void AAuraPlayerController::UnHighlightActor( AActor* InActor )
+{
+	if (IsValid( InActor ) && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_UnHighlightActor( InActor );
 	}
 }
