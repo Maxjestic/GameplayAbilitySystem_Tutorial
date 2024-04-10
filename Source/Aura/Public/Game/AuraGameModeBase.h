@@ -32,7 +32,7 @@ public:
 	void SaveInGameProgressData( ULoadScreenSaveGame* SaveObject ) const;
 
 	/** Saves world state - map with actors */
-	void SaveWorldState( UWorld* World ) const;
+	void SaveWorldState( UWorld* World, const FString& DestinationMapAssetName = FString( "" ) ) const;
 
 	/** Loads world state - actors from given map */
 	void LoadWorldState( UWorld* World ) const;
@@ -48,6 +48,9 @@ public:
 
 	/** Handles traveling to map when loading */
 	void TravelToMap( const UMVVM_LoadSlot* Slot );
+
+	/** Returns a map name associated with given map asset name */
+	FString GetMapNameFromMapAssetName( const FString& MapAssetName ) const;
 
 	/** Data asset used to initialize enemy attributes */
 	UPROPERTY( EditDefaultsOnly, Category = "Character Class Defaults" )

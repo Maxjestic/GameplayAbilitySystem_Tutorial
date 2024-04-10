@@ -74,9 +74,9 @@ protected:
 	/** Highlight color */
 	UPROPERTY( EditDefaultsOnly )
 	int32 CustomDepthStencilOverride = CUSTOM_DEPTH_TAN;
-
-private:
+	
 	/** Used to detect overlap */
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USphereComponent> Sphere;
+
 };

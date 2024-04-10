@@ -125,6 +125,10 @@ public:
 	UPROPERTY()
 	FString MapName = FString( "Default Map Name" );
 
+	/** Saved map asset name */
+	UPROPERTY()
+	FString MapAssetName = FString( "Default Map Asset Name" );
+
 	/** Saved tag for player start */
 	UPROPERTY()
 	FName PlayerStartTag;
