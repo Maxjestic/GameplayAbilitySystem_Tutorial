@@ -59,6 +59,10 @@ public:
 	UPROPERTY()
 	FName PlayerStartTag;
 
+	/** Map asset name used in save */
+	UPROPERTY()
+	FString MapAssetName;
+
 private:
 	/** Name associated with save slot */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess="true") )

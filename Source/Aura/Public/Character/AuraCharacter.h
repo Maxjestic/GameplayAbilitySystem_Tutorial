@@ -31,6 +31,7 @@ public:
 
 	//~ Begin Combat Interface
 	virtual int32 GetCharacterLevel_Implementation() const override;
+	virtual void Die( const FVector& DeathImpulse ) override;
 	//~ End Combat Interface
 
 	//~ Begin Player Interface
@@ -45,10 +46,17 @@ public:
 	virtual int32 GetSpellPoints_Implementation() const override;
 	virtual int32 GetSpellPointsReward_Implementation( const int32 PlayerLevel ) const override;
 	virtual void AddToSpellPoints_Implementation( const int32 InSpellPoints ) override;
-	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalMaterial) override;
+	virtual void ShowMagicCircle_Implementation( UMaterialInterface* DecalMaterial ) override;
 	virtual void HideMagicCircle_Implementation() override;
-	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;
+	virtual void SaveProgress_Implementation( const FName& CheckpointTag ) override;
 	//~ End Player Interface
+
+	/** Delay on death */
+	UPROPERTY( EditDefaultsOnly )
+	float DeathTime = 5.f;
+
+	/** Timer used on death to show information */
+	FTimerHandle DeathTimer;
 
 protected:
 	//~ Begin AAuraCharacterBase Interface
@@ -58,7 +66,7 @@ protected:
 
 	/** Loads character data from disk */
 	void LoadProgress() const;
-	
+
 	/** Gameplay effect initializing primary attributes for the character */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Attributes" )
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
@@ -81,13 +89,13 @@ private:
 	virtual void InitializeDefaultAttributes() const override;
 	//~ End AAuraCharacterBase Interface
 
-	UFUNCTION(NetMulticast, Reliable)
+	UFUNCTION( NetMulticast, Reliable )
 	void MulticastLevelUpParticles() const;
 
 	/** Player character camera component */
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<UCameraComponent> TopDownCameraComponent;
-	
+
 	/** Spring arm component for camera */
 	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USpringArmComponent> CameraBoom;

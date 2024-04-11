@@ -52,6 +52,9 @@ public:
 	/** Returns a map name associated with given map asset name */
 	FString GetMapNameFromMapAssetName( const FString& MapAssetName ) const;
 
+	/** Called when player dies */
+	void PlayerDied(const ACharacter* DeadCharacter) const;
+
 	/** Data asset used to initialize enemy attributes */
 	UPROPERTY( EditDefaultsOnly, Category = "Character Class Defaults" )
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;

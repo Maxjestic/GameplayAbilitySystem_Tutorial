@@ -204,6 +204,7 @@ protected:
 	TObjectPtr<USoundBase> DeathSound;
 
 	/** True if this is dead */
+	UPROPERTY( BlueprintReadOnly )
 	bool bDead = false;
 
 	/** Base walk speed value */
