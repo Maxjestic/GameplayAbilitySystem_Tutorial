@@ -41,8 +41,9 @@ public:
 	//~ End IAbilitySystemInterface
 
 	//~ Begin AActor Interface
-	virtual void Tick(float DeltaSeconds) override;
-	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void Tick( float DeltaSeconds ) override;
+	virtual float TakeDamage( float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	                          AActor* DamageCauser ) override;
 	//~ End AActor Interface
 
 	//~ Begin ICombatInterface
@@ -75,6 +76,9 @@ public:
 
 	/** Returns my attribute set */
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	/** Character class accessors */
+	void SetCharacterClass( const ECharacterClass InClass ) { CharacterClass = InClass; }
 
 	/** Handles what happens on all clients whenever I die */
 	UFUNCTION( NetMulticast, Reliable )
@@ -247,6 +251,6 @@ private:
 	TObjectPtr<UPassiveNiagaraComponent> ManaSiphonNiagaraComponent;
 
 	/** Scene component to attach the effects to */
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY( VisibleAnywhere )
 	TObjectPtr<USceneComponent> EffectAttachComponent;
 };

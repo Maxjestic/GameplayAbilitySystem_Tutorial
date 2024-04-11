@@ -35,7 +35,7 @@ public:
 	//~ Begin IHighlight Interface	
 	virtual void HighlightActor_Implementation() override;
 	virtual void UnHighlightActor_Implementation() override;
-	virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;
+	virtual void SetMoveToLocation_Implementation( FVector& OutDestination ) override;
 	//~ End IHighlight Interface
 
 	//~ Begin APawn Interface
@@ -49,6 +49,9 @@ public:
 
 	/** Callback responding to Effects.HitReact tag change */
 	void HitReactTagChanged( const FGameplayTag CallbackTag, int32 NewCount );
+
+	/** Level accessors */
+	void SetLevel( const int32 InLevel ) { Level = InLevel; }
 
 	/** Delegate to broadcast when health changes */
 	UPROPERTY( BlueprintAssignable )
