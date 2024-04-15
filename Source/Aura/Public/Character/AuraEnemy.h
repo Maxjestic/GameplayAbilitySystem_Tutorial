@@ -84,6 +84,10 @@ protected:
 	virtual void StunTagChanged( const FGameplayTag CallbackTag, int32 NewCount ) override;
 	//~ End AAuraCharacterBase Interface
 
+	/** Used to spawn loot when enemy dies */
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnLoot();
+
 	/** Enemy level */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults" )
 	int32 Level = 1;

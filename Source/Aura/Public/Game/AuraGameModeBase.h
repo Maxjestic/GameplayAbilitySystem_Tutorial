@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "AuraGameModeBase.generated.h"
 
+class ULootTiers;
 class ULoadScreenSaveGame;
 class USaveGame;
 class UMVVM_LoadSlot;
@@ -62,6 +63,10 @@ public:
 	/** Data asset with all ability infos */
 	UPROPERTY( EditDefaultsOnly, Category = "Ability Info" )
 	TObjectPtr<UAbilityInfo> AbilityInfo;
+
+	/** Data asset with all loots */
+	UPROPERTY( EditDefaultsOnly, Category = "Loot Tiers" )
+	TObjectPtr<ULootTiers> LootTiers;
 
 	/** Class used to save game */
 	UPROPERTY( EditDefaultsOnly )

@@ -111,6 +111,6 @@ protected:
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
 
 	/** Level used to deduce magnitude of the effects */
-	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Applicable Effects" )
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Applicable Effects" )
 	float ActorLevel = 1.f;
 };

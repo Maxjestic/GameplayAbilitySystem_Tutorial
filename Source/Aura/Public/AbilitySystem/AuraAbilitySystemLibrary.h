@@ -9,6 +9,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class ULootTiers;
 class ULoadScreenSaveGame;
 struct FDamageEffectParams;
 class UAbilityInfo;
@@ -74,9 +75,13 @@ public:
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static UCharacterClassInfo* GetCharacterClassInfo( const UObject* WorldContextObject );
 
-	/** Character Class Info data asset getter */
+	/** Ability Info data asset getter */
 	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults" )
 	static UAbilityInfo* GetAbilityInfo( const UObject* WorldContextObject );
+
+	/** Loot tiers data asset getter */
+	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|Loot", meta = (DefaultToSelf = "WorldContextObject") )
+	static ULootTiers* GetLootTiers( const UObject* WorldContextObject );
 
 
 	/**
@@ -216,12 +221,12 @@ public:
 	static FGameplayEffectContextHandle ApplyDamageEffect( const FDamageEffectParams& DamageEffectParams );
 
 	/** Creates given number of rotators spread in defined angle around given axis */
-	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
 	static TArray<FRotator> EvenlySpacedRotators( const FVector& Forward, const FVector& Axis, const float Spread,
 	                                              const int32 NumRotators );
 
 	/** Creates given number of vectors spread in defined angle around given axis */
-	UFUNCTION( BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
+	UFUNCTION( BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics" )
 	static TArray<FVector> EvenlyRotatedVectors( const FVector& Forward, const FVector& Axis, const float Spread, const int32 NumVectors );
 
 	/** Returns amount of experience reward based on level and class of the character */

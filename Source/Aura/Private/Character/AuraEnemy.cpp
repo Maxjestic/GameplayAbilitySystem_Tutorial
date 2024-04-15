@@ -96,6 +96,7 @@ void AAuraEnemy::Die( const FVector& DeathImpulse )
 	{
 		AuraAIController->GetBlackboardComponent()->SetValueAsBool( FName( "Dead" ), true );
 	}
+	SpawnLoot();
 	Super::Die( DeathImpulse );
 }
 
@@ -132,7 +133,8 @@ void AAuraEnemy::InitAbilityActorInfo()
 	}
 
 	OnAbilitySystemComponentRegistered.Broadcast( AbilitySystemComponent );
-	AbilitySystemComponent->RegisterGameplayTagEvent( FAuraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved ).AddUObject( this, &AAuraEnemy::StunTagChanged );
+	AbilitySystemComponent->RegisterGameplayTagEvent( FAuraGameplayTags::Get().Debuff_Stun, EGameplayTagEventType::NewOrRemoved ).
+	                        AddUObject( this, &AAuraEnemy::StunTagChanged );
 }
 
 void AAuraEnemy::InitializeDefaultAttributes() const

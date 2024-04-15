@@ -212,6 +212,19 @@ UAbilityInfo* UAuraAbilitySystemLibrary::GetAbilityInfo( const UObject* WorldCon
 	return AuraGameMode->AbilityInfo;
 }
 
+ULootTiers* UAuraAbilitySystemLibrary::GetLootTiers( const UObject* WorldContextObject )
+{
+	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(
+		UGameplayStatics::GetGameMode( WorldContextObject ) );
+
+	if (AuraGameMode == nullptr)
+	{
+		return nullptr;
+	}
+
+	return AuraGameMode->LootTiers;
+}
+
 bool UAuraAbilitySystemLibrary::IsBlockedHit( const FGameplayEffectContextHandle& EffectContextHandle )
 {
 	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -444,9 +457,9 @@ void UAuraAbilitySystemLibrary::GetLivePlayersWithinRadius( const UObject* World
 	FCollisionQueryParams SphereParams;
 	SphereParams.AddIgnoredActors( ActorsToIgnore );
 
-	TArray<FOverlapResult> Overlaps;
 	if (const UWorld* World = GEngine->GetWorldFromContextObject( WorldContextObject, EGetWorldErrorMode::LogAndReturnNull ))
 	{
+		TArray<FOverlapResult> Overlaps;
 		World->OverlapMultiByObjectType( Overlaps,
 		                                 SphereOrigin,
 		                                 FQuat::Identity,
