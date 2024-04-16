@@ -131,11 +131,11 @@ protected:
 	FVector InitialLocation;
 
 	/** Location calculated in ItemMovement */
-	UPROPERTY( BlueprintReadOnly)
+	UPROPERTY( BlueprintReadWrite )
 	FVector CalculatedLocation;
 
 	/** Rotation calculated in ItemMovement */
-	UPROPERTY( BlueprintReadOnly)
+	UPROPERTY( BlueprintReadWrite )
 	FRotator CalculatedRotation;
 
 	/** Indicates if this should rotate */
