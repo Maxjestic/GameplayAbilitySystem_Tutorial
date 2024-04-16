@@ -65,6 +65,10 @@ public:
 	 */
 	AAuraEffectActor();
 
+	//~ Begin AActor Interface
+	virtual void Tick( float DeltaTime ) override;
+	//~ End AActor Interface
+
 protected:
 	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
@@ -87,11 +91,19 @@ protected:
 	UFUNCTION( BlueprintCallable )
 	void OnEndOverlap( AActor* TargetActor );
 
-	/** Decide if the this should be removed after the Effect is removed */
+	/** Prepares for sinusoidal movement */
+	UFUNCTION( BlueprintCallable )
+	void StartSinusoidalMovement();
+
+	/** Prepares for rotation */
+	UFUNCTION( BlueprintCallable )
+	void StartRotation();
+
+	/** Decide if this should be removed after the Effect is removed */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Applicable Effects" )
 	bool bDestroyOnEffectApplication = false;
 
-	/** Decide if the this should be applied to enemies */
+	/** Decide if this should be applied to enemies */
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = "Applicable Effects" )
 	bool bApplyEffectsToEnemies = false;
 
@@ -113,4 +125,43 @@ protected:
 	/** Level used to deduce magnitude of the effects */
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Applicable Effects" )
 	float ActorLevel = 1.f;
+
+	/** Initial location of this */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement" )
+	FVector InitialLocation;
+
+	/** Location calculated in ItemMovement */
+	UPROPERTY( BlueprintReadOnly)
+	FVector CalculatedLocation;
+
+	/** Rotation calculated in ItemMovement */
+	UPROPERTY( BlueprintReadOnly)
+	FRotator CalculatedRotation;
+
+	/** Indicates if this should rotate */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement" )
+	bool bRotates = false;
+
+	/** Rotation rate of this actor */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement" )
+	float RotationRate = 45.f;
+
+	/** Indicates if this should move up and down */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement" )
+	bool bSinusoidalMovement = false;
+
+	/** Sine movement amplitude of this actor */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement" )
+	float SineAmplitude = 1.f;
+
+	/** Sine movement period of this actor */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Pickup Movement" )
+	float SinePeriodConstant = 1.f;
+
+private:
+	/** Used to keep track of sinusoidal movement */
+	float RunningTime = 0.f;
+
+	/** Takes care of item movement in tick */
+	void ItemMovement( float DeltaTime );
 };
